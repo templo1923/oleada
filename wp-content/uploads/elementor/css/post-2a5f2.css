@@ -1,0 +1,492 @@
+.elementor-2 .elementor-element.elementor-element-b2b67e0:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-b2b67e0 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: var( --e-global-color-secondary );
+    background: url("../../2023/11/IMG_5223-scaled.jpg") 50% 50%;
+    background-size: cover;
+}
+
+.elementor-2 .elementor-element.elementor-element-b2b67e0 {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-b2b67e0 > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-bc-flex-widget .elementor-2 .elementor-element.elementor-element-4684357.elementor-column .elementor-widget-wrap {
+    align-items: space-between;
+}
+
+.elementor-2 .elementor-element.elementor-element-4684357.elementor-column.elementor-element[data-element_type="column"] > .elementor-widget-wrap.elementor-element-populated {
+    align-content: space-between;
+    align-items: space-between;
+}
+
+.elementor-2 .elementor-element.elementor-element-d352091 {
+    text-align: left;
+    width: var( --container-widget-width, 52.936% );
+    max-width: 52.936%;
+    --container-widget-width: 52.936%;
+    --container-widget-flex-grow: 0;
+}
+
+.elementor-2 .elementor-element.elementor-element-d352091 .elementor-heading-title {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-d352091 > .elementor-widget-container {
+    margin: 0px 0px 0px 70px;
+}
+
+.elementor-2 .elementor-element.elementor-element-380589a .elementor-heading-title {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-380589a > .elementor-widget-container {
+    margin: 0px 0px 0px 70px;
+}
+
+.elementor-2 .elementor-element.elementor-element-380589a {
+    width: var( --container-widget-width, 99.874% );
+    max-width: 99.874%;
+    --container-widget-width: 99.874%;
+    --container-widget-flex-grow: 0;
+}
+
+.elementor-2 .elementor-element.elementor-element-abf54e5 .elementor-button .elementor-align-icon-right {
+    margin-left: 5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-abf54e5 .elementor-button .elementor-align-icon-left {
+    margin-right: 5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-abf54e5 .elementor-button {
+    fill: var( --e-global-color-bab36a2 );
+    color: var( --e-global-color-bab36a2 );
+    background-color: #ff6900;
+}
+
+.elementor-2 .elementor-element.elementor-element-abf54e5 > .elementor-widget-container {
+    margin: 10px 10px 10px 75px;
+}
+
+.elementor-2 .elementor-element.elementor-element-abf54e5 {
+    width: var( --container-widget-width, 100.379% );
+    max-width: 100.379%;
+    --container-widget-width: 100.379%;
+    --container-widget-flex-grow: 0;
+}
+
+.elementor-2 .elementor-element.elementor-element-db36f41 .elementor-button .elementor-align-icon-right {
+    margin-left: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-db36f41 .elementor-button .elementor-align-icon-left {
+    margin-right: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-db36f41 .elementor-button {
+    fill: var( --e-global-color-bab36a2 );
+    color: var( --e-global-color-bab36a2 );
+    background-color: #ff6900;
+}
+
+.elementor-2 .elementor-element.elementor-element-db36f41 > .elementor-widget-container {
+    margin: 10px 10px 10px 75px;
+}
+
+.elementor-2 .elementor-element.elementor-element-db36f41 {
+    width: var( --container-widget-width, 100.379% );
+    max-width: 100.379%;
+    --container-widget-width: 100.379%;
+    --container-widget-flex-grow: 0;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c3f18e > .elementor-container {
+    max-width: 1600px;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c3f18e:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-0c3f18e > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #020000;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c3f18e > .elementor-background-overlay {
+    background-color: #000000;
+    opacity: 0.5;
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c3f18e {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-0307976 {
+    color: var( --e-global-color-e1a1346 );
+    width: 100%;
+    max-width: 100%;
+    align-self: center;
+}
+
+.elementor-2 .elementor-element.elementor-element-0307976 > .elementor-widget-container {
+    margin: 040px 0px -20px 0px;
+}
+
+.elementor-2 .elementor-element.elementor-element-37eedd2 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-37eedd2 > .elementor-widget-container {
+    margin: -10px -10px -10px -10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-20dc837 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-20dc837 > .elementor-widget-container {
+    margin: 025px 0px 030px 0px;
+}
+
+.elementor-2 .elementor-element.elementor-element-cbbc995 .elementor-button {
+    background-color: #CF1717;
+}
+
+.elementor-2 .elementor-element.elementor-element-cbbc995 > .elementor-widget-container {
+    padding: 15px 0px 30px 0px;
+}
+
+.elementor-2 .elementor-element.elementor-element-cbbc995 {
+    width: 100%;
+    max-width: 100%;
+    align-self: flex-end;
+}
+
+.elementor-2 .elementor-element.elementor-element-f1609f4:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-f1609f4 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: transparent;
+    background-image: linear-gradient(180deg, #000000 0%, #ff6900 100%);
+}
+
+.elementor-2 .elementor-element.elementor-element-f1609f4 {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-f1609f4 > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-d1e5580 {
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-7cd94ce .elementor-button {
+    background-color: #800303;
+}
+
+.elementor-2 .elementor-element.elementor-element-7cd94ce > .elementor-widget-container {
+    padding: 35px 35px 35px 35px;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c6b8de:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-0c6b8de > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #000000;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c6b8de {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+.elementor-2 .elementor-element.elementor-element-0c6b8de > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-b463fae {
+    text-align: center;
+}
+
+.elementor-2 .elementor-element.elementor-element-b463fae .elementor-heading-title {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-b463fae > .elementor-widget-container {
+    padding: 20px 20px 20px 20px;
+}
+
+.elementor-2 .elementor-element.elementor-element-1d20562:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-1d20562 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #000000;
+}
+
+.elementor-2 .elementor-element.elementor-element-1d20562 {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+.elementor-2 .elementor-element.elementor-element-1d20562 > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-dfa086e:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap, .elementor-2 .elementor-element.elementor-element-dfa086e > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #1B1616;
+}
+
+.elementor-2 .elementor-element.elementor-element-dfa086e > .elementor-element-populated {
+    box-shadow: 0px 0px 10px 9px rgba(113.89999999999999, 47.293260869565216, 47.293260869565216, 0.55);
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin: 0px 30px 40px 0px;
+    --e-column-margin-right: 30px;
+    --e-column-margin-left: 0px;
+    padding: 010px 10px 10px 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-dfa086e > .elementor-element-populated > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-fa94e4d {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-c5790ab {
+    --divider-border-style: solid;
+    --divider-color: var( --e-global-color-text );
+    --divider-border-width: 1px;
+}
+
+.elementor-2 .elementor-element.elementor-element-c5790ab .elementor-divider-separator {
+    width: 100%;
+}
+
+.elementor-2 .elementor-element.elementor-element-c5790ab .elementor-divider {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-c5790ab > .elementor-widget-container {
+    margin: -5px -5px -5px -5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-336e288 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-5213869 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-d585ffb {
+    text-align: left;
+}
+
+.elementor-2 .elementor-element.elementor-element-d07554d .elementor-button {
+    background-color: #CF1717;
+}
+
+.elementor-2 .elementor-element.elementor-element-72ef085:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap, .elementor-2 .elementor-element.elementor-element-72ef085 > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #1B1616;
+}
+
+.elementor-2 .elementor-element.elementor-element-72ef085 > .elementor-element-populated {
+    box-shadow: 0px 0px 10px 9px rgba(113.89999999999999, 47.293260869565216, 47.293260869565216, 0.55);
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin: 0px 30px 040px 0px;
+    --e-column-margin-right: 30px;
+    --e-column-margin-left: 0px;
+    padding: 10px 10px 10px 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-72ef085 > .elementor-element-populated > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-8222784 {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-884690f {
+    --divider-border-style: solid;
+    --divider-color: var( --e-global-color-text );
+    --divider-border-width: 1px;
+}
+
+.elementor-2 .elementor-element.elementor-element-884690f .elementor-divider-separator {
+    width: 100%;
+}
+
+.elementor-2 .elementor-element.elementor-element-884690f .elementor-divider {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-884690f > .elementor-widget-container {
+    margin: -5px -5px -5px -5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-5bb5b8a {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-ee89947 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-20950ff .elementor-button {
+    background-color: #CF1717;
+}
+
+.elementor-2 .elementor-element.elementor-element-00b137d:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap, .elementor-2 .elementor-element.elementor-element-00b137d > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #1B1616;
+}
+
+.elementor-2 .elementor-element.elementor-element-00b137d > .elementor-element-populated {
+    box-shadow: 0px 0px 10px 9px rgba(113.89999999999999, 47.293260869565216, 47.293260869565216, 0.55);
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin: 0px 30px 040px 0px;
+    --e-column-margin-right: 30px;
+    --e-column-margin-left: 0px;
+    padding: 10px 10px 10px 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-00b137d > .elementor-element-populated > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-de07bbf {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-18b1cf8 {
+    --divider-border-style: solid;
+    --divider-color: var( --e-global-color-text );
+    --divider-border-width: 1px;
+}
+
+.elementor-2 .elementor-element.elementor-element-18b1cf8 .elementor-divider-separator {
+    width: 100%;
+}
+
+.elementor-2 .elementor-element.elementor-element-18b1cf8 .elementor-divider {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-18b1cf8 > .elementor-widget-container {
+    margin: -5px -5px -5px -5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-50a39b2 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-61174c5 {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-c96beee .elementor-button {
+    background-color: #CF1717;
+}
+
+.elementor-2 .elementor-element.elementor-element-430072b:not(.elementor-motion-effects-element-type-background) > .elementor-widget-wrap, .elementor-2 .elementor-element.elementor-element-430072b > .elementor-widget-wrap > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #1B1616;
+}
+
+.elementor-2 .elementor-element.elementor-element-430072b > .elementor-element-populated {
+    box-shadow: 0px 0px 10px 9px rgba(113.89999999999999, 47.293260869565216, 47.293260869565216, 0.55);
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    margin: 0px 30px 040px 0px;
+    --e-column-margin-right: 30px;
+    --e-column-margin-left: 0px;
+    padding: 10px 10px 10px 10px;
+}
+
+.elementor-2 .elementor-element.elementor-element-430072b > .elementor-element-populated > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-1ec7f51 {
+    color: #FFFFFF;
+}
+
+.elementor-2 .elementor-element.elementor-element-bbb31bc {
+    --divider-border-style: solid;
+    --divider-color: var( --e-global-color-text );
+    --divider-border-width: 1px;
+}
+
+.elementor-2 .elementor-element.elementor-element-bbb31bc .elementor-divider-separator {
+    width: 100%;
+}
+
+.elementor-2 .elementor-element.elementor-element-bbb31bc .elementor-divider {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.elementor-2 .elementor-element.elementor-element-bbb31bc > .elementor-widget-container {
+    margin: -5px -5px -5px -5px;
+}
+
+.elementor-2 .elementor-element.elementor-element-df3a58f {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-36357ea {
+    color: var( --e-global-color-bab36a2 );
+}
+
+.elementor-2 .elementor-element.elementor-element-f6bf3af .elementor-button {
+    background-color: #CF1717;
+}
+
+.elementor-2 .elementor-element.elementor-element-76a7b79:not(.elementor-motion-effects-element-type-background), .elementor-2 .elementor-element.elementor-element-76a7b79 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: #000000;
+}
+
+.elementor-2 .elementor-element.elementor-element-76a7b79 {
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    padding: 0px 0px 45px 0px;
+}
+
+.elementor-2 .elementor-element.elementor-element-76a7b79 > .elementor-background-overlay {
+    transition: background 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+
+.elementor-2 .elementor-element.elementor-element-d376fda {
+    text-align: center;
+}
+
+.elementor-2 .elementor-element.elementor-element-d376fda .elementor-heading-title {
+    color: #FFFFFF;
+    -webkit-text-stroke-color: #000;
+    stroke: #000;
+}
+
+body.elementor-page-2:not(.elementor-motion-effects-element-type-background), body.elementor-page-2 > .elementor-motion-effects-container > .elementor-motion-effects-layer {
+    background-color: var( --e-global-color-e1a1346 );
+}
+
+@media(max-width: 767px) {
+    .elementor-2 .elementor-element.elementor-element-d352091 {
+        text-align:left;
+        width: var( --container-widget-width, 302.016px );
+        max-width: 302.016px;
+        --container-widget-width: 302.016px;
+        --container-widget-flex-grow: 0;
+    }
+}
+
+@media(min-width: 768px) {
+    .elementor-2 .elementor-element.elementor-element-4684357 {
+        width:100%;
+    }
+
+    .elementor-2 .elementor-element.elementor-element-053a740 {
+        width: 100%;
+    }
+}
