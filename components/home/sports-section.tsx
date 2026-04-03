@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Calendar, Clock, ChevronRight, Play, Trophy } from "lucide-react"
+import { Calendar, Clock, ChevronRight, Play, Trophy, Zap, Timer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -36,14 +36,25 @@ export function SportsSection() {
   const [matches, setMatches] = useState<Match[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<"all" | "live" | "upcoming">("all")
+  
+  // 🚀 NUEVOS ESTADOS PARA MULTIDEPORTE Y SEO
+  const [sport, setSport] = useState("football")
+  const [updates, setUpdates] = useState({ last: "--:--", next: "--:--" })
   const [mounted, setMounted] = useState(false)
 
   const fetchMatches = async () => {
+    setIsLoading(true)
     try {
-      // 🚀 Ajuste: Llama a tu API que ya tiene el filtro inteligente VIP incorporado
-      const res = await fetch("/api/football")
-      const data = await res.json()
-      setMatches(data.matches || [])
+      // 🚀 Consulta dinámica según el deporte seleccionado
+      const res = await fetch(`/api/sports?sport=${sport}`)
+      const json = await res.json()
+      
+      // Adaptamos para soportar la respuesta de la API nueva
+      setMatches(json.matches || json.data || [])
+      
+      if (json.updateInfo) {
+        setUpdates({ last: json.updateInfo.lastUpdate, next: json.updateInfo.nextUpdate })
+      }
     } catch (error) {
       console.error("Error fetching matches:", error)
     } finally {
@@ -51,13 +62,13 @@ export function SportsSection() {
     }
   }
 
+  // 🚀 Cada vez que cambie la pestaña de 'sport', se vuelve a hacer el fetch
   useEffect(() => {
     setMounted(true)
     fetchMatches()
-    // Auto-refresh cada 60 segundos
     const interval = setInterval(fetchMatches, 60000)
     return () => clearInterval(interval)
-  }, [])
+  }, [sport])
 
   const filteredMatches = matches.filter((match) => {
     if (filter === "all") return true
@@ -71,7 +82,6 @@ export function SportsSection() {
   const formatTime = (dateString: string) => {
     if (!mounted) return "--:--"
     const date = new Date(dateString)
-    // 🚀 Ajuste: Fuerza la hora de Colombia para que no haya confusiones
     return date.toLocaleTimeString("es-CO", { 
       hour: "2-digit", 
       minute: "2-digit",
@@ -80,26 +90,37 @@ export function SportsSection() {
     })
   }
 
+  // Menú de deportes disponibles
+  const sportsMenu = [
+    { id: "football", label: "Fútbol", icon: "⚽" },
+    { id: "nba", label: "NBA", icon: "🏀" },
+    { id: "f1", label: "F1", icon: "🏎️" },
+    { id: "mma", label: "MMA", icon: "🥊" }
+  ]
+
   return (
     <section className="py-16 lg:py-24 section-gradient">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
+        
+        {/* Header Principal */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-destructive glow-orange">
                 <Trophy className="h-5 w-5 text-background" />
               </div>
-              <span className="text-sm font-medium text-accent uppercase tracking-wider">Deportes</span>
+              <span className="text-sm font-medium text-accent uppercase tracking-wider">Multideporte</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Hoy en el Deporte</h2>
-            <p className="mt-2 text-muted-foreground">Los eventos deportivos mas importantes del dia</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Cartelera en Vivo</h2>
+            <p className="mt-2 text-muted-foreground">Los eventos más importantes del mundo, actualizados al minuto.</p>
           </div>
+          
+          {/* Filtros de estado (Todos, En Vivo, Próximos) */}
           <div className="flex items-center gap-2">
             {[
               { key: "all", label: "Todos" },
               { key: "live", label: `En Vivo (${liveCount})` },
-              { key: "upcoming", label: "Proximos" },
+              { key: "upcoming", label: "Próximos" },
             ].map((item) => (
               <button
                 key={item.key}
@@ -114,6 +135,38 @@ export function SportsSection() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* 🚀 NUEVO: Pestañas de Deportes y Sincronización SEO */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 border-b border-border/50 pb-6">
+          
+          <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide">
+            {sportsMenu.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setSport(item.id)}
+                className={`px-5 py-2.5 rounded-xl font-bold transition-all whitespace-nowrap flex items-center gap-2 text-sm ${
+                  sport === item.id 
+                    ? "bg-primary text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] border border-primary" 
+                    : "glass text-slate-400 hover:text-white border border-white/5"
+                }`}
+              >
+                <span>{item.icon}</span> {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 text-[10px] uppercase tracking-widest font-black">
+            <div className="flex items-center gap-1.5 text-green-400 bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+              <Zap className="w-3.5 h-3.5" />
+              <span>Sincronizado: {updates.last}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-amber-400 bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/20">
+              <Timer className="w-3.5 h-3.5" />
+              <span>Próximo ajuste: {updates.next}</span>
+            </div>
+          </div>
+          
         </div>
 
         {/* Matches Grid */}
@@ -244,7 +297,7 @@ export function SportsSection() {
 
                 {/* Hover Overlay */}
                 <Link href="/canales-premium" className="absolute inset-0 z-0">
-                    <span className="sr-only">Ir a detalles del partido</span>
+                    <span className="sr-only">Ir a detalles del evento</span>
                 </Link>
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
               </article>
@@ -256,7 +309,7 @@ export function SportsSection() {
         {!isLoading && filteredMatches.length === 0 && (
           <div className="text-center py-12">
             <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No hay partidos disponibles para la categoría seleccionada.</p>
+            <p className="text-muted-foreground">No hay eventos top disponibles para esta categoría hoy.</p>
           </div>
         )}
 
