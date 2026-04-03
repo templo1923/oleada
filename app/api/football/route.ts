@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
 
-const FOOTBALL_API_KEY = process.env.FOOTBALL_API_KEY
+const FOOTBALL_API_KEY = process.env.FOOTBALL_API_KEY || process.env.SPORTS_API_KEY
 const FOOTBALL_BASE_URL = "https://v3.football.api-sports.io"
 
-// Ligas principales con sus IDs
+// Ligas principales VIP con sus IDs
 const MAIN_LEAGUES = {
+  "Liga BetPlay": 239,
   "La Liga": 140,
   "Premier League": 39,
   "Serie A": 135,
@@ -13,9 +14,15 @@ const MAIN_LEAGUES = {
   "Champions League": 2,
   "Europa League": 3,
   "Copa Libertadores": 13,
+  "Copa Sudamericana": 11,
   "Liga MX": 262,
   "MLS": 253,
+  "Copa America": 9,
+  "Euro Championship": 4
 }
+
+// Extraemos solo los números (IDs) para usarlos en el filtro
+const MAIN_LEAGUE_IDS = Object.values(MAIN_LEAGUES)
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -30,7 +37,7 @@ export async function GET(request: Request) {
 
   try {
     let endpoint = ""
-  const headers = {
+    const headers = {
       "x-apisports-key": FOOTBALL_API_KEY,
       "x-apisports-host": "v3.football.api-sports.io",
     }
@@ -55,12 +62,21 @@ export async function GET(request: Request) {
 
     const response = await fetch(`${FOOTBALL_BASE_URL}${endpoint}`, {
       headers,
-      next: { revalidate: 60 },
+      next: { revalidate: 60 }, // Se actualiza cada minuto
     })
+    
     const data = await response.json()
+    let rawFixtures = data.response || []
+
+    // 🔥 FILTRO INTELIGENTE: Si no pidieron una liga en específico, mostramos solo las VIP
+    if (!league && type !== "live") {
+      rawFixtures = rawFixtures.filter((fixture: any) => 
+        MAIN_LEAGUE_IDS.includes(fixture.league.id)
+      )
+    }
 
     // Transformar datos al formato de nuestra app
-    const matches = data.response?.map((fixture: any) => ({
+    const matches = rawFixtures.map((fixture: any) => ({
       id: fixture.fixture.id,
       homeTeam: {
         name: fixture.teams.home.name,
@@ -85,6 +101,13 @@ export async function GET(request: Request) {
       isLive: ["1H", "2H", "HT", "ET", "P", "LIVE"].includes(fixture.fixture.status.short),
     })) || []
 
+    // Ordenar para que los partidos en vivo o más próximos salgan primero
+    matches.sort((a: any, b: any) => {
+      if (a.isLive && !b.isLive) return -1;
+      if (!a.isLive && b.isLive) return 1;
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+
     return NextResponse.json({ matches, total: matches.length })
   } catch (error) {
     console.error("Football API Error:", error)
@@ -93,7 +116,7 @@ export async function GET(request: Request) {
 }
 
 function getDemoMatches(date: string) {
-  // Datos de demostración basados en partidos reales típicos
+  // Datos de demostración
   const demoMatches = [
     {
       id: 1,
@@ -109,14 +132,14 @@ function getDemoMatches(date: string) {
     },
     {
       id: 2,
-      homeTeam: { name: "Manchester City", logo: "https://media.api-sports.io/football/teams/50.png", score: 0 },
-      awayTeam: { name: "Liverpool", logo: "https://media.api-sports.io/football/teams/40.png", score: 0 },
-      league: { name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png", country: "England" },
+      homeTeam: { name: "Millonarios", logo: "https://media.api-sports.io/football/teams/1182.png", score: 0 },
+      awayTeam: { name: "Atl. Nacional", logo: "https://media.api-sports.io/football/teams/1183.png", score: 0 },
+      league: { name: "Liga BetPlay", logo: "https://media.api-sports.io/football/leagues/239.png", country: "Colombia" },
       status: "1H",
       statusLong: "Primer Tiempo",
       elapsed: 23,
       date: new Date().toISOString(),
-      venue: "Etihad Stadium",
+      venue: "El Campín",
       isLive: true,
     },
     {
@@ -133,40 +156,16 @@ function getDemoMatches(date: string) {
     },
     {
       id: 4,
-      homeTeam: { name: "Juventus", logo: "https://media.api-sports.io/football/teams/496.png", score: null },
-      awayTeam: { name: "AC Milan", logo: "https://media.api-sports.io/football/teams/489.png", score: null },
-      league: { name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png", country: "Italy" },
-      status: "NS",
-      statusLong: "No Iniciado",
-      elapsed: null,
-      date: new Date(Date.now() + 7200000).toISOString(),
-      venue: "Allianz Stadium",
-      isLive: false,
-    },
-    {
-      id: 5,
-      homeTeam: { name: "PSG", logo: "https://media.api-sports.io/football/teams/85.png", score: 3 },
-      awayTeam: { name: "Marseille", logo: "https://media.api-sports.io/football/teams/81.png", score: 1 },
-      league: { name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png", country: "France" },
-      status: "FT",
-      statusLong: "Finalizado",
-      elapsed: 90,
-      date: new Date(Date.now() - 3600000).toISOString(),
-      venue: "Parc des Princes",
-      isLive: false,
-    },
-    {
-      id: 6,
-      homeTeam: { name: "Boca Juniors", logo: "https://media.api-sports.io/football/teams/451.png", score: null },
-      awayTeam: { name: "River Plate", logo: "https://media.api-sports.io/football/teams/435.png", score: null },
+      homeTeam: { name: "River Plate", logo: "https://media.api-sports.io/football/teams/435.png", score: null },
+      awayTeam: { name: "Boca Juniors", logo: "https://media.api-sports.io/football/teams/451.png", score: null },
       league: { name: "Copa Libertadores", logo: "https://media.api-sports.io/football/leagues/13.png", country: "South America" },
       status: "NS",
       statusLong: "No Iniciado",
       elapsed: null,
-      date: new Date(Date.now() + 10800000).toISOString(),
-      venue: "La Bombonera",
+      date: new Date(Date.now() + 7200000).toISOString(),
+      venue: "Monumental",
       isLive: false,
-    },
+    }
   ]
 
   return { matches: demoMatches, total: demoMatches.length, isDemo: true }
