@@ -1,0 +1,197 @@
+{
+  "channels": [
+    {
+      "id": "espn",
+      "name": "ESPN",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg",
+      "category": "Deportes",
+      "description": "El líder mundial en deportes. NBA, NFL, MLB, Fútbol y más.",
+      "isLive": true,
+      "currentProgram": "SportsCenter",
+      "schedule": [
+        { "time": "06:00", "program": "SportsCenter AM" },
+        { "time": "10:00", "program": "First Take" },
+        { "time": "14:00", "program": "NBA Today" },
+        { "time": "18:00", "program": "SportsCenter" },
+        { "time": "20:00", "program": "Monday Night Football" }
+      ]
+    },
+    {
+      "id": "espn2",
+      "name": "ESPN 2",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7b/ESPN2_logo.svg",
+      "category": "Deportes",
+      "description": "Más deportes, más acción. College Football, Tennis, MMA.",
+      "isLive": true,
+      "currentProgram": "College GameDay",
+      "schedule": [
+        { "time": "08:00", "program": "Get Up" },
+        { "time": "12:00", "program": "College Football Live" },
+        { "time": "16:00", "program": "Around the Horn" },
+        { "time": "18:00", "program": "PTI" },
+        { "time": "20:00", "program": "College Basketball" }
+      ]
+    },
+    {
+      "id": "fox-sports",
+      "name": "Fox Sports",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0c/FOX_Sports_logo.svg",
+      "category": "Deportes",
+      "description": "NFL, MLB, NASCAR, UFC y los mejores eventos deportivos.",
+      "isLive": true,
+      "currentProgram": "NFL en Vivo",
+      "schedule": [
+        { "time": "07:00", "program": "FOX Sports AM" },
+        { "time": "11:00", "program": "Undisputed" },
+        { "time": "15:00", "program": "The Herd" },
+        { "time": "19:00", "program": "UFC Tonight" },
+        { "time": "21:00", "program": "NFL Sunday" }
+      ]
+    },
+    {
+      "id": "bein-sports",
+      "name": "beIN Sports",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fb/BeIN_Sports_logo_%282017%29.svg",
+      "category": "Deportes",
+      "description": "La Liga, Ligue 1, Copa del Rey y fútbol internacional.",
+      "isLive": true,
+      "currentProgram": "La Liga en Vivo",
+      "schedule": [
+        { "time": "09:00", "program": "beIN Sports News" },
+        { "time": "13:00", "program": "La Liga Preview" },
+        { "time": "16:00", "program": "La Liga - Barcelona vs Real Madrid" },
+        { "time": "20:00", "program": "Ligue 1" },
+        { "time": "23:00", "program": "La Liga Highlights" }
+      ]
+    },
+    {
+      "id": "tnt-sports",
+      "name": "TNT Sports",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2c/TNT_Sports_logo_2023.svg",
+      "category": "Deportes",
+      "description": "NBA, Champions League, Europa League y más.",
+      "isLive": true,
+      "currentProgram": "Champions League",
+      "schedule": [
+        { "time": "10:00", "program": "TNT Sports News" },
+        { "time": "14:00", "program": "Champions League Preview" },
+        { "time": "17:00", "program": "Champions League Live" },
+        { "time": "21:00", "program": "Inside the NBA" },
+        { "time": "22:00", "program": "NBA Game" }
+      ]
+    },
+    {
+      "id": "hbo-max",
+      "name": "HBO",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/HBO_logo.svg",
+      "category": "Entretenimiento",
+      "description": "Series originales, películas exclusivas y documentales.",
+      "isLive": true,
+      "currentProgram": "House of the Dragon",
+      "schedule": [
+        { "time": "18:00", "program": "Last Week Tonight" },
+        { "time": "19:00", "program": "The Last of Us" },
+        { "time": "20:00", "program": "House of the Dragon" },
+        { "time": "21:00", "program": "Succession" },
+        { "time": "22:00", "program": "Euphoria" }
+      ]
+    },
+    {
+      "id": "star-plus",
+      "name": "Star+",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Star%2B_logo.svg",
+      "category": "Entretenimiento",
+      "description": "Series, películas, deportes en vivo y contenido exclusivo.",
+      "isLive": true,
+      "currentProgram": "The Simpsons",
+      "schedule": [
+        { "time": "12:00", "program": "Family Guy" },
+        { "time": "14:00", "program": "American Dad" },
+        { "time": "16:00", "program": "The Simpsons" },
+        { "time": "18:00", "program": "Modern Family" },
+        { "time": "20:00", "program": "This Is Us" }
+      ]
+    },
+    {
+      "id": "paramount",
+      "name": "Paramount+",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg",
+      "category": "Entretenimiento",
+      "description": "Champions League, Europa League, películas y series exclusivas.",
+      "isLive": true,
+      "currentProgram": "Yellowstone",
+      "schedule": [
+        { "time": "14:00", "program": "Star Trek: Discovery" },
+        { "time": "16:00", "program": "Yellowstone" },
+        { "time": "18:00", "program": "1883" },
+        { "time": "20:00", "program": "Champions League" },
+        { "time": "23:00", "program": "Mayor of Kingstown" }
+      ]
+    },
+    {
+      "id": "dazn",
+      "name": "DAZN",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/be/DAZN_Logo_Master.svg",
+      "category": "Deportes",
+      "description": "Boxing, MMA, Serie A, La Liga y más deportes premium.",
+      "isLive": true,
+      "currentProgram": "Boxing Night",
+      "schedule": [
+        { "time": "12:00", "program": "DAZN News" },
+        { "time": "15:00", "program": "Serie A" },
+        { "time": "18:00", "program": "La Liga" },
+        { "time": "21:00", "program": "Boxing: Canelo vs GGG" },
+        { "time": "00:00", "program": "MMA Fight Night" }
+      ]
+    },
+    {
+      "id": "discovery",
+      "name": "Discovery+",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Discovery%2B_2024.svg",
+      "category": "Documentales",
+      "description": "Documentales, reality shows y contenido educativo.",
+      "isLive": false,
+      "currentProgram": "Planet Earth III",
+      "schedule": [
+        { "time": "10:00", "program": "How It's Made" },
+        { "time": "12:00", "program": "MythBusters" },
+        { "time": "14:00", "program": "Deadliest Catch" },
+        { "time": "18:00", "program": "Gold Rush" },
+        { "time": "21:00", "program": "Planet Earth III" }
+      ]
+    },
+    {
+      "id": "win-sports",
+      "name": "Win Sports",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Win_Sports_Plus.png",
+      "category": "Deportes",
+      "description": "Fútbol colombiano, Liga BetPlay y deportes nacionales.",
+      "isLive": true,
+      "currentProgram": "Liga BetPlay",
+      "schedule": [
+        { "time": "14:00", "program": "Win Sports Noticias" },
+        { "time": "16:00", "program": "Liga BetPlay - Millonarios vs Nacional" },
+        { "time": "19:00", "program": "Liga BetPlay - América vs Cali" },
+        { "time": "21:00", "program": "Análisis Deportivo" },
+        { "time": "23:00", "program": "Resumen de la Jornada" }
+      ]
+    },
+    {
+      "id": "directv-sports",
+      "name": "DIRECTV Sports",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5f/DirecTV_Sports_logo_%282022%29.svg",
+      "category": "Deportes",
+      "description": "Copa Libertadores, Sudamericana, F1 y deportes premium.",
+      "isLive": true,
+      "currentProgram": "Copa Libertadores",
+      "schedule": [
+        { "time": "15:00", "program": "DSports Noticias" },
+        { "time": "17:00", "program": "Copa Libertadores" },
+        { "time": "19:30", "program": "Copa Sudamericana" },
+        { "time": "22:00", "program": "Fórmula 1 Highlights" },
+        { "time": "23:30", "program": "Golf PGA Tour" }
+      ]
+    }
+  ],
+  "categories": ["Deportes", "Entretenimiento", "Documentales", "Noticias", "Infantil"]
+}
