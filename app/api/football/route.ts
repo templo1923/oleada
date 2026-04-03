@@ -30,9 +30,9 @@ export async function GET(request: Request) {
 
   try {
     let endpoint = ""
-    const headers = {
-      "x-rapidapi-key": FOOTBALL_API_KEY,
-      "x-rapidapi-host": "v3.football.api-sports.io",
+  const headers = {
+      "x-apisports-key": FOOTBALL_API_KEY,
+      "x-apisports-host": "v3.football.api-sports.io",
     }
 
     switch (type) {
