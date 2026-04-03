@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Calendar, Clock, ChevronRight, Play, Trophy, RefreshCw } from "lucide-react"
+import { Calendar, Clock, ChevronRight, Play, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -40,7 +40,8 @@ export function SportsSection() {
 
   const fetchMatches = async () => {
     try {
-      const res = await fetch("/api/football?type=today")
+      // 🚀 Ajuste: Llama a tu API que ya tiene el filtro inteligente VIP incorporado
+      const res = await fetch("/api/football")
       const data = await res.json()
       setMatches(data.matches || [])
     } catch (error) {
@@ -53,7 +54,7 @@ export function SportsSection() {
   useEffect(() => {
     setMounted(true)
     fetchMatches()
-    // Auto-refresh every 60 seconds
+    // Auto-refresh cada 60 segundos
     const interval = setInterval(fetchMatches, 60000)
     return () => clearInterval(interval)
   }, [])
@@ -70,7 +71,13 @@ export function SportsSection() {
   const formatTime = (dateString: string) => {
     if (!mounted) return "--:--"
     const date = new Date(dateString)
-    return date.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })
+    // 🚀 Ajuste: Fuerza la hora de Colombia para que no haya confusiones
+    return date.toLocaleTimeString("es-CO", { 
+      hour: "2-digit", 
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "America/Bogota" 
+    })
   }
 
   return (
@@ -147,7 +154,7 @@ export function SportsSection() {
                   {match.isLive && (
                     <span className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-destructive/20 text-destructive text-xs font-semibold">
                       <span className="w-1.5 h-1.5 rounded-full bg-destructive live-indicator" />
-                      {match.elapsed ? `${match.elapsed}&apos;` : "LIVE"}
+                      {match.elapsed ? `${match.elapsed}'` : "LIVE"}
                     </span>
                   )}
                 </div>
@@ -224,7 +231,7 @@ export function SportsSection() {
                         match.isLive 
                           ? "bg-destructive hover:bg-destructive/90 text-white" 
                           : "bg-primary hover:bg-primary/90 text-background"
-                      } font-semibold`}
+                      } font-semibold z-10 relative`}
                       asChild
                     >
                       <Link href="/canales-premium">
@@ -236,6 +243,9 @@ export function SportsSection() {
                 </div>
 
                 {/* Hover Overlay */}
+                <Link href="/canales-premium" className="absolute inset-0 z-0">
+                    <span className="sr-only">Ir a detalles del partido</span>
+                </Link>
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
               </article>
             ))}
@@ -246,7 +256,7 @@ export function SportsSection() {
         {!isLoading && filteredMatches.length === 0 && (
           <div className="text-center py-12">
             <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No hay partidos disponibles en este momento.</p>
+            <p className="text-muted-foreground">No hay partidos disponibles para la categoría seleccionada.</p>
           </div>
         )}
 
@@ -255,7 +265,7 @@ export function SportsSection() {
           <Button 
             size="lg" 
             variant="outline" 
-            className="border-border/50 bg-secondary/50 hover:bg-secondary hover:border-primary/50 font-medium"
+            className="border-border/50 bg-secondary/50 hover:bg-secondary hover:border-primary/50 font-medium z-10 relative"
             asChild
           >
             <Link href="/agenda-deportiva">
