@@ -37,7 +37,6 @@ export function SportsSection() {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<"all" | "live" | "upcoming">("all")
   
-  // 🚀 NUEVOS ESTADOS PARA MULTIDEPORTE Y SEO
   const [sport, setSport] = useState("football")
   const [updates, setUpdates] = useState({ last: "--:--", next: "--:--" })
   const [mounted, setMounted] = useState(false)
@@ -45,12 +44,11 @@ export function SportsSection() {
   const fetchMatches = async () => {
     setIsLoading(true)
     try {
-      // 🚀 Consulta dinámica según el deporte seleccionado
+      // 🚀 EL FIX PRINCIPAL: Llamar a /api/sports con la variable de deporte dinámica
       const res = await fetch(`/api/sports?sport=${sport}`)
       const json = await res.json()
       
-      // Adaptamos para soportar la respuesta de la API nueva
-      setMatches(json.matches || json.data || [])
+      setMatches(json.matches || [])
       
       if (json.updateInfo) {
         setUpdates({ last: json.updateInfo.lastUpdate, next: json.updateInfo.nextUpdate })
@@ -62,7 +60,6 @@ export function SportsSection() {
     }
   }
 
-  // 🚀 Cada vez que cambie la pestaña de 'sport', se vuelve a hacer el fetch
   useEffect(() => {
     setMounted(true)
     fetchMatches()
@@ -73,7 +70,7 @@ export function SportsSection() {
   const filteredMatches = matches.filter((match) => {
     if (filter === "all") return true
     if (filter === "live") return match.isLive
-    if (filter === "upcoming") return match.status === "NS"
+    if (filter === "upcoming") return match.status === "NS" || !match.isLive
     return true
   })
 
@@ -90,7 +87,6 @@ export function SportsSection() {
     })
   }
 
-  // Menú de deportes disponibles
   const sportsMenu = [
     { id: "football", label: "Fútbol", icon: "⚽" },
     { id: "nba", label: "NBA", icon: "🏀" },
@@ -102,7 +98,6 @@ export function SportsSection() {
     <section className="py-16 lg:py-24 section-gradient">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
-        {/* Header Principal */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -115,7 +110,6 @@ export function SportsSection() {
             <p className="mt-2 text-muted-foreground">Los eventos más importantes del mundo, actualizados al minuto.</p>
           </div>
           
-          {/* Filtros de estado (Todos, En Vivo, Próximos) */}
           <div className="flex items-center gap-2">
             {[
               { key: "all", label: "Todos" },
@@ -137,9 +131,7 @@ export function SportsSection() {
           </div>
         </div>
 
-        {/* 🚀 NUEVO: Pestañas de Deportes y Sincronización SEO */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 border-b border-border/50 pb-6">
-          
           <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide">
             {sportsMenu.map((item) => (
               <button
@@ -166,10 +158,8 @@ export function SportsSection() {
               <span>Próximo ajuste: {updates.next}</span>
             </div>
           </div>
-          
         </div>
 
-        {/* Matches Grid */}
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -181,22 +171,17 @@ export function SportsSection() {
             {filteredMatches.slice(0, 8).map((match) => (
               <article 
                 key={match.id} 
-                className="group relative rounded-2xl glass overflow-hidden card-hover"
+                className="group relative rounded-2xl glass overflow-hidden card-hover flex flex-col justify-between"
               >
                 {/* League Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
                   <div className="flex items-center gap-2">
                     <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-secondary">
                       {match.league.logo ? (
-                        <Image
-                          src={match.league.logo}
-                          alt={match.league.name}
-                          fill
-                          className="object-contain p-1"
-                        />
+                        <Image src={match.league.logo} alt={match.league.name} fill className="object-contain p-1" />
                       ) : (
-                        <span className="flex items-center justify-center w-full h-full text-xs font-bold">
-                          {match.league.name.substring(0, 2)}
+                        <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
+                          {match.league.name ? match.league.name.substring(0, 3) : "VIP"}
                         </span>
                       )}
                     </div>
@@ -206,29 +191,24 @@ export function SportsSection() {
                   </div>
                   {match.isLive && (
                     <span className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-destructive/20 text-destructive text-xs font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-destructive live-indicator" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
                       {match.elapsed ? `${match.elapsed}'` : "LIVE"}
                     </span>
                   )}
                 </div>
 
                 {/* Match Content */}
-                <div className="p-4">
+                <div className="p-4 flex-grow">
                   <div className="flex flex-col gap-3">
                     {/* Home Team */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="relative w-6 h-6 rounded-full overflow-hidden bg-secondary flex-shrink-0">
                           {match.homeTeam.logo ? (
-                            <Image
-                              src={match.homeTeam.logo}
-                              alt={match.homeTeam.name}
-                              fill
-                              className="object-contain p-0.5"
-                            />
+                            <Image src={match.homeTeam.logo} alt={match.homeTeam.name} fill className="object-contain p-0.5" />
                           ) : (
                             <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
-                              {match.homeTeam.name.substring(0, 2)}
+                              {match.homeTeam.name ? match.homeTeam.name.substring(0, 2) : "L"}
                             </span>
                           )}
                         </div>
@@ -237,9 +217,7 @@ export function SportsSection() {
                         </span>
                       </div>
                       {match.homeTeam.score !== null && (
-                        <span className="text-lg font-bold text-foreground ml-2">
-                          {match.homeTeam.score}
-                        </span>
+                        <span className="text-lg font-bold text-foreground ml-2">{match.homeTeam.score}</span>
                       )}
                     </div>
 
@@ -248,15 +226,10 @@ export function SportsSection() {
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="relative w-6 h-6 rounded-full overflow-hidden bg-secondary flex-shrink-0">
                           {match.awayTeam.logo ? (
-                            <Image
-                              src={match.awayTeam.logo}
-                              alt={match.awayTeam.name}
-                              fill
-                              className="object-contain p-0.5"
-                            />
+                            <Image src={match.awayTeam.logo} alt={match.awayTeam.name} fill className="object-contain p-0.5" />
                           ) : (
                             <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
-                              {match.awayTeam.name.substring(0, 2)}
+                              {match.awayTeam.name ? match.awayTeam.name.substring(0, 2) : "V"}
                             </span>
                           )}
                         </div>
@@ -265,37 +238,34 @@ export function SportsSection() {
                         </span>
                       </div>
                       {match.awayTeam.score !== null && (
-                        <span className="text-lg font-bold text-foreground ml-2">
-                          {match.awayTeam.score}
-                        </span>
+                        <span className="text-lg font-bold text-foreground ml-2">{match.awayTeam.score}</span>
                       )}
                     </div>
                   </div>
-
-                  {/* Time & CTA */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span className="text-sm">{formatTime(match.date)}</span>
-                    </div>
-                    <Button 
-                      size="sm" 
-                      className={`${
-                        match.isLive 
-                          ? "bg-destructive hover:bg-destructive/90 text-white" 
-                          : "bg-primary hover:bg-primary/90 text-background"
-                      } font-semibold z-10 relative`}
-                      asChild
-                    >
-                      <Link href="/canales-premium">
-                        <Play className="mr-1 h-3 w-3" />
-                        {match.isLive ? "Ver Ahora" : "Ver"}
-                      </Link>
-                    </Button>
-                  </div>
                 </div>
 
-                {/* Hover Overlay */}
+                {/* Time & CTA */}
+                <div className="p-4 border-t border-white/5 mt-auto flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    <span className="text-sm font-semibold">{formatTime(match.date)}</span>
+                  </div>
+                  <Button 
+                    size="sm" 
+                    className={`${
+                      match.isLive 
+                        ? "bg-destructive hover:bg-destructive/90 text-white" 
+                        : "bg-primary hover:bg-primary/90 text-background"
+                    } font-semibold z-10 relative`}
+                    asChild
+                  >
+                    <Link href="/canales-premium">
+                      <Play className="mr-1 h-3 w-3" />
+                      {match.isLive ? "Ver Ahora" : "Ver"}
+                    </Link>
+                  </Button>
+                </div>
+
                 <Link href="/canales-premium" className="absolute inset-0 z-0">
                     <span className="sr-only">Ir a detalles del evento</span>
                 </Link>
@@ -305,15 +275,14 @@ export function SportsSection() {
           </div>
         )}
 
-        {/* Empty State */}
         {!isLoading && filteredMatches.length === 0 && (
-          <div className="text-center py-12">
+          <div className="text-center py-12 glass rounded-2xl">
             <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No hay eventos top disponibles para esta categoría hoy.</p>
+            <h3 className="text-xl font-bold text-white mb-2">Cartelera en pausa</h3>
+            <p className="text-muted-foreground">No hay eventos VIP programados para esta categoría el día de hoy.</p>
           </div>
         )}
 
-        {/* CTA */}
         <div className="mt-10 text-center">
           <Button 
             size="lg" 
