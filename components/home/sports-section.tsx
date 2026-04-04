@@ -259,7 +259,7 @@ export function SportsSection() {
                     } font-semibold z-10 relative`}
                     asChild
                   >
-                    <Link href="/canales-premium">
+                    <Link href={/partido/${match.slug}}>
                       <Play className="mr-1 h-3 w-3" />
                       {match.isLive ? "Ver Ahora" : "Ver"}
                     </Link>

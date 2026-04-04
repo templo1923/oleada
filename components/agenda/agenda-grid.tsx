@@ -384,7 +384,7 @@ function MatchCard({
             } font-semibold`}
             asChild
           >
-            <Link href="/canales-premium">
+            <Link href={/partido/${match.slug}}>
               <Play className="mr-2 h-4 w-4" />
               {match.isLive 
                 ? `Ver En Vivo` 
