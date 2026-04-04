@@ -240,13 +240,13 @@ export function SportsSection() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <div className="relative w-8 h-8 rounded-full bg-white/5 p-1 flex-shrink-0">
-                              {match.homeTeam.logo ? (
-                                <Image src={match.homeTeam.logo} alt={match.homeTeam.name} fill className="object-contain p-1" />
+                              {match.homeTeam?.logo ? (
+                                <Image src={match.homeTeam.logo} alt={match.homeTeam?.name || "Local"} fill className="object-contain p-1" />
                               ) : (
-                                <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">{match.homeTeam.name.substring(0, 2)}</span>
+                                <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">{match.homeTeam?.name?.substring(0, 2) || "L"}</span>
                               )}
                             </div>
-                            <span className="font-semibold text-white truncate text-sm">{match.homeTeam.name}</span>
+                            <span className="font-semibold text-white truncate text-sm">{match.homeTeam?.name || "Local"}</span>
                           </div>
                           {match.homeTeam.score !== null && (
                             <span className="text-xl font-black text-white ml-2">{match.homeTeam.score}</span>
@@ -257,13 +257,13 @@ export function SportsSection() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <div className="relative w-8 h-8 rounded-full bg-white/5 p-1 flex-shrink-0">
-                              {match.awayTeam.logo ? (
-                                <Image src={match.awayTeam.logo} alt={match.awayTeam.name} fill className="object-contain p-1" />
+                              {match.awayTeam?.logo ? (
+                                <Image src={match.awayTeam.logo} alt={match.awayTeam?.name || "Visitante"} fill className="object-contain p-1" />
                               ) : (
-                                <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">{match.awayTeam.name.substring(0, 2)}</span>
+                                <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">{match.awayTeam?.name?.substring(0, 2) || "V"}</span>
                               )}
                             </div>
-                            <span className="font-semibold text-white truncate text-sm">{match.awayTeam.name}</span>
+                            <span className="font-semibold text-white truncate text-sm">{match.awayTeam?.name || "Visitante"}</span>
                           </div>
                           {match.awayTeam.score !== null && (
                             <span className="text-xl font-black text-white ml-2">{match.awayTeam.score}</span>

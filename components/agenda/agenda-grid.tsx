@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Clock, Play, Trophy, MapPin, ChevronRight, Tv, RefreshCw, AlertCircle, Zap } from "lucide-react"
+import { Clock, Play, Trophy, ChevronRight, ChevronDown, RefreshCw, AlertCircle, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -16,7 +16,7 @@ interface Team {
 interface League {
   name: string
   logo: string
-  country: string
+  country?: string
 }
 
 interface Match {
@@ -25,12 +25,18 @@ interface Match {
   awayTeam: Team
   league: League
   status: string
-  statusLong: string
+  statusLong?: string
   elapsed: number | null
   date: string
-  venue: string | null
+  venue?: string | null
   isLive: boolean
-  slug: string // 🚀 Añadimos el slug para las URLs SEO
+  slug: string
+}
+
+interface LeagueGroup {
+  league: League
+  matches: Match[]
+  hasLive: boolean
 }
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
@@ -96,9 +102,35 @@ export function AgendaGrid() {
     return () => clearInterval(interval)
   }, [sport])
 
+  // Agrupar partidos por liga (estilo FlashScore)
+  const groupedByLeague = useMemo(() => {
+    const groups: Record<string, LeagueGroup> = {}
+    
+    matches.forEach((match) => {
+      const leagueName = match.league?.name || "Otros Eventos"
+      if (!groups[leagueName]) {
+        groups[leagueName] = {
+          league: match.league || { name: leagueName, logo: "" },
+          matches: [],
+          hasLive: false
+        }
+      }
+      groups[leagueName].matches.push(match)
+      if (match.isLive) {
+        groups[leagueName].hasLive = true
+      }
+    })
+    
+    // Ordenar: primero ligas con partidos en vivo, luego por cantidad de partidos
+    return Object.values(groups).sort((a, b) => {
+      if (a.hasLive && !b.hasLive) return -1
+      if (!a.hasLive && b.hasLive) return 1
+      return b.matches.length - a.matches.length
+    })
+  }, [matches])
+
   const liveMatches = matches.filter((m) => m.isLive)
-  const upcomingMatches = matches.filter((m) => !m.isLive && m.status === "NS")
-  const finishedMatches = matches.filter((m) => ["FT", "AET", "PEN"].includes(m.status))
+  const totalLive = liveMatches.length
 
   const formatTime = (dateString: string) => {
     if (!mounted) return "--:--"
@@ -157,72 +189,54 @@ export function AgendaGrid() {
 
       {isLoading ? (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 rounded-2xl" />
-            ))}
-          </div>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="glass rounded-2xl overflow-hidden">
+              <Skeleton className="h-14 w-full" />
+              <div className="p-4 space-y-3">
+                {Array.from({ length: 2 }).map((_, j) => (
+                  <Skeleton key={j} className="h-20 rounded-xl" />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <>
-          {liveMatches.length > 0 && (
-            <div className="mb-10">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/20 text-destructive text-sm font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
-                  EN VIVO AHORA
-                </span>
-                <span className="text-sm text-muted-foreground">{liveMatches.length} eventos</span>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {liveMatches.map((match) => (
-                  <MatchCard key={match.id} match={match} featured formatTime={formatTime} />
-                ))}
+          {/* Resumen de partidos en vivo */}
+          {totalLive > 0 && (
+            <div className="mb-6 p-4 glass rounded-2xl border border-destructive/30 bg-destructive/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/20 text-destructive text-sm font-bold">
+                    <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+                    EN VIVO
+                  </span>
+                  <span className="text-foreground font-semibold">{totalLive} partidos en directo ahora</span>
+                </div>
+                <Zap className="w-5 h-5 text-destructive" />
               </div>
             </div>
           )}
 
-          {upcomingMatches.length > 0 && (
-            <div className="mb-10">
-              <div className="flex items-center gap-3 mb-6">
-                <Trophy className="h-5 w-5 text-accent" />
-                <h2 className="text-xl font-bold text-foreground">Próximos Eventos</h2>
-                <span className="text-sm text-muted-foreground">({upcomingMatches.length})</span>
-              </div>
+          {/* Vista agrupada por Liga (estilo FlashScore) */}
+          <div className="space-y-4">
+            {groupedByLeague.slice(0, showAll ? groupedByLeague.length : 10).map((group, index) => (
+              <LeagueSection 
+                key={`${group.league.name}-${index}`} 
+                group={group} 
+                formatTime={formatTime}
+              />
+            ))}
+          </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {upcomingMatches.slice(0, showAll ? upcomingMatches.length : 8).map((match) => (
-                  <MatchCard key={match.id} match={match} formatTime={formatTime} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {finishedMatches.length > 0 && (
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Clock className="h-5 w-5 text-muted-foreground" />
-                <h2 className="text-xl font-bold text-foreground">Finalizados</h2>
-                <span className="text-sm text-muted-foreground">({finishedMatches.length})</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {finishedMatches.slice(0, showAll ? finishedMatches.length : 4).map((match) => (
-                  <MatchCard key={match.id} match={match} formatTime={formatTime} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {matches.length > 8 && !showAll && (
+          {groupedByLeague.length > 10 && !showAll && (
             <div className="mt-8 text-center">
               <Button 
                 variant="outline" 
                 onClick={() => setShowAll(true)}
                 className="border-border/50 bg-secondary/50 hover:bg-secondary hover:border-primary/50"
               >
-                Ver Todos los Eventos ({matches.length})
+                Ver Todas las Ligas ({groupedByLeague.length})
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -232,7 +246,7 @@ export function AgendaGrid() {
             <div className="text-center py-12 glass rounded-2xl border border-white/5">
               <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-foreground mb-2">Cartelera en pausa</h3>
-              <p className="text-muted-foreground">No hay eventos programados en esta categoría para hoy.</p>
+              <p className="text-muted-foreground">No hay eventos programados en esta categoria para hoy.</p>
             </div>
           )}
         </>
@@ -241,151 +255,150 @@ export function AgendaGrid() {
   )
 }
 
-function MatchCard({ 
-  match, 
-  featured = false,
+// Componente de seccion de liga (estilo FlashScore)
+function LeagueSection({ 
+  group, 
   formatTime 
 }: { 
-  match: Match
-  featured?: boolean
-  formatTime: (date: string) => string
+  group: LeagueGroup
+  formatTime: (date: string) => string 
 }) {
-  const statusInfo = STATUS_MAP[match.status] || { label: match.status || "Por Jugar", color: "muted" }
+  const [isExpanded, setIsExpanded] = useState(true)
 
   return (
-    <article className={`group relative rounded-2xl glass overflow-hidden card-hover ${featured ? "lg:flex" : "flex flex-col"}`}>
-      {/* League Header */}
-      <div className={`flex items-center justify-between px-4 py-3 border-b border-border/50 ${featured ? "lg:hidden" : ""}`}>
-        <div className="flex items-center gap-2">
-          <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-secondary">
-            {match.league.logo ? (
-              <Image src={match.league.logo} alt={match.league.name} fill className="object-contain p-1" />
+    <div className="glass rounded-2xl overflow-hidden border border-white/5">
+      {/* Header de la Liga */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between px-4 py-3 bg-secondary/50 hover:bg-secondary/70 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-background/50">
+            {group.league.logo ? (
+              <Image 
+                src={group.league.logo} 
+                alt={group.league.name} 
+                fill 
+                className="object-contain p-1" 
+              />
             ) : (
-              <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
-                {match.league.name ? match.league.name.substring(0, 3) : "VIP"}
+              <span className="flex items-center justify-center w-full h-full text-[10px] font-bold text-foreground">
+                {group.league.name?.substring(0, 3) || "LIG"}
               </span>
             )}
           </div>
-          <div>
-            <span className="text-xs font-medium text-foreground">{match.league.name}</span>
+          <div className="text-left">
+            <h3 className="font-bold text-foreground text-sm">{group.league.name}</h3>
+            <span className="text-xs text-muted-foreground">{group.matches.length} partidos</span>
           </div>
-        </div>
-        {match.isLive ? (
-          <span className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-destructive/20 text-destructive text-xs font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
-            {match.elapsed ? `${match.elapsed}'` : statusInfo.label}
-          </span>
-        ) : (
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold bg-${statusInfo.color}/20 text-${statusInfo.color}`}>
-            {statusInfo.label}
-          </span>
-        )}
-      </div>
-
-      {/* Featured Layout - League Info on Left */}
-      {featured && (
-        <div className="hidden lg:flex flex-col justify-center items-center w-32 bg-gradient-to-b from-secondary to-muted/50 px-4">
-          <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-secondary mb-2">
-            {match.league.logo ? (
-              <Image src={match.league.logo} alt={match.league.name} fill className="object-contain p-2" />
-            ) : (
-              <span className="flex items-center justify-center w-full h-full text-lg font-bold">
-                {match.league.name ? match.league.name.substring(0, 2) : "VIP"}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] font-medium text-foreground text-center uppercase tracking-wider">{match.league.name}</span>
-          {match.isLive && (
-            <span className="mt-2 flex items-center gap-1 px-2 py-1 rounded-full bg-destructive/20 text-destructive text-xs font-semibold">
+          {group.hasLive && (
+            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-[10px] font-bold ml-2">
               <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
-              {match.elapsed ? `${match.elapsed}'` : "LIVE"}
+              LIVE
             </span>
           )}
         </div>
+        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+      </button>
+
+      {/* Lista de partidos */}
+      {isExpanded && (
+        <div className="divide-y divide-white/5">
+          {group.matches.map((match) => (
+            <MatchRow key={match.id} match={match} formatTime={formatTime} />
+          ))}
+        </div>
       )}
+    </div>
+  )
+}
 
-      {/* Match Content */}
-      <div className={`p-4 flex-1 flex flex-col justify-between ${featured ? "lg:p-6" : ""}`}>
-        <div className="flex flex-col gap-3 mb-4">
-          {/* Home Team */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-secondary flex-shrink-0">
-                {match.homeTeam.logo ? (
-                  <Image src={match.homeTeam.logo} alt={match.homeTeam.name} fill className="object-contain p-1" />
-                ) : (
-                  <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
-                    {match.homeTeam.name ? match.homeTeam.name.substring(0, 2) : "L"}
-                  </span>
-                )}
-              </div>
-              <span className={`font-semibold text-foreground truncate ${featured ? "text-lg" : "text-sm"}`}>
-                {match.homeTeam.name}
-              </span>
-            </div>
-            {match.homeTeam.score !== null && (
-              <span className={`font-bold text-foreground ml-3 ${featured ? "text-2xl" : "text-lg"}`}>
-                {match.homeTeam.score}
-              </span>
-            )}
-          </div>
+// Componente de fila de partido compacto (estilo FlashScore)
+function MatchRow({ 
+  match, 
+  formatTime 
+}: { 
+  match: Match
+  formatTime: (date: string) => string 
+}) {
+  const statusInfo = STATUS_MAP[match.status] || { label: match.status || "Por Jugar", color: "muted" }
+  const isFinished = ["FT", "AET", "PEN"].includes(match.status)
 
-          {/* Away Team */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-secondary flex-shrink-0">
-                {match.awayTeam.logo ? (
-                  <Image src={match.awayTeam.logo} alt={match.awayTeam.name} fill className="object-contain p-1" />
-                ) : (
-                  <span className="flex items-center justify-center w-full h-full text-[10px] font-bold">
-                    {match.awayTeam.name ? match.awayTeam.name.substring(0, 2) : "V"}
-                  </span>
-                )}
-              </div>
-              <span className={`font-semibold text-foreground truncate ${featured ? "text-lg" : "text-sm"}`}>
-                {match.awayTeam.name}
-              </span>
-            </div>
-            {match.awayTeam.score !== null && (
-              <span className={`font-bold text-foreground ml-3 ${featured ? "text-2xl" : "text-lg"}`}>
-                {match.awayTeam.score}
-              </span>
-            )}
+  return (
+    <Link 
+      href={`/partido/${match.slug}`}
+      className="flex items-center gap-4 px-4 py-3 hover:bg-white/5 transition-colors group"
+    >
+      {/* Hora / Estado */}
+      <div className="w-16 flex-shrink-0 text-center">
+        {match.isLive ? (
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-destructive font-bold text-sm">
+              {match.elapsed ? `${match.elapsed}'` : "LIVE"}
+            </span>
+            <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
           </div>
-        </div>
-
-        {/* CTA & Time */}
-        <div className="mt-auto pt-4 border-t border-white/5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              <span className="text-sm font-semibold">{formatTime(match.date)}</span>
-            </div>
-          </div>
-          
-          <Button 
-            className={`w-full z-10 relative ${
-              match.isLive 
-                ? "bg-destructive hover:bg-destructive/90 text-white glow-orange" 
-                : "bg-primary hover:bg-primary/90 text-background glow-green"
-            } font-semibold`}
-            asChild
-          >
-            {/* 🚀 FIX 2: El botón apunta al slug de la página SEO */}
-            <Link href={`/partido/${match.slug}`}>
-              <Play className="mr-2 h-4 w-4" />
-              {match.isLive 
-                ? `Ver En Vivo` 
-                : `Ver Detalles del Evento`}
-            </Link>
-          </Button>
-        </div>
-        
-        {/* 🚀 FIX 3: El overlay de la tarjeta también apunta al slug SEO */}
-        <Link href={`/partido/${match.slug}`} className="absolute inset-0 z-0">
-           <span className="sr-only">Ir a detalles</span>
-        </Link>
+        ) : isFinished ? (
+          <span className="text-muted-foreground text-xs font-medium">FIN</span>
+        ) : (
+          <span className="text-foreground font-semibold text-sm">{formatTime(match.date)}</span>
+        )}
       </div>
-    </article>
+
+      {/* Equipos y Marcador */}
+      <div className="flex-1 min-w-0">
+        {/* Local */}
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="relative w-5 h-5 rounded-full overflow-hidden bg-secondary flex-shrink-0">
+              {match.homeTeam.logo ? (
+                <Image src={match.homeTeam.logo} alt={match.homeTeam.name} fill className="object-contain" />
+              ) : (
+                <span className="flex items-center justify-center w-full h-full text-[8px] font-bold">
+                  {match.homeTeam.name?.substring(0, 2) || "L"}
+                </span>
+              )}
+            </div>
+            <span className="text-foreground text-sm truncate">{match.homeTeam.name}</span>
+          </div>
+          {match.homeTeam.score !== null && (
+            <span className={`font-bold text-sm ml-2 ${match.isLive ? "text-foreground" : "text-muted-foreground"}`}>
+              {match.homeTeam.score}
+            </span>
+          )}
+        </div>
+        {/* Visitante */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="relative w-5 h-5 rounded-full overflow-hidden bg-secondary flex-shrink-0">
+              {match.awayTeam.logo ? (
+                <Image src={match.awayTeam.logo} alt={match.awayTeam.name} fill className="object-contain" />
+              ) : (
+                <span className="flex items-center justify-center w-full h-full text-[8px] font-bold">
+                  {match.awayTeam.name?.substring(0, 2) || "V"}
+                </span>
+              )}
+            </div>
+            <span className="text-foreground text-sm truncate">{match.awayTeam.name}</span>
+          </div>
+          {match.awayTeam.score !== null && (
+            <span className={`font-bold text-sm ml-2 ${match.isLive ? "text-foreground" : "text-muted-foreground"}`}>
+              {match.awayTeam.score}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="flex-shrink-0">
+        <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
+          match.isLive 
+            ? "bg-destructive/20 text-destructive group-hover:bg-destructive group-hover:text-white" 
+            : "bg-primary/20 text-primary group-hover:bg-primary group-hover:text-background"
+        }`}>
+          <Play className="w-4 h-4 fill-current" />
+        </span>
+      </div>
+    </Link>
   )
 }
