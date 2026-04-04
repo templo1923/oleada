@@ -30,7 +30,7 @@ interface Match {
   date: string
   venue: string | null
   isLive: boolean
-  slug: string // 🚀 FIX 1: Faltaba declarar el slug en la interfaz
+  slug: string
 }
 
 export function SportsSection() {
@@ -48,7 +48,16 @@ export function SportsSection() {
       const res = await fetch(`/api/sports?sport=${sport}`)
       const json = await res.json()
       
-      setMatches(json.matches || [])
+      let fetchedMatches = json.matches || []
+      
+      // 🚀 ORGANIZADOR DE CAOS: Ponemos los EN VIVO primero
+      fetchedMatches.sort((a: Match, b: Match) => {
+          if (a.isLive && !b.isLive) return -1;
+          if (!a.isLive && b.isLive) return 1;
+          return 0;
+      });
+
+      setMatches(fetchedMatches)
       
       if (json.updateInfo) {
         setUpdates({ last: json.updateInfo.lastUpdate, next: json.updateInfo.nextUpdate })
@@ -173,7 +182,6 @@ export function SportsSection() {
                 key={match.id} 
                 className="group relative rounded-2xl glass overflow-hidden card-hover flex flex-col justify-between"
               >
-                {/* League Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
                   <div className="flex items-center gap-2">
                     <div className="relative w-7 h-7 rounded-lg overflow-hidden bg-secondary">
@@ -197,10 +205,8 @@ export function SportsSection() {
                   )}
                 </div>
 
-                {/* Match Content */}
                 <div className="p-4 flex-grow">
                   <div className="flex flex-col gap-3">
-                    {/* Home Team */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="relative w-6 h-6 rounded-full overflow-hidden bg-secondary flex-shrink-0">
@@ -221,7 +227,6 @@ export function SportsSection() {
                       )}
                     </div>
 
-                    {/* Away Team */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="relative w-6 h-6 rounded-full overflow-hidden bg-secondary flex-shrink-0">
@@ -244,7 +249,6 @@ export function SportsSection() {
                   </div>
                 </div>
 
-                {/* Time & CTA */}
                 <div className="p-4 border-t border-white/5 mt-auto flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-muted-foreground">
                     <Clock className="h-4 w-4" />
@@ -259,6 +263,7 @@ export function SportsSection() {
                     } font-semibold z-10 relative`}
                     asChild
                   >
+                    {/* 🚀 FIX: COMILLAS INVERTIDAS AÑADIDAS AQUÍ */}
                     <Link href={`/partido/${match.slug}`}>
                       <Play className="mr-1 h-3 w-3" />
                       {match.isLive ? "Ver Ahora" : "Ver"}
@@ -266,7 +271,7 @@ export function SportsSection() {
                   </Button>
                 </div>
 
-                {/* 🚀 FIX 2: Este enlace cubre toda la tarjeta, le actualicé el href también */}
+                {/* 🚀 FIX: COMILLAS INVERTIDAS AÑADIDAS AQUÍ TAMBIÉN */}
                 <Link href={`/partido/${match.slug}`} className="absolute inset-0 z-0">
                     <span className="sr-only">Ir a detalles del evento</span>
                 </Link>
@@ -280,7 +285,7 @@ export function SportsSection() {
           <div className="text-center py-12 glass rounded-2xl">
             <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Cartelera en pausa</h3>
-            <p className="text-muted-foreground">No hay eventos VIP programados para esta categoría el día de hoy.</p>
+            <p className="text-muted-foreground">No hay eventos programados para esta categoría el día de hoy.</p>
           </div>
         )}
 
