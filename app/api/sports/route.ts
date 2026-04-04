@@ -27,7 +27,6 @@ export async function GET(request: Request) {
         break
       default:
         baseUrl = "https://v3.football.api-sports.io"
-        // 🔥 MODO MASIVO: Le quitamos el "&league=...", ahora traerá TODOS los partidos del mundo
         endpoint = `/fixtures?date=${date}` 
     }
 
@@ -43,46 +42,52 @@ export async function GET(request: Request) {
     const rawFixtures = data.response || []
 
     const formattedMatches = rawFixtures.map((item: any) => {
-      const isFootball = sport === 'football';
-      const isNBA = sport === 'nba';
+      let homeTeam, awayTeam, league, id, matchDate, status, isLive;
 
-      const id = item?.fixture?.id || item?.id || Math.random();
-      const matchDate = item?.fixture?.date || item?.date || new Date().toISOString();
-      const status = item?.fixture?.status?.short || item?.status?.short || item?.status || "NS";
-      const isLive = ["1H", "2H", "HT", "LIVE", "Q1", "Q2", "Q3", "Q4", "Live"].includes(status);
-
-      let homeTeam = { name: "Local", logo: "", score: null };
-      let awayTeam = { name: "Visitante", logo: "", score: null };
-      let league = { name: "Torneo", logo: "" };
-
-      if (isFootball) {
-        homeTeam = { name: item.teams?.home?.name, logo: item.teams?.home?.logo, score: item.goals?.home };
-        awayTeam = { name: item.teams?.away?.name, logo: item.teams?.away?.logo, score: item.goals?.away };
-        league = { name: item.league?.name, logo: item.league?.logo };
-      } else if (isNBA) {
-        homeTeam = { name: item.teams?.home?.name, logo: item.teams?.home?.logo, score: item.scores?.home?.total };
-        awayTeam = { name: item.teams?.away?.name, logo: item.teams?.away?.logo, score: item.scores?.away?.total };
-        league = { name: item.league?.name, logo: item.league?.logo };
+      if (sport === 'football') {
+        id = item.fixture.id;
+        matchDate = item.fixture.date;
+        status = item.fixture.status.short;
+        homeTeam = { name: item.teams.home.name, logo: item.teams.home.logo, score: item.goals.home };
+        awayTeam = { name: item.teams.away.name, logo: item.teams.away.logo, score: item.goals.away };
+        league = { name: item.league.name, logo: item.league.logo };
+      } else if (sport === 'nba') {
+        id = item.id;
+        matchDate = item.date.start;
+        status = item.status.short;
+        homeTeam = { name: item.teams.home.name, logo: item.teams.home.logo, score: item.scores.home.points };
+        awayTeam = { name: item.teams.away.name, logo: item.teams.away.logo, score: item.scores.away.points };
+        league = { name: "NBA", logo: "https://media.api-sports.io/basketball/leagues/12.png" };
+      } else if (sport === 'f1') {
+        id = item.id;
+        matchDate = item.date;
+        status = item.status;
+        homeTeam = { name: item.competition.name, logo: item.circuit.image, score: null };
+        awayTeam = { name: item.circuit.name, logo: "", score: null };
+        league = { name: "Formula 1", logo: "https://media.api-sports.io/formula-1/leagues/1.png" };
+      } else {
+        // MMA / OTROS
+        id = item.id || Math.random();
+        matchDate = item.date || new Date().toISOString();
+        status = item.status?.short || "NS";
+        homeTeam = { name: item.fighters?.home?.name || "Fighter 1", logo: item.fighters?.home?.logo, score: null };
+        awayTeam = { name: item.fighters?.away?.name || "Fighter 2", logo: item.fighters?.away?.logo, score: null };
+        league = { name: "MMA / UFC", logo: "" };
       }
 
-      // 🔥 TRUCO SEO: Creamos una URL amigable para cada partido (ej: real-madrid-vs-barcelona)
-      const slugLocal = homeTeam.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || "equipo";
-      const slugVisitante = awayTeam.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || "equipo";
-      const slug = `${slugLocal}-vs-${slugVisitante}-${id}`;
+      isLive = ["1H", "2H", "HT", "LIVE", "Q1", "Q2", "Q3", "Q4", "Live", "Running"].includes(status);
+      const slug = `${homeTeam.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-vs-${awayTeam.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${id}`;
 
-      return {
-        id, date: matchDate, status, isLive, elapsed: item?.fixture?.status?.elapsed || null,
-        homeTeam, awayTeam, league, slug
-      }
+      return { id, date: matchDate, status, isLive, homeTeam, awayTeam, league, slug }
     });
 
-    const now = Date.now()
-    const updateInfo = {
-      lastUpdate: new Date(now).toLocaleTimeString("es-CO", { timeZone: "America/Bogota" }),
-      nextUpdate: new Date(now + REVALIDATE_TIME * 1000).toLocaleTimeString("es-CO", { timeZone: "America/Bogota" })
-    }
-
-    return NextResponse.json({ matches: formattedMatches, updateInfo })
+    return NextResponse.json({ 
+        matches: formattedMatches,
+        updateInfo: {
+            lastUpdate: new Date().toLocaleTimeString("es-CO", { timeZone: "America/Bogota" }),
+            nextUpdate: new Date(Date.now() + 3600000).toLocaleTimeString("es-CO", { timeZone: "America/Bogota" })
+        }
+    })
 
   } catch (error) {
     return NextResponse.json({ error: "Error en matriz" }, { status: 500 })
