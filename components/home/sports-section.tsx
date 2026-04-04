@@ -292,7 +292,7 @@ export function SportsSection() {
           >
             <Link href="/agenda-deportiva">
               <Calendar className="mr-2 h-5 w-5" />
-              Explorar Agenda Completa
+              Explorar La Agenda Completa
               <ChevronRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
