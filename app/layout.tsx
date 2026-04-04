@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Outfit, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script' // 🚀 Importación del Script añadida aquí arriba
 import './globals.css'
 
 const outfit = Outfit({ 
@@ -95,26 +96,13 @@ export default function RootLayout({
       <body className={`${outfit.variable} ${geistMono.variable} font-sans antialiased`} suppressHydrationWarning>
         {children}
         <Analytics />
-
-        import Script from 'next/script'
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="es">
-      <body>
-        {children}
-        {/* Cargador de Widgets de API-Sports */}
+        
+        {/* 🚀 Script maestro de los widgets de API-Sports agregado aquí */}
         <Script 
           src="https://widgets.api-sports.io/3.1.0/widgets.js" 
-          type="module" 
+          type="module"
           strategy="afterInteractive"
         />
-      </body>
-    </html>
-  )
-}
-
-
       </body>
     </html>
   )
