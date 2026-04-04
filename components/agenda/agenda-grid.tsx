@@ -67,7 +67,7 @@ export function AgendaGrid() {
 
   const fetchMatches = async () => {
     try {
-      const res = await fetch("/api/football?type=today")
+      const res = await fetch("/api/sports?type=today")
       const data: MatchesResponse = await res.json()
       setMatches(data.matches || [])
       setIsDemo(data.isDemo || false)
