@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Play, Trophy, Zap, ChevronRight, Clock, Activity } from "lucide-react"
+import { Play, Trophy, Clock, Activity, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Tipado básico según la estructura de tu JSON
@@ -26,7 +26,6 @@ interface ApiEvent {
 }
 
 // Función para obtener los datos desde el servidor (¡ESTO ES LO QUE DA EL SEO!)
-// Función para obtener los datos desde el servidor (¡ESTO ES LO QUE DA EL SEO!)
 async function getAgendaData() {
   const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
   const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
@@ -34,7 +33,7 @@ async function getAgendaData() {
   const ONLIVE_URL = "https://api.telelatinomax.shop/api/proxy_onlive.php"; 
 
   try {
-    // 🚨 AQUÍ ESTÁ LA MAGIA: Disfrazamos la petición para pasar tu seguridad PHP 🚨
+    // 🚨 EL TRUCO ESTÁ AQUÍ: Disfrazamos al servidor para que el PHP lo deje pasar 🚨
     const fetchOptions = { 
       next: { revalidate: 300 },
       headers: {
@@ -65,7 +64,7 @@ async function getAgendaData() {
         return hA.localeCompare(hB);
     });
 
-    // Para la Landing, solo tomamos los primeros 12 eventos
+    // Para la Landing, solo tomamos los primeros 12 eventos para no hacerla gigante
     return todosLosPartidos.slice(0, 12);
 
   } catch (error) {
@@ -78,13 +77,6 @@ export async function SportsSection() {
   // Obtenemos los datos antes de que la página se envíe al navegador
   const matches = await getAgendaData();
   const IMG_BASE = "https://cdn.pltvhd.com";
-
-  // Función para determinar si el partido está pasando AHORA (Aprox)
-  // Como esto se renderiza en el servidor (zona UTC usualmente), hacemos un cálculo básico
-  const isMatchLive = (timeStr: string) => {
-      // Nota: Esta es una aproximación para SEO. En la web final, jQuery hace el cálculo exacto.
-      return false; // Por seguridad en el renderizado SSR, lo dejamos false, o puedes implementar lógica de zona horaria aquí.
-  };
 
   return (
     <section className="py-12 section-gradient overflow-hidden">
@@ -124,6 +116,8 @@ export async function SportsSection() {
                   <article className="glass border border-white/5 rounded-[2rem] p-6 hover:border-primary/40 transition-all group relative h-full flex flex-col justify-between bg-white/[0.02]">
                     <div className="flex justify-between items-center mb-5">
                       <div className="flex items-center gap-2">
+                        {/* Como en SSR a veces el onError de la imagen falla si no hay "use client", 
+                            es mejor usar un <img> estándar aquí. Si la imagen se rompe, el diseño oscuro disimula. */}
                         <img 
                             src={imageUrl} 
                             alt={`Torneo de ${nombrePartido}`} 
@@ -173,7 +167,7 @@ export async function SportsSection() {
         ) : (
           <div className="text-center py-12 glass rounded-[2rem] border border-white/5 bg-white/[0.02]">
             <Activity className="w-12 h-12 text-slate-600 mx-auto mb-4 opacity-20" />
-            <p className="text-slate-400 font-bold">Cargando la mejor cartelera deportiva...</p>
+            <p className="text-slate-400 font-bold">No hay eventos deportivos programados en este momento.</p>
           </div>
         )}
       </div>
