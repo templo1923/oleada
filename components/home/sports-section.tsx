@@ -30,6 +30,7 @@ interface Match {
   date: string
   venue: string | null
   isLive: boolean
+  slug: string // 🚀 FIX 1: Faltaba declarar el slug en la interfaz
 }
 
 export function SportsSection() {
@@ -44,7 +45,6 @@ export function SportsSection() {
   const fetchMatches = async () => {
     setIsLoading(true)
     try {
-      // 🚀 EL FIX PRINCIPAL: Llamar a /api/sports con la variable de deporte dinámica
       const res = await fetch(`/api/sports?sport=${sport}`)
       const json = await res.json()
       
@@ -259,14 +259,15 @@ export function SportsSection() {
                     } font-semibold z-10 relative`}
                     asChild
                   >
-                    <Link href={/partido/${match.slug}}>
+                    <Link href={`/partido/${match.slug}`}>
                       <Play className="mr-1 h-3 w-3" />
                       {match.isLive ? "Ver Ahora" : "Ver"}
                     </Link>
                   </Button>
                 </div>
 
-                <Link href="/canales-premium" className="absolute inset-0 z-0">
+                {/* 🚀 FIX 2: Este enlace cubre toda la tarjeta, le actualicé el href también */}
+                <Link href={`/partido/${match.slug}`} className="absolute inset-0 z-0">
                     <span className="sr-only">Ir a detalles del evento</span>
                 </Link>
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />

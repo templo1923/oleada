@@ -30,9 +30,9 @@ interface Match {
   date: string
   venue: string | null
   isLive: boolean
+  slug: string // 🚀 Añadimos el slug para las URLs SEO
 }
 
-// 🚀 Ya no necesitamos interface estricta para la respuesta si es dinámica
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
   "1H": { label: "1er Tiempo", color: "destructive" },
   "2H": { label: "2do Tiempo", color: "destructive" },
@@ -62,17 +62,14 @@ export function AgendaGrid() {
   const [lastUpdate, setLastUpdate] = useState<string>("")
   const [mounted, setMounted] = useState(false)
   
-  // 🚀 ESTADO PARA EL DEPORTE
   const [sport, setSport] = useState("football")
 
   const fetchMatches = async () => {
     setIsLoading(true)
     try {
-      // 🚀 FIX: AHORA LLAMA A LA API NUEVA Y LE PASA EL DEPORTE
       const res = await fetch(`/api/sports?sport=${sport}`)
       const data = await res.json()
       
-      // La API nueva devuelve { matches: [...] } o { data: [...] }
       setMatches(data.matches || data.data || [])
       setIsDemo(data.isDemo || false)
       
@@ -88,12 +85,10 @@ export function AgendaGrid() {
     }
   }
 
-  // 🚀 Se vuelve a ejecutar cuando cambias de deporte
   useEffect(() => {
     setMounted(true)
     fetchMatches()
     
-    // Auto-refresh cada 60 segundos
     const interval = setInterval(() => {
       fetchMatches()
     }, 60000)
@@ -120,7 +115,6 @@ export function AgendaGrid() {
 
   return (
     <div>
-      {/* 🚀 SELECTOR DE DEPORTES */}
       <div className="flex gap-2 overflow-x-auto w-full pb-4 mb-6 scrollbar-hide">
         {sportsMenu.map((item) => (
           <button
@@ -137,7 +131,6 @@ export function AgendaGrid() {
         ))}
       </div>
 
-      {/* Demo Notice */}
       {isDemo && (
         <div className="mb-6 flex items-center gap-3 p-4 rounded-xl glass border border-accent/30">
           <AlertCircle className="h-5 w-5 text-accent" />
@@ -147,7 +140,6 @@ export function AgendaGrid() {
         </div>
       )}
 
-      {/* Last Update & Refresh */}
       <div className="flex items-center justify-between mb-6">
         <div className="text-sm text-muted-foreground flex items-center gap-2">
           {lastUpdate && mounted && (
@@ -173,7 +165,6 @@ export function AgendaGrid() {
         </div>
       ) : (
         <>
-          {/* Live Matches Section */}
           {liveMatches.length > 0 && (
             <div className="mb-10">
               <div className="flex items-center gap-3 mb-6">
@@ -192,7 +183,6 @@ export function AgendaGrid() {
             </div>
           )}
 
-          {/* Upcoming Matches */}
           {upcomingMatches.length > 0 && (
             <div className="mb-10">
               <div className="flex items-center gap-3 mb-6">
@@ -209,7 +199,6 @@ export function AgendaGrid() {
             </div>
           )}
 
-          {/* Finished Matches */}
           {finishedMatches.length > 0 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
@@ -226,7 +215,6 @@ export function AgendaGrid() {
             </div>
           )}
 
-          {/* Show All Button */}
           {matches.length > 8 && !showAll && (
             <div className="mt-8 text-center">
               <Button 
@@ -240,7 +228,6 @@ export function AgendaGrid() {
             </div>
           )}
 
-          {/* Empty State */}
           {matches.length === 0 && (
             <div className="text-center py-12 glass rounded-2xl border border-white/5">
               <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -384,7 +371,8 @@ function MatchCard({
             } font-semibold`}
             asChild
           >
-            <Link href={/partido/${match.slug}}>
+            {/* 🚀 FIX 2: El botón apunta al slug de la página SEO */}
+            <Link href={`/partido/${match.slug}`}>
               <Play className="mr-2 h-4 w-4" />
               {match.isLive 
                 ? `Ver En Vivo` 
@@ -393,8 +381,8 @@ function MatchCard({
           </Button>
         </div>
         
-        {/* Enlace superpuesto para UX */}
-        <Link href="/canales-premium" className="absolute inset-0 z-0">
+        {/* 🚀 FIX 3: El overlay de la tarjeta también apunta al slug SEO */}
+        <Link href={`/partido/${match.slug}`} className="absolute inset-0 z-0">
            <span className="sr-only">Ir a detalles</span>
         </Link>
       </div>
