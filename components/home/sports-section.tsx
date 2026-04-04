@@ -26,6 +26,7 @@ interface ApiEvent {
 }
 
 // Función para obtener los datos desde el servidor (¡ESTO ES LO QUE DA EL SEO!)
+// Función para obtener los datos desde el servidor (¡ESTO ES LO QUE DA EL SEO!)
 async function getAgendaData() {
   const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
   const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
@@ -33,8 +34,14 @@ async function getAgendaData() {
   const ONLIVE_URL = "https://api.telelatinomax.shop/api/proxy_onlive.php"; 
 
   try {
-    // Usamos next: { revalidate: 300 } para que Next.js guarde los datos en caché por 5 mins y no sature tu servidor
-    const fetchOptions = { next: { revalidate: 300 } };
+    // 🚨 AQUÍ ESTÁ LA MAGIA: Disfrazamos la petición para pasar tu seguridad PHP 🚨
+    const fetchOptions = { 
+      next: { revalidate: 300 },
+      headers: {
+        'Origin': 'https://oleadatvpremium.com',
+        'Referer': 'https://oleadatvpremium.com/'
+      }
+    };
 
     const [res1, res2, res3, res4] = await Promise.all([
       fetch(AGENDA_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] })),
@@ -58,7 +65,7 @@ async function getAgendaData() {
         return hA.localeCompare(hB);
     });
 
-    // Para la Landing, solo tomamos los primeros 12 eventos para no hacerla gigante
+    // Para la Landing, solo tomamos los primeros 12 eventos
     return todosLosPartidos.slice(0, 12);
 
   } catch (error) {
