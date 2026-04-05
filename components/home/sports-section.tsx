@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Play, Trophy, Clock, Activity, ChevronRight, Zap } from "lucide-react"
+import { Play, Trophy, Clock, Activity, ChevronRight, Zap, CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // 1. Tipado
@@ -20,28 +20,38 @@ interface ApiEvent {
   }
 }
 
-// 2. FUNCIÓN LIMPIADORA: Quita basura HTML de los nombres que vienen de la API
+// 2. FUNCIÓN LIMPIADORA: Quita basura HTML y palabras de idiomas (ESPAÑOL, INGLÉS, etc.)
 function textoPuro(html: string) {
-  return (html || "").replace(/<[^>]*>?/gm, '').trim();
+  if (!html) return "Evento Deportivo";
+  let limpio = html.replace(/<[^>]*>?/gm, '').trim();
+  // Borramos corchetes [ESPAÑOL] y listas de idiomas perdidas
+  limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN)/gi, '').trim();
+  // Limpiamos comas o guiones que queden colgando al final
+  return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
 }
 
-// 3. Cerebro de Categorías Visuales
+// 3. Cerebro de Categorías (CORREGIDO: Busca deportes específicos antes que el Fútbol)
 function obtenerDeporte(evento: ApiEvent): { nombre: string, icono: string, color: string } {
   const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
   const sp = (evento.attributes.sport_name || "").toUpperCase();
 
-  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
+  // Primer filtro: Deportes específicos
+  if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
   if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO") || desc.includes("FIBA")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
   if (sp.includes("TENNIS") || desc.includes("TENIS") || desc.includes("ATP") || desc.includes("WTA")) return { nombre: "TENIS", icono: "🎾", color: "text-lime-400 bg-lime-400/10 border-lime-400/20" };
   if (sp.includes("MOTOR") || desc.includes("F1") || desc.includes("MOTOGP") || desc.includes("NASCAR")) return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
   if (desc.includes("UFC") || desc.includes("BOXING") || desc.includes("MMA") || desc.includes("WWE") || desc.includes("BOXEO")) return { nombre: "COMBATE", icono: "🥊", color: "text-red-600 bg-red-600/10 border-red-600/20" };
   if (desc.includes("MLB") || desc.includes("BÉISBOL") || desc.includes("BASEBALL")) return { nombre: "BÉISBOL", icono: "⚾", color: "text-blue-400 bg-blue-400/10 border-blue-400/20" };
   if (desc.includes("NFL") || desc.includes("SUPER BOWL")) return { nombre: "FUTBOL AMER.", icono: "🏈", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" };
+  if (sp.includes("VOLLEY") || desc.includes("VOLEY") || desc.includes("VOLEIBOL")) return { nombre: "VOLEIBOL", icono: "🏐", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20" };
+
+  // Segundo filtro: Si tiene la palabra Fútbol, o el clásico " VS " o " X "
+  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
 
   return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
 }
 
-// 4. Consumo de APIs en el Servidor (Magia SEO)
+// 4. Consumo de APIs y Lógica de "En Vivo"
 async function getAgendaData() {
   const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
   const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
@@ -50,11 +60,8 @@ async function getAgendaData() {
 
   try {
     const fetchOptions = { 
-      next: { revalidate: 300 },
-      headers: {
-        'Origin': 'https://oleadatvpremium.com',
-        'Referer': 'https://oleadatvpremium.com/'
-      }
+      next: { revalidate: 120 }, // Actualiza la info cada 2 minutos en el servidor
+      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' }
     };
 
     const [res1, res2, res3, res4] = await Promise.all([
@@ -64,23 +71,48 @@ async function getAgendaData() {
       fetch(ONLIVE_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))
     ]);
 
-    let todosLosPartidos: ApiEvent[] = [
-      ...(res1.data || []), 
-      ...(res2.data || []), 
-      ...(res3.data || []),
-      ...(res4.data || [])
-    ];
+    let todos = [...(res1.data || []), ...(res2.data || []), ...(res3.data || []), ...(res4.data || [])];
 
-    todosLosPartidos.sort((a, b) => {
+    // Ocultar la categoría "Varios" de la página principal
+    todos = todos.filter(p => obtenerDeporte(p).nombre !== "VARIOS");
+
+    // LÓGICA DE TIEMPO: Filtrar ventana de 2 horas
+    // Usamos la hora de Colombia/Bogotá (-5) como referencia base para la API
+    const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: false });
+    const timeParts = formatter.formatToParts(new Date());
+    const currentHour = parseInt(timeParts.find(p => p.type === 'hour')?.value || "0");
+    const currentMinute = parseInt(timeParts.find(p => p.type === 'minute')?.value || "0");
+    const currentTimeInMinutes = (currentHour * 60) + currentMinute;
+
+    const eventosFiltradosPorTiempo = todos.filter(evento => {
+      const timeStr = (evento.attributes.diary_hour || evento.attributes.diary_time || "00:00");
+      const [h, m] = timeStr.split(':').map(Number);
+      const eventTimeInMinutes = (h * 60) + m;
+      
+      // ¿Está en la ventana de las últimas 2 horas (empezado) o en las próximas 2 horas?
+      const diff = eventTimeInMinutes - currentTimeInMinutes;
+      // -120 (empezó hace 2h), +120 (empieza en 2h)
+      return diff >= -120 && diff <= 120;
+    }).map(evento => {
+      const timeStr = (evento.attributes.diary_hour || evento.attributes.diary_time || "00:00");
+      const [h, m] = timeStr.split(':').map(Number);
+      const eventTimeInMinutes = (h * 60) + m;
+      // Marcamos como LIVE si ya empezó o está a punto de empezar (hasta hace 110 min)
+      const diff = eventTimeInMinutes - currentTimeInMinutes;
+      const isLive = diff <= 5 && diff >= -110; 
+      
+      return { ...evento, isLive };
+    });
+
+    // Ordenar los más próximos a la hora actual
+    eventosFiltradosPorTiempo.sort((a, b) => {
         const hA = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
         const hB = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
         return hA.localeCompare(hB);
     });
 
-    // Filtramos para ocultar "VARIOS" y mantener el inicio muy Top
-    const eventosTop = todosLosPartidos.filter(p => obtenerDeporte(p).nombre !== "VARIOS");
-
-    return eventosTop.slice(0, 10);
+    // Devolver un máximo de 10 eventos
+    return eventosFiltradosPorTiempo.slice(0, 10);
   } catch (error) {
     return [];
   }
@@ -90,25 +122,33 @@ export async function SportsSection() {
   const matches = await getAgendaData();
   const IMG_BASE = "https://cdn.pltvhd.com";
 
+  // Formatear la fecha actual para la cabecera
+  const fechaActual = new Intl.DateTimeFormat('es-ES', { 
+    weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Bogota' 
+  }).format(new Date());
+
   return (
     <section className="py-12 section-gradient overflow-hidden w-full">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
         
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-white/10 pb-6">
           <div>
+            <div className="flex items-center gap-2 mb-2 text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 w-fit px-3 py-1 rounded-md">
+              <CalendarDays className="w-4 h-4" /> Hoy: {fechaActual}
+            </div>
             <h2 className="text-2xl md:text-3xl font-black text-white flex items-center gap-2">
               <Trophy className="text-primary w-6 h-6" /> Agenda <span className="text-primary">Destacada</span>
             </h2>
-            <p className="text-slate-400 text-sm mt-1">Los mejores eventos clasificados y en vivo.</p>
+            <p className="text-slate-400 text-sm mt-1">Los eventos más calientes de las próximas horas.</p>
           </div>
         </div>
 
         {matches.length > 0 ? (
           <div className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x select-none w-full">
-            {matches.map((match, index) => {
+            {matches.map((match: any, index: number) => {
               const attr = match.attributes;
               const time = (attr.diary_hour || attr.diary_time || "00:00").substring(0, 5);
-              const isLive = index < 3; 
+              const isLive = match.isLive; 
               const categoriaInfo = obtenerDeporte(match);
 
               // 🚨 LIMPIEZA TOTAL DEL NOMBRE DEL EQUIPO 🚨
@@ -133,7 +173,6 @@ export async function SportsSection() {
               else if (!imageUrl.startsWith('http')) imageUrl = `${IMG_BASE}${imageUrl}`;
 
               return (
-                // 💡 AJUSTE VISUAL: Cambiamos a min-w-[320px] o [340px] para que los nombres largos quepan mejor sin apretarse.
                 <div key={index} className="min-w-[320px] md:min-w-[340px] snap-start">
                   <h2 className="sr-only">Ver partido {rawName} en vivo gratis</h2>
                   
@@ -162,7 +201,6 @@ export async function SportsSection() {
                           <div className="w-10 h-10 bg-white rounded-full p-1.5 flex-shrink-0 flex items-center justify-center border border-white/20">
                             <img src={imageUrl} alt="" className="w-full h-full object-contain" />
                           </div>
-                          {/* TRUCO: line-clamp-2 permite que el nombre ocupe 2 líneas si es muy largo, en lugar de cortarse de una vez */}
                           <span className="text-base font-bold text-white line-clamp-2 leading-tight" title={homeTeam}>
                             {homeTeam}
                           </span>
@@ -207,7 +245,10 @@ export async function SportsSection() {
         ) : (
           <div className="text-center py-12 glass rounded-[2rem] border border-white/5">
             <Activity className="w-12 h-12 text-slate-600 mx-auto mb-4 opacity-20 animate-pulse" />
-            <p className="text-slate-400 font-bold">No hay eventos activos ahora.</p>
+            <p className="text-slate-400 font-bold">No hay eventos próximos en esta franja horaria.</p>
+            <Button variant="link" className="mt-2 text-primary" asChild>
+               <Link href="/agenda-deportiva">Ver la agenda completa de hoy</Link>
+            </Button>
           </div>
         )}
       </div>
