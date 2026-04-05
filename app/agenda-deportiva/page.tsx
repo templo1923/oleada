@@ -11,7 +11,6 @@ function textoPuro(html: string) {
   return html.replace(/<[^>]*>?/gm, '').trim();
 }
 
-// 🧠 CEREBRO DE CATEGORÍAS TOTALMENTE EXPANDIDO 🧠
 function obtenerDeporte(evento: any): { nombre: string, icono: string, color: string } {
   const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
   const sp = (evento.attributes.sport_name || "").toUpperCase();
@@ -59,7 +58,6 @@ async function getAgendaData() {
         return hA.localeCompare(hB);
     });
 
-    // Inyectamos la categoría a cada evento para que el cliente no tenga que reprocesarlo
     return todos.map(t => ({...t, categoriaAsignada: obtenerDeporte(t)}));
   } catch (error) { return []; }
 }
@@ -68,7 +66,6 @@ export default async function AgendaPage() {
   const matches = await getAgendaData();
   const IMG_BASE = "https://cdn.pltvhd.com";
 
-  // Agrupar en categorías
   const eventosPorCategoria: Record<string, any[]> = { "TODOS": matches };
   matches.forEach(match => {
     const deporte = match.categoriaAsignada.nombre;
@@ -76,7 +73,6 @@ export default async function AgendaPage() {
     eventosPorCategoria[deporte].push(match);
   });
 
-  // Ordenar pestañas
   const ordenPrioridad = ["TODOS", "FÚTBOL", "BASKET", "TENIS", "MOTOR", "COMBATE", "BÉISBOL", "FUTBOL AMER.", "VOLEIBOL", "CICLISMO"];
   const categoriasActivas = Object.keys(eventosPorCategoria).sort((a, b) => {
     let idxA = ordenPrioridad.indexOf(a);
@@ -89,7 +85,7 @@ export default async function AgendaPage() {
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-12 overflow-x-hidden w-full">
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8 text-center">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-12 text-center">
         <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 mb-6 border border-primary/30">
             <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
@@ -98,7 +94,7 @@ export default async function AgendaPage() {
             <span className="text-sm font-bold text-white uppercase tracking-wider">EVENTOS DISPONIBLES ({matches.length})</span>
         </div>
         <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Agenda <span className="text-primary">Deportiva</span></h1>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto">Busca y selecciona tu evento favorito. Transmisiones en vivo y en calidad HD.</p>
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto">Selecciona tu deporte favorito y no te pierdas ninguna transmisión. Todos los eventos en vivo y en calidad HD.</p>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
