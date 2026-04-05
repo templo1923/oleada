@@ -93,11 +93,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${outfit.variable} ${geistMono.variable} font-sans antialiased`} suppressHydrationWarning>
+      {/* 🚨 AQUÍ ESTÁ EL AJUSTE: Agregado overflow-x-hidden para matar el espacio negro 🚨 */}
+      <body className={`${outfit.variable} ${geistMono.variable} font-sans antialiased overflow-x-hidden w-full`} suppressHydrationWarning>
         {children}
         <Analytics />
         
-        {/* 🚀 Script maestro de los widgets de API-Sports agregado aquí */}
         <Script 
           src="https://widgets.api-sports.io/3.1.0/widgets.js" 
           type="module"
