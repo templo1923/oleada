@@ -1,13 +1,21 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { Search, Clock, Activity, Play, Zap, ChevronDown, PlayCircle } from "lucide-react"
+import { Search, Clock, Activity, Play, Zap, ChevronDown, PlayCircle, Tv } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 
+// Limpiador para el nombre del evento
 function textoPuro(html: string) {
   if (!html) return "Evento Deportivo";
+  let limpio = html.replace(/<[^>]*>?/gm, '').trim();
+  limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN)/gi, '').trim();
+  return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
+}
+
+// Limpiador especial para los nombres de los canales
+function limpiarCanal(html: string) {
+  if (!html) return "Transmisión";
   return html.replace(/<[^>]*>?/gm, '').trim();
 }
 
@@ -41,6 +49,12 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
       return nombreLimpio.includes(busqueda.toLowerCase());
     });
   }
+
+  // Obtenemos hora actual en minutos para el botón LIVE
+  const d = new Date();
+  const localTime = d.toLocaleTimeString('en-US', { timeZone: 'America/Bogota', hour12: false, hour: 'numeric', minute: 'numeric' });
+  const [currH, currM] = localTime.split(':').map(Number);
+  const currentMinutes = (currH * 60) + currM;
 
   return (
     <div className="w-full">
@@ -96,7 +110,7 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
                     <div className="col-span-full text-center py-10 text-slate-500">No se encontraron eventos para "{busqueda}"</div>
                   )}
 
-                  {/* AQUÍ VA TU DISEÑO FAVORITO */}
+                  {/* DISEÑO PREMIUM ACTUALIZADO (Con logo grande a la izquierda) */}
                   {eventosMostrar.map((match: any, index: number) => {
                     const attr = match.attributes;
                     const embeds = attr.embeds?.data || [];
@@ -104,21 +118,11 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
                     const time = (attr.diary_hour || attr.diary_time || "00:00").substring(0, 5);
                     const categoriaInfo = match.categoriaAsignada;
                     
-                    // Simula "En Vivo" solo si el usuario no ha buscado nada específico
-                    const isLive = index < 3 && !busqueda; 
-
-                    let homeTeam = rawName;
-                    let awayTeam = "Transmisión HD";
-                    
-                    if (rawName.toLowerCase().includes(" vs ")) {
-                      const parts = rawName.split(/ vs /i);
-                      homeTeam = parts[0].trim(); 
-                      awayTeam = parts[1] ? parts[1].trim() : "Transmisión";
-                    } else if (rawName.toLowerCase().includes(" x ")) {
-                      const parts = rawName.split(/ x /i);
-                      homeTeam = parts[0].trim(); 
-                      awayTeam = parts[1] ? parts[1].trim() : "Transmisión";
-                    }
+                    // Cálculo de "LIVE" (Si empezó en las últimas 2 horas o empieza en 5 minutos)
+                    const [evH, evM] = time.split(':').map(Number);
+                    const eventMinutes = (evH * 60) + evM;
+                    const diff = eventMinutes - currentMinutes;
+                    const isLive = diff <= 5 && diff >= -110;
 
                     let imageUrl = attr.country?.data?.attributes?.image?.data?.attributes?.url || attr.country?.data?.attributes?.country_image;
                     if (!imageUrl) imageUrl = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`;
@@ -127,9 +131,9 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
                     const isOpen = expandido === index;
 
                     return (
-                      <article key={index} className="glass border border-white/5 rounded-[2rem] p-6 hover:border-primary/40 transition-all group relative flex flex-col justify-between bg-white/[0.02]">
-                        <h2 className="sr-only">Ver partido {rawName} en vivo gratis</h2>
+                      <article key={index} className="glass border border-white/5 rounded-[2rem] p-6 hover:border-primary/40 transition-all group relative flex flex-col justify-between bg-white/[0.02] shadow-lg">
                         
+                        {/* ENCABEZADO (Categoría y Hora/Live) */}
                         <div className="flex justify-between items-center mb-6">
                           <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${categoriaInfo.color}`}>
                             {categoriaInfo.icono} {categoriaInfo.nombre}
@@ -140,64 +144,64 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
                               <Zap className="w-3 h-3 fill-current" /> LIVE
                             </div>
                           ) : (
-                            <div className="flex items-center gap-1 text-slate-500 text-[10px] font-bold">
+                            <div className="flex items-center gap-1 text-slate-400 text-[11px] font-bold">
                               <Clock className="w-3 h-3" /> {time}
                             </div>
                           )}
                         </div>
 
-                        <div className="space-y-4 mb-8">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 overflow-hidden pr-2">
-                              <div className="w-10 h-10 bg-white rounded-full p-1.5 flex-shrink-0 flex items-center justify-center border border-white/20">
-                                <img src={imageUrl} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`; }}/>
-                              </div>
-                              <span className="text-base font-bold text-white line-clamp-2 leading-tight" title={homeTeam}>
-                                {homeTeam}
-                              </span>
+                        {/* CUERPO (Logo a la izquierda, Texto a la derecha) */}
+                        <div className="flex flex-col gap-4 mb-8 flex-1 justify-center cursor-pointer" onClick={() => setExpandido(isOpen ? null : index)}>
+                          <div className="flex items-center gap-4">
+                            <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl p-2 flex-shrink-0 flex items-center justify-center shadow-inner">
+                              <img src={imageUrl} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`; }}/>
                             </div>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 overflow-hidden pr-2">
-                              <div className="w-10 h-10 bg-white/5 rounded-full flex-shrink-0 flex items-center justify-center border border-white/5">
-                                <span className="text-[12px] font-black text-slate-400">TV</span>
-                              </div>
-                              <span className="text-sm font-medium text-slate-300 line-clamp-2 leading-tight" title={awayTeam}>
-                                {awayTeam}
-                              </span>
+                            
+                            <div className="flex-1 overflow-hidden">
+                               <h3 className="text-base md:text-lg font-bold text-white leading-tight line-clamp-3" title={rawName}>
+                                 {rawName}
+                               </h3>
+                               <div className="flex items-center gap-2 mt-2">
+                                 <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                                   <Tv className="w-3 h-3 text-slate-400" />
+                                   <span className="text-[9px] font-black text-slate-400 tracking-wider uppercase">Transmisión HD</span>
+                                 </div>
+                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Opciones de canales */}
+                        {/* OPCIONES DE CANALES (Desplegable limpio) */}
                         {isOpen ? (
-                          <div className="bg-[#0f172a] p-3 border border-white/10 rounded-2xl space-y-2 mb-2 animate-in slide-in-from-top-2">
+                          <div className="bg-[#0f172a] p-3 border border-white/10 rounded-2xl space-y-2 mb-4 animate-in slide-in-from-top-2">
                             {embeds.length > 0 ? (
-                              embeds.map((emb: any, idx: number) => (
-                                <a 
-                                  key={idx}
-                                  href={generarEnlaceVer(emb, rawName)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-white font-bold text-sm hover:bg-primary/20 transition-all cursor-pointer"
-                                >
-                                  <PlayCircle className="text-[#60a5fa] w-4 h-4 mr-2" />
-                                  {emb.attributes.embed_name}
-                                </a>
-                              ))
+                              embeds.map((emb: any, idx: number) => {
+                                const nombreCanal = limpiarCanal(emb.attributes.embed_name);
+                                return (
+                                  <a 
+                                    key={idx}
+                                    href={generarEnlaceVer(emb, rawName)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-white font-bold text-sm hover:bg-primary/20 transition-all cursor-pointer"
+                                  >
+                                    <PlayCircle className="text-[#60a5fa] w-4 h-4 mr-2 flex-shrink-0" />
+                                    <span className="truncate">{nombreCanal}</span>
+                                  </a>
+                                )
+                              })
                             ) : (
-                              <p className="text-slate-500 text-xs p-2 text-center">Sin canales asignados.</p>
+                              <p className="text-slate-500 text-xs p-2 text-center">Sin canales asignados aún.</p>
                             )}
                           </div>
                         ) : null}
 
-                        {/* Botón Principal (Abre canales si hay varios, o manda al primero) */}
+                        {/* BOTÓN PRINCIPAL */}
                         <Button 
                           onClick={() => setExpandido(isOpen ? null : index)}
                           className={`w-full rounded-2xl py-6 font-black text-xs tracking-widest uppercase transition-all z-10 ${isLive ? "bg-gradient-to-r from-primary to-[#00d4ff] text-white hover:scale-[1.02] shadow-lg shadow-primary/20" : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:border-primary/50"}`} 
                         >
-                          <Play className="mr-2 h-4 w-4 fill-current" /> {isOpen ? 'Cerrar Opciones' : 'Ver Transmisión'}
+                          <Play className="mr-2 h-4 w-4 fill-current" /> {isOpen ? 'Ocultar Opciones' : 'Ver Transmisión'}
                         </Button>
                       </article>
                     )
