@@ -1,223 +1,120 @@
-"use client"
+import { Metadata } from "next"
+import { AgendaClient } from "@/components/agenda-client"
 
-import { useState } from "react"
-import { Search, Clock, Activity, Play, Zap, ChevronDown, PlayCircle, Tv } from "lucide-react"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
+export const metadata: Metadata = {
+  title: 'Agenda Deportiva Hoy | Partidos en Vivo Gratis | SportLive',
+  description: 'Mira la agenda deportiva de hoy. Fútbol, Baloncesto, Tenis, UFC, Motor y más.',
+}
 
-// Limpiador para el nombre del evento
+// 1. Limpiador Maestro
 function textoPuro(html: string) {
-  if (!html) return "Evento Deportivo";
+  if (!html) return "";
   let limpio = html.replace(/<[^>]*>?/gm, '').trim();
   limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN)/gi, '').trim();
   return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
 }
 
-// Limpiador especial para los nombres de los canales
-function limpiarCanal(html: string) {
-  if (!html) return "Transmisión";
-  return html.replace(/<[^>]*>?/gm, '').trim();
+// 2. Cerebro (Con Críquet separado)
+function obtenerDeporte(evento: any): { nombre: string, icono: string, color: string } {
+  const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
+  const sp = (evento.attributes.sport_name || "").toUpperCase();
+
+  if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
+  if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO") || desc.includes("FIBA") || desc.includes("EUROLEAGUE")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
+  if (sp.includes("TENNIS") || desc.includes("TENIS") || desc.includes("ATP") || desc.includes("WTA") || desc.includes("WIMBLEDON")) return { nombre: "TENIS", icono: "🎾", color: "text-lime-400 bg-lime-400/10 border-lime-400/20" };
+  if (sp.includes("MOTOR") || desc.includes("F1") || desc.includes("MOTOGP") || desc.includes("NASCAR") || desc.includes("AUTOMOVILISMO")) return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
+  if (desc.includes("UFC") || desc.includes("BOXING") || desc.includes("MMA") || desc.includes("WWE") || desc.includes("BOXEO") || desc.includes("FIGHT")) return { nombre: "COMBATE", icono: "🥊", color: "text-red-600 bg-red-600/10 border-red-600/20" };
+  if (desc.includes("MLB") || desc.includes("BÉISBOL") || desc.includes("BASEBALL") || desc.includes("BEISBOL")) return { nombre: "BÉISBOL", icono: "⚾", color: "text-blue-400 bg-blue-400/10 border-blue-400/20" };
+  if (desc.includes("NFL") || desc.includes("SUPER BOWL") || desc.includes("FOOTBALL") || desc.includes("AFL")) return { nombre: "FUTBOL AMER.", icono: "🏈", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" };
+  if (sp.includes("VOLLEY") || desc.includes("VOLEY") || desc.includes("VOLEIBOL")) return { nombre: "VOLEIBOL", icono: "🏐", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20" };
+  if (desc.includes("NHL") || desc.includes("HOCKEY")) return { nombre: "HOCKEY", icono: "🏒", color: "text-teal-400 bg-teal-400/10 border-teal-400/20" };
+  if (desc.includes("BILLAR") || desc.includes("SNOOKER")) return { nombre: "BILLAR", icono: "🎱", color: "text-purple-400 bg-purple-400/10 border-purple-400/20" };
+  if (desc.includes("DARTS") || desc.includes("DARDOS")) return { nombre: "DARDOS", icono: "🎯", color: "text-rose-400 bg-rose-400/10 border-rose-400/20" };
+  if (desc.includes("CYCLING") || desc.includes("CICLISMO") || desc.includes("TOUR DE")) return { nombre: "CICLISMO", icono: "🚴", color: "text-sky-400 bg-sky-400/10 border-sky-400/20" };
+  if (desc.includes("GOLF") || desc.includes("PGA")) return { nombre: "GOLF", icono: "⛳", color: "text-emerald-600 bg-emerald-600/10 border-emerald-600/20" };
+  if (desc.includes("RUGBY") || desc.includes("SIX NATIONS")) return { nombre: "RUGBY", icono: "🏉", color: "text-amber-800 bg-amber-800/10 border-amber-800/20" };
+
+  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
+
+  return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
 }
 
-export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, IMG_BASE }: any) {
-  const [busqueda, setBusqueda] = useState("")
-  const [expandido, setExpandido] = useState<number | null>(null)
+async function getAgendaData() {
+  const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
+  const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
+  const EXTRA_URL = "https://api.telelatinomax.shop/api/proxy_extra.php"; 
+  const ONLIVE_URL = "https://api.telelatinomax.shop/api/proxy_onlive.php"; 
 
-  // Enlace para ver el partido
-  const generarEnlaceVer = (emb: any, rawName: string) => {
-    const rawUrl = emb.attributes.embed_iframe;
-    let rFinal = "";
-    
-    if (rawUrl.includes('eventos.html?r=')) {
-        rFinal = rawUrl.split('eventos.html?r=')[1];
-        if (rFinal.includes('&')) rFinal = rFinal.split('&')[0]; 
-    } else if (rawUrl.startsWith('http')) {
-        rFinal = btoa(rawUrl);
-    } else {
-        rFinal = rawUrl;
-    }
-    
-    const tituloCodificado = encodeURIComponent(rawName).replace(/'/g, "%27");
-    return `https://oleadatvpremium.com/SportLive/ver.html?r=${rFinal}&n=${tituloCodificado}`;
-  }
+  try {
+    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } };
 
-  // Filtrar eventos por el buscador
-  const eventosFiltrados = (eventos: any[]) => {
-    if (!busqueda) return eventos;
-    return eventos.filter(e => {
-      const nombreLimpio = textoPuro(e.attributes.diary_description).toLowerCase();
-      return nombreLimpio.includes(busqueda.toLowerCase());
+    const [res1, res2, res3, res4] = await Promise.all([
+      fetch(AGENDA_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] })),
+      fetch(LIVETV_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] })),
+      fetch(EXTRA_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] })),
+      fetch(ONLIVE_URL, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))
+    ]);
+
+    let todos = [...(res1.data || []), ...(res2.data || []), ...(res3.data || []), ...(res4.data || [])];
+
+    todos.sort((a, b) => {
+        const hA = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
+        const hB = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
+        return hA.localeCompare(hB);
     });
-  }
 
-  // Obtenemos hora actual en minutos para el botón LIVE
-  const d = new Date();
-  const localTime = d.toLocaleTimeString('en-US', { timeZone: 'America/Bogota', hour12: false, hour: 'numeric', minute: 'numeric' });
-  const [currH, currM] = localTime.split(':').map(Number);
-  const currentMinutes = (currH * 60) + currM;
+    return todos.map(t => ({...t, categoriaAsignada: obtenerDeporte(t)}));
+  } catch (error) { return []; }
+}
+
+export default async function AgendaPage() {
+  const matches = await getAgendaData();
+  const IMG_BASE = "https://cdn.pltvhd.com";
+
+  // Fecha actual
+  const fechaActual = new Intl.DateTimeFormat('es-ES', { 
+    weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Bogota' 
+  }).format(new Date());
+
+  const eventosPorCategoria: Record<string, any[]> = { "TODOS": matches };
+  matches.forEach(match => {
+    const deporte = match.categoriaAsignada.nombre;
+    if (!eventosPorCategoria[deporte]) eventosPorCategoria[deporte] = [];
+    eventosPorCategoria[deporte].push(match);
+  });
+
+  const ordenPrioridad = ["TODOS", "FÚTBOL", "BASKET", "TENIS", "MOTOR", "COMBATE", "BÉISBOL", "FUTBOL AMER.", "VOLEIBOL", "CICLISMO", "CRÍQUET"];
+  const categoriasActivas = Object.keys(eventosPorCategoria).sort((a, b) => {
+    let idxA = ordenPrioridad.indexOf(a);
+    let idxB = ordenPrioridad.indexOf(b);
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    if (idxA !== -1) return -1;
+    if (idxB !== -1) return 1;
+    return a.localeCompare(b);
+  });
 
   return (
-    <div className="w-full">
-      {/* Buscador */}
-      <div className="relative mb-10 max-w-2xl mx-auto">
-        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-primary" />
+    <div className="min-h-screen bg-background pt-24 pb-12 overflow-x-hidden w-full">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-12 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 mb-6 border border-primary/30">
+            <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            </span>
+            <span className="text-sm font-bold text-white uppercase tracking-wider">HOY: {fechaActual}</span>
         </div>
-        <input
-          type="text"
-          className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-14 pr-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-lg"
-          placeholder="Buscar equipo, torneo o deporte..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Agenda <span className="text-primary">Deportiva</span></h1>
+        <p className="text-slate-400 text-lg max-w-2xl mx-auto">Selecciona tu deporte favorito y no te pierdas ninguna transmisión. Hay <strong className="text-white">{matches.length} eventos</strong> disponibles.</p>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <AgendaClient 
+          matches={matches} 
+          categoriasActivas={categoriasActivas} 
+          eventosPorCategoria={eventosPorCategoria} 
+          IMG_BASE={IMG_BASE} 
         />
-      </div>
-
-      {matches.length > 0 ? (
-        <Tabs defaultValue="TODOS" className="w-full">
-          
-          {/* Botones de Categorías */}
-          <div className="w-full overflow-x-auto scrollbar-hide mb-8 pb-4">
-            <TabsList className="bg-white/5 border border-white/10 rounded-2xl h-auto p-2 inline-flex gap-2 min-w-max">
-              {categoriasActivas.map((cat: string) => {
-                const count = eventosFiltrados(eventosPorCategoria[cat]).length;
-                if (count === 0 && busqueda) return null;
-
-                return (
-                  <TabsTrigger 
-                    key={cat} 
-                    value={cat}
-                    className="rounded-xl px-5 py-3 text-xs md:text-sm font-black uppercase tracking-wider text-slate-400 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-[#00d4ff] data-[state=active]:text-white transition-all shadow-none data-[state=active]:shadow-[0_0_15px_rgba(59,130,246,0.4)]"
-                  >
-                    {cat} 
-                    <span className="ml-2 bg-black/30 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                      {count}
-                    </span>
-                  </TabsTrigger>
-                )
-              })}
-            </TabsList>
-          </div>
-
-          {/* Contenedor de Tarjetas */}
-          {categoriasActivas.map((cat: string) => {
-            const eventosMostrar = eventosFiltrados(eventosPorCategoria[cat]);
-
-            return (
-              <TabsContent key={cat} value={cat} className="mt-0 outline-none">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  
-                  {eventosMostrar.length === 0 && (
-                    <div className="col-span-full text-center py-10 text-slate-500">No se encontraron eventos para "{busqueda}"</div>
-                  )}
-
-                  {/* DISEÑO PREMIUM ACTUALIZADO (Con logo grande a la izquierda) */}
-                  {eventosMostrar.map((match: any, index: number) => {
-                    const attr = match.attributes;
-                    const embeds = attr.embeds?.data || [];
-                    const rawName = textoPuro(attr.diary_description);
-                    const time = (attr.diary_hour || attr.diary_time || "00:00").substring(0, 5);
-                    const categoriaInfo = match.categoriaAsignada;
-                    
-                    // Cálculo de "LIVE" (Si empezó en las últimas 2 horas o empieza en 5 minutos)
-                    const [evH, evM] = time.split(':').map(Number);
-                    const eventMinutes = (evH * 60) + evM;
-                    const diff = eventMinutes - currentMinutes;
-                    const isLive = diff <= 5 && diff >= -110;
-
-                    let imageUrl = attr.country?.data?.attributes?.image?.data?.attributes?.url || attr.country?.data?.attributes?.country_image;
-                    if (!imageUrl) imageUrl = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`;
-                    else if (!imageUrl.startsWith('http')) imageUrl = `${IMG_BASE}${imageUrl}`;
-
-                    const isOpen = expandido === index;
-
-                    return (
-                      <article key={index} className="glass border border-white/5 rounded-[2rem] p-6 hover:border-primary/40 transition-all group relative flex flex-col justify-between bg-white/[0.02] shadow-lg">
-                        
-                        {/* ENCABEZADO (Categoría y Hora/Live) */}
-                        <div className="flex justify-between items-center mb-6">
-                          <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${categoriaInfo.color}`}>
-                            {categoriaInfo.icono} {categoriaInfo.nombre}
-                          </span>
-
-                          {isLive ? (
-                            <div className="flex items-center gap-1.5 bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-full text-[9px] font-black animate-pulse">
-                              <Zap className="w-3 h-3 fill-current" /> LIVE
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-1 text-slate-400 text-[11px] font-bold">
-                              <Clock className="w-3 h-3" /> {time}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* CUERPO (Logo a la izquierda, Texto a la derecha) */}
-                        <div className="flex flex-col gap-4 mb-8 flex-1 justify-center cursor-pointer" onClick={() => setExpandido(isOpen ? null : index)}>
-                          <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl p-2 flex-shrink-0 flex items-center justify-center shadow-inner">
-                              <img src={imageUrl} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`; }}/>
-                            </div>
-                            
-                            <div className="flex-1 overflow-hidden">
-                               <h3 className="text-base md:text-lg font-bold text-white leading-tight line-clamp-3" title={rawName}>
-                                 {rawName}
-                               </h3>
-                               <div className="flex items-center gap-2 mt-2">
-                                 <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
-                                   <Tv className="w-3 h-3 text-slate-400" />
-                                   <span className="text-[9px] font-black text-slate-400 tracking-wider uppercase">Transmisión HD</span>
-                                 </div>
-                               </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* OPCIONES DE CANALES (Desplegable limpio) */}
-                        {isOpen ? (
-                          <div className="bg-[#0f172a] p-3 border border-white/10 rounded-2xl space-y-2 mb-4 animate-in slide-in-from-top-2">
-                            {embeds.length > 0 ? (
-                              embeds.map((emb: any, idx: number) => {
-                                const nombreCanal = limpiarCanal(emb.attributes.embed_name);
-                                return (
-                                  <a 
-                                    key={idx}
-                                    href={generarEnlaceVer(emb, rawName)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-white font-bold text-sm hover:bg-primary/20 transition-all cursor-pointer"
-                                  >
-                                    <PlayCircle className="text-[#60a5fa] w-4 h-4 mr-2 flex-shrink-0" />
-                                    <span className="truncate">{nombreCanal}</span>
-                                  </a>
-                                )
-                              })
-                            ) : (
-                              <p className="text-slate-500 text-xs p-2 text-center">Sin canales asignados aún.</p>
-                            )}
-                          </div>
-                        ) : null}
-
-                        {/* BOTÓN PRINCIPAL */}
-                        <Button 
-                          onClick={() => setExpandido(isOpen ? null : index)}
-                          className={`w-full rounded-2xl py-6 font-black text-xs tracking-widest uppercase transition-all z-10 ${isLive ? "bg-gradient-to-r from-primary to-[#00d4ff] text-white hover:scale-[1.02] shadow-lg shadow-primary/20" : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:border-primary/50"}`} 
-                        >
-                          <Play className="mr-2 h-4 w-4 fill-current" /> {isOpen ? 'Ocultar Opciones' : 'Ver Transmisión'}
-                        </Button>
-                      </article>
-                    )
-                  })}
-                </div>
-              </TabsContent>
-            )
-          })}
-        </Tabs>
-      ) : (
-        <div className="text-center py-20 glass rounded-[2rem] border border-white/5">
-          <Activity className="w-16 h-16 text-slate-600 mx-auto mb-4 opacity-20 animate-pulse" />
-          <h3 className="text-xl font-bold text-white mb-2">No hay eventos programados</h3>
-          <p className="text-slate-400">Vuelve más tarde para ver la mejor cartelera deportiva.</p>
-        </div>
-      )}
+      </section>
     </div>
   )
 }
