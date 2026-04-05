@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button"
 // 🚨 ENLACES REALES CONECTADOS AL ECOSISTEMA 🚨
 const navLinks = [
   { href: "https://oleadatvpremium.com/SportLive/index.html", label: "Inicio", icon: Zap },
-  { href: "https://oleadatvpremium.com/SportLive/agenda.html", label: "Agenda Deportiva", icon: Calendar },
-  { href: "https://oleadatvpremium.com/SportLive/television.html", label: "Canales TV", icon: Tv },
-  { href: "https://oleadatvpremium.com/SportLive/peliculas.html", label: "Cine", icon: Film },
+  { href: "/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
+  { href: "/canales-tv", label: "Canales TV", icon: Tv },
+  { href: "/cine", label: "Cine", icon: Film },
   { href: "https://sportlive-one.vercel.app/blog", label: "Blog", icon: FileText },
 ]
 
