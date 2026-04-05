@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Play, Trophy, Clock, Activity, ChevronRight, Zap, CalendarDays } from "lucide-react"
+import { Play, Trophy, Clock, Activity, ChevronRight, Zap, CalendarDays, Tv } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // 1. Tipado
@@ -20,22 +20,19 @@ interface ApiEvent {
   }
 }
 
-// 2. FUNCIÓN LIMPIADORA: Quita basura HTML y palabras de idiomas (ESPAÑOL, INGLÉS, etc.)
+// 2. FUNCIÓN LIMPIADORA: Quita basura HTML y palabras de idiomas
 function textoPuro(html: string) {
   if (!html) return "Evento Deportivo";
   let limpio = html.replace(/<[^>]*>?/gm, '').trim();
-  // Borramos corchetes [ESPAÑOL] y listas de idiomas perdidas
   limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN)/gi, '').trim();
-  // Limpiamos comas o guiones que queden colgando al final
   return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
 }
 
-// 3. Cerebro de Categorías (CORREGIDO: Busca deportes específicos antes que el Fútbol)
+// 3. Cerebro de Categorías
 function obtenerDeporte(evento: ApiEvent): { nombre: string, icono: string, color: string } {
   const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
   const sp = (evento.attributes.sport_name || "").toUpperCase();
 
-  // Primer filtro: Deportes específicos
   if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
   if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO") || desc.includes("FIBA")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
   if (sp.includes("TENNIS") || desc.includes("TENIS") || desc.includes("ATP") || desc.includes("WTA")) return { nombre: "TENIS", icono: "🎾", color: "text-lime-400 bg-lime-400/10 border-lime-400/20" };
@@ -45,13 +42,12 @@ function obtenerDeporte(evento: ApiEvent): { nombre: string, icono: string, colo
   if (desc.includes("NFL") || desc.includes("SUPER BOWL")) return { nombre: "FUTBOL AMER.", icono: "🏈", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" };
   if (sp.includes("VOLLEY") || desc.includes("VOLEY") || desc.includes("VOLEIBOL")) return { nombre: "VOLEIBOL", icono: "🏐", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20" };
 
-  // Segundo filtro: Si tiene la palabra Fútbol, o el clásico " VS " o " X "
   if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
 
   return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
 }
 
-// 4. Consumo de APIs y Lógica de "En Vivo"
+// 4. Consumo de APIs y Lógica de "En Vivo" (Ventana 2h)
 async function getAgendaData() {
   const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
   const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
@@ -60,7 +56,7 @@ async function getAgendaData() {
 
   try {
     const fetchOptions = { 
-      next: { revalidate: 120 }, // Actualiza la info cada 2 minutos en el servidor
+      next: { revalidate: 120 }, 
       headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' }
     };
 
@@ -72,12 +68,8 @@ async function getAgendaData() {
     ]);
 
     let todos = [...(res1.data || []), ...(res2.data || []), ...(res3.data || []), ...(res4.data || [])];
-
-    // Ocultar la categoría "Varios" de la página principal
     todos = todos.filter(p => obtenerDeporte(p).nombre !== "VARIOS");
 
-    // LÓGICA DE TIEMPO: Filtrar ventana de 2 horas
-    // Usamos la hora de Colombia/Bogotá (-5) como referencia base para la API
     const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: false });
     const timeParts = formatter.formatToParts(new Date());
     const currentHour = parseInt(timeParts.find(p => p.type === 'hour')?.value || "0");
@@ -88,30 +80,24 @@ async function getAgendaData() {
       const timeStr = (evento.attributes.diary_hour || evento.attributes.diary_time || "00:00");
       const [h, m] = timeStr.split(':').map(Number);
       const eventTimeInMinutes = (h * 60) + m;
-      
-      // ¿Está en la ventana de las últimas 2 horas (empezado) o en las próximas 2 horas?
       const diff = eventTimeInMinutes - currentTimeInMinutes;
-      // -120 (empezó hace 2h), +120 (empieza en 2h)
       return diff >= -120 && diff <= 120;
     }).map(evento => {
       const timeStr = (evento.attributes.diary_hour || evento.attributes.diary_time || "00:00");
       const [h, m] = timeStr.split(':').map(Number);
       const eventTimeInMinutes = (h * 60) + m;
-      // Marcamos como LIVE si ya empezó o está a punto de empezar (hasta hace 110 min)
       const diff = eventTimeInMinutes - currentTimeInMinutes;
       const isLive = diff <= 5 && diff >= -110; 
       
       return { ...evento, isLive };
     });
 
-    // Ordenar los más próximos a la hora actual
     eventosFiltradosPorTiempo.sort((a, b) => {
         const hA = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
         const hB = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
         return hA.localeCompare(hB);
     });
 
-    // Devolver un máximo de 10 eventos
     return eventosFiltradosPorTiempo.slice(0, 10);
   } catch (error) {
     return [];
@@ -122,7 +108,6 @@ export async function SportsSection() {
   const matches = await getAgendaData();
   const IMG_BASE = "https://cdn.pltvhd.com";
 
-  // Formatear la fecha actual para la cabecera
   const fechaActual = new Intl.DateTimeFormat('es-ES', { 
     weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Bogota' 
   }).format(new Date());
@@ -151,21 +136,8 @@ export async function SportsSection() {
               const isLive = match.isLive; 
               const categoriaInfo = obtenerDeporte(match);
 
-              // 🚨 LIMPIEZA TOTAL DEL NOMBRE DEL EQUIPO 🚨
+              // 🚨 Texto Completo y Limpio 🚨
               const rawName = textoPuro(attr.diary_description || "Evento");
-              
-              let homeTeam = rawName;
-              let awayTeam = "Transmisión HD";
-              
-              if (rawName.toLowerCase().includes(" vs ")) {
-                const parts = rawName.split(/ vs /i);
-                homeTeam = parts[0].trim(); 
-                awayTeam = parts[1] ? parts[1].trim() : "Transmisión";
-              } else if (rawName.toLowerCase().includes(" x ")) {
-                const parts = rawName.split(/ x /i);
-                homeTeam = parts[0].trim(); 
-                awayTeam = parts[1] ? parts[1].trim() : "Transmisión";
-              }
 
               // Imágenes
               let imageUrl = attr.country?.data?.attributes?.image?.data?.attributes?.url || attr.country?.data?.attributes?.country_image;
@@ -173,12 +145,13 @@ export async function SportsSection() {
               else if (!imageUrl.startsWith('http')) imageUrl = `${IMG_BASE}${imageUrl}`;
 
               return (
-                <div key={index} className="min-w-[320px] md:min-w-[340px] snap-start">
+                <div key={index} className="min-w-[320px] md:min-w-[350px] snap-start">
                   <h2 className="sr-only">Ver partido {rawName} en vivo gratis</h2>
                   
                   <article className="glass border border-white/5 rounded-[2rem] p-6 hover:border-primary/40 transition-all group relative h-full flex flex-col justify-between bg-white/[0.02]">
-                    <div className="flex justify-between items-center mb-6">
-                      
+                    
+                    {/* ENCABEZADO (Categoría y Hora) */}
+                    <div className="flex justify-between items-start mb-6">
                       <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${categoriaInfo.color}`}>
                         {categoriaInfo.icono} {categoriaInfo.nombre}
                       </span>
@@ -188,34 +161,29 @@ export async function SportsSection() {
                           <Zap className="w-3 h-3 fill-current" /> LIVE
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1 text-slate-500 text-[10px] font-bold">
+                        <div className="flex items-center gap-1 text-slate-400 text-[11px] font-bold">
                           <Clock className="w-3 h-3" /> {time}
                         </div>
                       )}
                     </div>
 
-                    <div className="space-y-4 mb-8">
-                      {/* FILA 1: EQUIPO LOCAL O NOMBRE PRINCIPAL */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 overflow-hidden pr-2">
-                          <div className="w-10 h-10 bg-white rounded-full p-1.5 flex-shrink-0 flex items-center justify-center border border-white/20">
-                            <img src={imageUrl} alt="" className="w-full h-full object-contain" />
-                          </div>
-                          <span className="text-base font-bold text-white line-clamp-2 leading-tight" title={homeTeam}>
-                            {homeTeam}
-                          </span>
+                    {/* CUERPO (Logo a la izquierda, Texto a la derecha) */}
+                    <div className="flex flex-col gap-4 mb-8 flex-1 justify-center">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl p-2 flex-shrink-0 flex items-center justify-center shadow-inner">
+                          <img src={imageUrl} alt="" className="w-full h-full object-contain" />
                         </div>
-                      </div>
-
-                      {/* FILA 2: EQUIPO VISITANTE O "TV" */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 overflow-hidden pr-2">
-                          <div className="w-10 h-10 bg-white/5 rounded-full flex-shrink-0 flex items-center justify-center border border-white/5">
-                            <span className="text-[12px] font-black text-slate-400">TV</span>
-                          </div>
-                          <span className="text-sm font-medium text-slate-300 line-clamp-2 leading-tight" title={awayTeam}>
-                            {awayTeam}
-                          </span>
+                        
+                        <div className="flex-1 overflow-hidden">
+                           <h3 className="text-base md:text-lg font-bold text-white leading-tight line-clamp-3" title={rawName}>
+                             {rawName}
+                           </h3>
+                           <div className="flex items-center gap-2 mt-2">
+                             <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2 py-1 rounded-md">
+                               <Tv className="w-3 h-3 text-slate-400" />
+                               <span className="text-[9px] font-black text-slate-400 tracking-wider uppercase">Transmisión HD</span>
+                             </div>
+                           </div>
                         </div>
                       </div>
                     </div>
