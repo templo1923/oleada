@@ -29,11 +29,11 @@ const features = [
 
 export function CTASection() {
   return (
-    <section className="py-16 lg:py-24 relative overflow-hidden">
+    <section className="py-16 lg:py-24 relative overflow-hidden w-full max-w-[100vw]">
       {/* Background */}
       <div className="absolute inset-0 hero-gradient" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[200px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@ export function CTASection() {
                 <span className="text-sm font-black text-primary uppercase tracking-wider">Acceso Inmediato</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white text-balance leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
                 No te quedes fuera del
                 <span className="block bg-gradient-to-r from-primary to-[#00d4ff] bg-clip-text text-transparent mt-2">Juego Hoy Mismo</span>
               </h2>
@@ -77,7 +77,7 @@ export function CTASection() {
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black text-base px-8 py-6 rounded-2xl shine glow-blue hover:opacity-90 hover:scale-105 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+                  className="bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black text-base px-8 py-6 rounded-2xl hover:scale-105 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
                   asChild
                 >
                   <Link href="https://oleadatvpremium.com/SportLive/index.html" target="_blank" rel="noopener noreferrer">
