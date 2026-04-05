@@ -58,7 +58,7 @@ export function HeroSection() {
                 className="border-white/20 bg-white/5 text-white hover:bg-white/10 font-bold text-base px-8 py-6 rounded-2xl transition-all"
                 asChild
               >
-                <Link href="https://oleadatvpremium.com/SportLive/agenda.html" target="_blank" rel="noopener noreferrer">
+                <Link href="/agenda-deportiva">
                   <Calendar className="mr-2 h-5 w-5" />
                   Ver Partidos de Hoy
                 </Link>
