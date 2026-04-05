@@ -172,11 +172,11 @@ export async function SportsSection() {
                     </div>
 
                     <Button className={`w-full rounded-2xl py-5 font-black text-[10px] tracking-widest uppercase transition-all ${isLive ? "bg-primary text-white hover:scale-[1.02] shadow-lg shadow-primary/20" : "bg-white/5 text-slate-300 hover:bg-white/10"}`} asChild>
-                      <Link href="https://oleadatvpremium.com/SportLive/agenda.html" target="_blank" rel="noopener noreferrer">
+                      <Link href="/agenda-deportiva">
                         <Play className="mr-2 h-3 w-3 fill-current" /> Ver Transmisión Libre
                       </Link>
                     </Button>
-                    <Link href="https://oleadatvpremium.com/SportLive/agenda.html" target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-0 rounded-[2rem]">
+                    <Link href="/agenda-deportiva" className="absolute inset-0 z-0 rounded-[2rem]">
                       <span className="sr-only">Abrir {rawName}</span>
                     </Link>
                   </article>
@@ -184,7 +184,7 @@ export async function SportsSection() {
               )
             })}
             
-            <Link href="https://oleadatvpremium.com/SportLive/agenda.html" target="_blank" rel="noopener noreferrer" className="min-w-[180px] flex flex-col items-center justify-center glass border border-dashed border-white/10 rounded-[2rem] hover:bg-white/5 hover:border-primary/50 transition-all snap-start group">
+            <Link href="/agenda-deportiva" className="min-w-[180px] flex flex-col items-center justify-center glass border border-dashed border-white/10 rounded-[2rem] hover:bg-white/5 hover:border-primary/50 transition-all snap-start group">
                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                    <ChevronRight className="w-6 h-6 text-primary" />
                </div>
