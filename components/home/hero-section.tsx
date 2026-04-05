@@ -87,7 +87,7 @@ export function HeroSection() {
                 icon: Calendar,
                 title: "Agenda Deportiva",
                 desc: "Partidos del dia",
-                href: "https://oleadatvpremium.com/SportLive/agenda.html",
+                https://oleadatvpremium.com/SportLive/agenda.html
                 gradient: "from-primary/20 to-primary/5",
                 iconColor: "text-primary",
               },
