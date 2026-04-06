@@ -21,37 +21,36 @@ function obtenerDeporte(evento: any): { nombre: string, icono: string, color: st
   const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
   const sp = (evento.attributes.sport_name || "").toUpperCase();
 
-  // 🚨 PRIORIDAD 1: CRÍQUET (Antes que todo)
+  // 1. DEPORTES MUY ESPECÍFICOS PRIMERO
   if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) {
     return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
   }
 
-  // 🚨 PRIORIDAD 2: MOTOR (Específico de carreras)
   if (sp.includes("MOTOR") || desc.includes("F1") || desc.includes("MOTOGP") || desc.includes("NASCAR") || desc.includes("PRIX") || desc.includes("AUTOMOVILISMO")) {
-    // Si el nombre tiene "Motor Lublin" (equipo de fútbol), lo ignoramos aquí para que caiga en fútbol
     if (!desc.includes("LUBLIN")) {
       return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
     }
   }
-
-  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("FOOTBALL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
-  
   
   if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO") || desc.includes("FIBA") || desc.includes("EUROLEAGUE")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
   if (sp.includes("TENNIS") || desc.includes("TENIS") || desc.includes("ATP") || desc.includes("WTA") || desc.includes("WIMBLEDON")) return { nombre: "TENIS", icono: "🎾", color: "text-lime-400 bg-lime-400/10 border-lime-400/20" };
-  
   if (desc.includes("UFC") || desc.includes("BOXING") || desc.includes("MMA") || desc.includes("WWE") || desc.includes("BOXEO") || desc.includes("FIGHT")) return { nombre: "COMBATE", icono: "🥊", color: "text-red-600 bg-red-600/10 border-red-600/20" };
   if (desc.includes("MLB") || desc.includes("BÉISBOL") || desc.includes("BASEBALL") || desc.includes("BEISBOL")) return { nombre: "BÉISBOL", icono: "⚾", color: "text-blue-400 bg-blue-400/10 border-blue-400/20" };
   if (desc.includes("NFL") || desc.includes("SUPER BOWL") || desc.includes("AMERICAN FOOTBALL") || desc.includes("AUSTRALIAN") || desc.includes("AFL")) return { nombre: "FUTBOL AMER.", icono: "🏈", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" };
   if (sp.includes("VOLLEY") || desc.includes("VOLEY") || desc.includes("VOLEIBOL")) return { nombre: "VOLEIBOL", icono: "🏐", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20" };
   if (desc.includes("NHL") || desc.includes("HOCKEY")) return { nombre: "HOCKEY", icono: "🏒", color: "text-teal-400 bg-teal-400/10 border-teal-400/20" };
-  if (desc.includes("HOCKEY") || desc.includes("HOCKEY")) return { nombre: "HOCKEY", icono: "🏒", color: "text-teal-400 bg-teal-400/10 border-teal-400/20" };
   if (desc.includes("BILLAR") || desc.includes("SNOOKER")) return { nombre: "BILLAR", icono: "🎱", color: "text-purple-400 bg-purple-400/10 border-purple-400/20" };
   if (desc.includes("DARTS") || desc.includes("DARDOS")) return { nombre: "DARDOS", icono: "🎯", color: "text-rose-400 bg-rose-400/10 border-rose-400/20" };
   if (desc.includes("CYCLING") || desc.includes("CICLISMO") || desc.includes("TOUR DE")) return { nombre: "CICLISMO", icono: "🚴", color: "text-sky-400 bg-sky-400/10 border-sky-400/20" };
   if (desc.includes("GOLF") || desc.includes("PGA")) return { nombre: "GOLF", icono: "⛳", color: "text-emerald-600 bg-emerald-600/10 border-emerald-600/20" };
   if (desc.includes("RUGBY") || desc.includes("SIX NATIONS")) return { nombre: "RUGBY", icono: "🏉", color: "text-amber-800 bg-amber-800/10 border-amber-800/20" };
 
+  // 🚨 PRIORIDAD FINAL: FÚTBOL (Debe ser la penúltima regla antes de VARIOS)
+  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("FOOTBALL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) {
+    return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
+  }
+
+  // Si nada cuadra, se va a Varios
   return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
 }
 
