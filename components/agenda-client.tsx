@@ -158,9 +158,9 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
                         {/* CUERPO (Logo a la izquierda, Texto a la derecha) */}
                         <div className="flex flex-col gap-4 mb-8 flex-1 justify-center cursor-pointer" onClick={() => setExpandido(isOpen ? null : index)}>
                           <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl p-2 flex-shrink-0 flex items-center justify-center shadow-inner">
-                              <img src={imageUrl} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`; }}/>
-                            </div>
+      <div className="w-14 h-14 bg-white rounded-2xl p-1.5 flex-shrink-0 flex items-center justify-center shadow-md">
+  <img src={imageUrl} alt="" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).src = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`; }}/>
+</div>
                             
                             <div className="flex-1 overflow-hidden">
                                <h3 className="text-base md:text-lg font-bold text-white leading-tight line-clamp-3" title={rawName}>

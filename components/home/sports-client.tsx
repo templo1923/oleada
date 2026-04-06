@@ -103,9 +103,9 @@ export function SportsClient({ matches, IMG_BASE }: { matches: any[], IMG_BASE: 
 
                       <div className="flex flex-col gap-4 mb-8 flex-1 justify-center">
                         <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/5 border border-white/10 rounded-2xl p-2 flex-shrink-0 flex items-center justify-center shadow-inner">
-                            <img src={imageUrl} alt="" className="w-full h-full object-contain" />
-                          </div>
+<div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-2xl p-1.5 flex-shrink-0 flex items-center justify-center shadow-md">
+  <img src={imageUrl} alt="" className="w-full h-full object-contain" />
+</div>
                           <div className="flex-1 overflow-hidden">
                              <h3 className="text-sm sm:text-base md:text-lg font-bold text-white leading-tight line-clamp-3 uppercase" title={rawName}>{rawName}</h3>
                              <div className="flex items-center gap-1.5 mt-2 bg-white/5 w-fit px-2 py-0.5 rounded border border-white/5">
