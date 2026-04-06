@@ -3,6 +3,8 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { AgendaClient } from "@/components/agenda-client"
 import { Globe } from "lucide-react"
+// 🚨 1. IMPORTAMOS EL COMPONENTE DE EVENTOS DESTACADOS 🚨
+import { FeaturedEvents } from "@/components/featured-events"
 
 export const metadata: Metadata = {
   title: 'Agenda Deportiva Hoy | Partidos en Vivo Gratis | SportLive',
@@ -114,6 +116,9 @@ export default async function AgendaPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <FeaturedEvents />
+          
           <AgendaClient matches={matches} categoriasActivas={categoriasActivas} eventosPorCategoria={eventosPorCategoria} IMG_BASE={IMG_BASE} />
         </section>
       </main>
