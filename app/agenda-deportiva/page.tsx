@@ -18,18 +18,21 @@ function textoPuro(html: string) {
 }
 
 function obtenerDeporte(evento: any): { nombre: string, icono: string, color: string } {
-  const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
-  const sp = (evento.attributes.sport_name || "").toUpperCase();
+  const desc = textoPuro(evento.attributes?.diary_description || "").toUpperCase();
+  const sp = (evento.attributes?.sport_name || "").toUpperCase();
 
-  // 1. DEPORTES MUY ESPECÍFICOS PRIMERO
+  // 🚨 1. EXCEPCIONES VIP (Equipos de fútbol con nombres confusos)
+  if (desc.includes("MOTOR LUBLIN") || desc.includes("RADOMIAK")) {
+    return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
+  }
+
+  // 2. DEPORTES MUY ESPECÍFICOS
   if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) {
     return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
   }
 
   if (sp.includes("MOTOR") || desc.includes("F1") || desc.includes("MOTOGP") || desc.includes("NASCAR") || desc.includes("PRIX") || desc.includes("AUTOMOVILISMO")) {
-    if (!desc.includes("LUBLIN")) {
-      return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
-    }
+    return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
   }
   
   if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO") || desc.includes("FIBA") || desc.includes("EUROLEAGUE")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
@@ -45,12 +48,11 @@ function obtenerDeporte(evento: any): { nombre: string, icono: string, color: st
   if (desc.includes("GOLF") || desc.includes("PGA")) return { nombre: "GOLF", icono: "⛳", color: "text-emerald-600 bg-emerald-600/10 border-emerald-600/20" };
   if (desc.includes("RUGBY") || desc.includes("SIX NATIONS")) return { nombre: "RUGBY", icono: "🏉", color: "text-amber-800 bg-amber-800/10 border-amber-800/20" };
 
-  // 🚨 PRIORIDAD FINAL: FÚTBOL (Debe ser la penúltima regla antes de VARIOS)
+  // 3. PRIORIDAD FINAL: FÚTBOL
   if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("FOOTBALL") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes(" VS ") || desc.includes(" X ")) {
     return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
   }
 
-  // Si nada cuadra, se va a Varios
   return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
 }
 
