@@ -1,69 +1,87 @@
-"use client"
-
-import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
+import { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Play, ShieldCheck, Tv, ArrowLeft } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { AgendaClient } from "@/components/agenda-client"
+import { CalendarDays, Globe } from "lucide-react"
 
-export default function PartidoPage({ params }: { params: { slug: string } }) {
-  const searchParams = useSearchParams()
-  const r = searchParams.get('r')
-  const n = searchParams.get('n')
+export const metadata: Metadata = {
+  title: 'Agenda Deportiva Hoy | SportLive',
+  description: 'Fútbol, Baloncesto, Tenis y más en vivo.',
+}
 
-  // Descodificamos el nombre para mostrarlo bonito, o si falla, usamos el slug
-  const nombrePartido = n ? decodeURIComponent(n) : params.slug.replace(/-/g, ' ').toUpperCase();
+function textoPuro(html: string) {
+  if (!html) return "";
+  let limpio = html.replace(/<[^>]*>?/gm, '').trim();
+  limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN|TURCO|HÚNGARO|ALEMÁN|GRIEGO|ITALIANO|SUECO)/gi, '').trim();
+  limpio = limpio.replace(/\(Señal Activa.*?\)/gi, '').trim();
+  return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
+}
+
+function obtenerDeporte(evento: any): { nombre: string, icono: string, color: string } {
+  const desc = textoPuro(evento.attributes.diary_description).toUpperCase();
+  const sp = (evento.attributes.sport_name || "").toUpperCase();
+
+  // PRIORIDAD: FÚTBOL
+  if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("SOCCER") || desc.includes("FÚTBOL") || desc.includes("FOOTBALL") || desc.includes("CHAMPIONS") || desc.includes(" VS ") || desc.includes(" X ")) return { nombre: "FÚTBOL", icono: "⚽", color: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" };
   
-  // Aquí está el link real que lleva a tu WebApp a monetizar
-  const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?r=${r}&n=${n}`;
+  if (sp.includes("CRICKET") || desc.includes("CRÍQUET") || desc.includes("CRICKET")) return { nombre: "CRÍQUET", icono: "🏏", color: "text-green-600 bg-green-600/10 border-green-600/20" };
+  if (sp.includes("BASKET") || desc.includes("NBA") || desc.includes("BALONCESTO")) return { nombre: "BASKET", icono: "🏀", color: "text-orange-400 bg-orange-400/10 border-orange-400/20" };
+  if (sp.includes("TENNIS") || desc.includes("TENIS")) return { nombre: "TENIS", icono: "🎾", color: "text-lime-400 bg-lime-400/10 border-lime-400/20" };
+  if (sp.includes("MOTOR") || desc.includes("F1") || desc.includes("MOTOGP")) return { nombre: "MOTOR", icono: "🏎️", color: "text-red-500 bg-red-500/10 border-red-500/20" };
+  if (desc.includes("UFC") || desc.includes("MMA") || desc.includes("BOXEO")) return { nombre: "COMBATE", icono: "🥊", color: "text-red-600 bg-red-600/10 border-red-600/20" };
+
+  return { nombre: "VARIOS", icono: "🏆", color: "text-slate-400 bg-slate-400/10 border-slate-400/20" };
+}
+
+async function getAgendaData() {
+  const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
+  try {
+    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } };
+    const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
+    let todos = results.flatMap(r => r.data || []);
+    todos.sort((a, b) => (a.attributes.diary_hour || "00:00").localeCompare(b.attributes.diary_hour || "00:00"));
+    return todos.map(t => ({...t, categoriaAsignada: obtenerDeporte(t)}));
+  } catch (error) { return []; }
+}
+
+export default async function AgendaPage() {
+  const matches = await getAgendaData();
+  const IMG_BASE = "https://cdn.pltvhd.com";
+  const fechaActual = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America' }).format(new Date());
+
+  const eventosPorCategoria: Record<string, any[]> = { "TODOS": matches };
+  matches.forEach(match => {
+    const deporte = match.categoriaAsignada.nombre;
+    if (!eventosPorCategoria[deporte]) eventosPorCategoria[deporte] = [];
+    eventosPorCategoria[deporte].push(match);
+  });
+
+  const categoriasActivas = Object.keys(eventosPorCategoria).sort();
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-hidden flex flex-col w-full">
+    <div className="relative min-h-screen bg-background flex flex-col w-full">
       <Navbar />
-      
-      <main className="pt-28 pb-12 flex-1 w-full flex flex-col items-center justify-center">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          
-          <Link href="/agenda-deportiva" className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Volver a la Agenda
-          </Link>
-
-          <div className="inline-flex items-center gap-2 mb-4 text-emerald-400 font-bold text-xs uppercase tracking-widest bg-emerald-400/10 px-3 py-1 rounded-md border border-emerald-400/20">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Transmisión Disponible
-          </div>
-
-          {/* 🚨 ESTE H1 ES EL QUE LEE GOOGLE 🚨 */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight text-balance">
-            Ver <span className="text-primary">{nombrePartido}</span> en Vivo y Gratis
-          </h1>
-          
-          <p className="text-slate-300 text-lg mb-10 max-w-xl mx-auto">
-            Estás a un solo clic de disfrutar este evento en calidad Full HD. Sin cortes, sin registros y 100% seguro.
-          </p>
-
-          <div className="glass border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
-            
-            <div className="relative z-10 flex flex-col items-center">
-              <Tv className="w-16 h-16 text-slate-500 mb-6 opacity-50" />
-              
-              <Button size="lg" className="w-full sm:w-auto text-lg px-12 py-8 rounded-2xl font-black uppercase tracking-wider bg-gradient-to-r from-primary to-[#00d4ff] hover:scale-105 shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all" asChild>
-                <Link href={linkReproductor} target="_blank" rel="noopener noreferrer">
-                  <Play className="w-6 h-6 mr-3 fill-current" /> Reproducir Partido Ahora
-                </Link>
-              </Button>
-              
-              <div className="flex items-center gap-2 mt-6 text-slate-400 text-sm font-medium">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" /> Transmisión Segura y Verificada
-              </div>
+      <main className="pt-24 pb-12 flex-1 w-full">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-12 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 border border-primary/30">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold text-white uppercase tracking-wider">Hoy: {fechaActual}</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 border border-white/10 text-slate-400">
+               <Globe className="w-3 h-3 sm:w-4 h-4" />
+               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Bogotá (GMT-5)</span>
             </div>
           </div>
-
-        </div>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4">Agenda <span className="text-primary">Deportiva</span></h1>
+        </section>
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AgendaClient matches={matches} categoriasActivas={categoriasActivas} eventosPorCategoria={eventosPorCategoria} IMG_BASE={IMG_BASE} />
+        </section>
       </main>
-
       <Footer />
     </div>
   )
