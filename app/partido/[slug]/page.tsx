@@ -5,9 +5,17 @@ import { Footer } from "@/components/footer"
 import { Play, ShieldCheck, Tv, ArrowLeft, MonitorPlay, WifiHigh, Info, CheckCircle2, Search } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
-// 🚨 1. LA MAGIA SEO: METADATOS DINÁMICOS PARA GOOGLE 🚨
-export async function generateMetadata({ params, searchParams }: { params: { slug: string }, searchParams: { n?: string } }): Promise<Metadata> {
-  const nombrePartido = searchParams?.n ? decodeURIComponent(searchParams.n) : params.slug.replace(/-/g, ' ').toUpperCase();
+// 🚨 ESTA LÍNEA ES MAGIA: Obliga a Vercel a procesar la página en vivo y evita el Error 500 🚨
+export const dynamic = 'force-dynamic';
+
+// 1. METADATOS DINÁMICOS PARA GOOGLE (SEO)
+export async function generateMetadata(props: any): Promise<Metadata> {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+  
+  // Next.js ya decodifica el texto automáticamente, evitamos el error
+  const rawN = searchParams?.n || '';
+  const nombrePartido = rawN ? String(rawN) : params?.slug?.replace(/-/g, ' ').toUpperCase() || 'EVENTO';
   
   return {
     title: `Ver ${nombrePartido} EN VIVO HD | SportLive`,
@@ -16,13 +24,16 @@ export async function generateMetadata({ params, searchParams }: { params: { slu
   }
 }
 
-// 2. COMPONENTE PRINCIPAL PURAMENTE DE SERVIDOR (Cero errores)
-export default function PartidoPage({ params, searchParams }: { params: { slug: string }, searchParams: { r?: string, n?: string } }) {
-  // Atrapamos los parámetros directamente sin usar hooks de cliente
+// 2. COMPONENTE DE SERVIDOR BLINDADO
+export default async function PartidoPage(props: any) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+
   const r = searchParams?.r || '';
   const n = searchParams?.n || '';
   
-  const nombrePartido = n ? decodeURIComponent(n) : params.slug.replace(/-/g, ' ').toUpperCase();
+  // Extraemos el nombre seguro sin romper el servidor
+  const nombrePartido = n ? String(n) : params?.slug?.replace(/-/g, ' ').toUpperCase() || 'EVENTO';
   const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?r=${r}&n=${n}`;
 
   return (
