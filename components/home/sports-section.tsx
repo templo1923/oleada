@@ -1,5 +1,6 @@
 import { Trophy, CalendarDays, Globe } from "lucide-react"
 import { SportsClient } from "./sports-client" // 🚨 IMPORTAMOS LAS PESTAÑAS 🚨
+import { FeaturedEvents } from "../featured-events"
 
 // 1. Limpieza de nombres
 function textoPuro(html: string) {
@@ -109,6 +110,9 @@ export async function SportsSection() {
             </h2>
           </div>
         </div>
+        
+        {/* 🚨 AQUÍ LLAMAMOS A LOS EVENTOS DESTACADOS 🚨 */}
+        <FeaturedEvents />
 
         {/* 🚨 LLAMAMOS AL NUEVO CLIENTE INTERACTIVO 🚨 */}
         <SportsClient matches={matches} IMG_BASE={IMG_BASE} />
