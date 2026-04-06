@@ -47,7 +47,7 @@ async function getAgendaData() {
 export default async function AgendaPage() {
   const matches = await getAgendaData();
   const IMG_BASE = "https://cdn.pltvhd.com";
-  const fechaActual = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America' }).format(new Date());
+  const fechaActual = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'America/Bogota' }).format(new Date());
 
   const eventosPorCategoria: Record<string, any[]> = { "TODOS": matches };
   matches.forEach(match => {
@@ -73,7 +73,7 @@ export default async function AgendaPage() {
             </div>
             <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 border border-white/10 text-slate-400">
                <Globe className="w-3 h-3 sm:w-4 h-4" />
-               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Bogotá (GMT-5)</span>
+               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">( UTC/GMT-5)</span>
             </div>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4">Agenda <span className="text-primary">Deportiva</span></h1>
