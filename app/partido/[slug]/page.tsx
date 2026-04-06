@@ -6,9 +6,8 @@ import { Play, ShieldCheck, Tv, ArrowLeft, MonitorPlay, WifiHigh, Info, CheckCir
 import { Button } from "@/components/ui/button"
 
 // 🚨 1. LA MAGIA SEO: METADATOS DINÁMICOS PARA GOOGLE 🚨
-// Esto cambia el título de la pestaña y la descripción en los resultados de búsqueda automáticamente.
 export async function generateMetadata({ params, searchParams }: { params: { slug: string }, searchParams: { n?: string } }): Promise<Metadata> {
-  const nombrePartido = searchParams.n ? decodeURIComponent(searchParams.n) : params.slug.replace(/-/g, ' ').toUpperCase();
+  const nombrePartido = searchParams?.n ? decodeURIComponent(searchParams.n) : params.slug.replace(/-/g, ' ').toUpperCase();
   
   return {
     title: `Ver ${nombrePartido} EN VIVO HD | SportLive`,
@@ -17,10 +16,12 @@ export async function generateMetadata({ params, searchParams }: { params: { slu
   }
 }
 
-// 2. COMPONENTE PRINCIPAL (Renderizado en el Servidor para Máximo Rendimiento)
+// 2. COMPONENTE PRINCIPAL PURAMENTE DE SERVIDOR (Cero errores)
 export default function PartidoPage({ params, searchParams }: { params: { slug: string }, searchParams: { r?: string, n?: string } }) {
-  const r = searchParams.r || '';
-  const n = searchParams.n || '';
+  // Atrapamos los parámetros directamente sin usar hooks de cliente
+  const r = searchParams?.r || '';
+  const n = searchParams?.n || '';
+  
   const nombrePartido = n ? decodeURIComponent(n) : params.slug.replace(/-/g, ' ').toUpperCase();
   const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?r=${r}&n=${n}`;
 
