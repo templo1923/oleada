@@ -24,6 +24,7 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
   const [expandido, setExpandido] = useState<number | null>(null)
 
   // Enlace para ver el partido
+// 🚨 GENERADOR DE URLS SEO (El Santo Grial) 🚨
   const generarEnlaceVer = (emb: any, rawName: string) => {
     const rawUrl = emb.attributes.embed_iframe;
     let rFinal = "";
@@ -37,8 +38,12 @@ export function AgendaClient({ matches, categoriasActivas, eventosPorCategoria, 
         rFinal = rawUrl;
     }
     
+    // 1. Creamos el "slug" para Google (ej: real-madrid-vs-barcelona)
+    const slug = rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const tituloCodificado = encodeURIComponent(rawName).replace(/'/g, "%27");
-    return `https://oleadatvpremium.com/SportLive/ver.html?r=${rFinal}&n=${tituloCodificado}`;
+    
+    // 2. Mandamos al usuario a nuestra PÁGINA INTERNA DE SEO
+    return `/partido/${slug}?r=${rFinal}&n=${tituloCodificado}`;
   }
 
   // Filtrar eventos por el buscador

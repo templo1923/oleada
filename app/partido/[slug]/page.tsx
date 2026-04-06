@@ -1,95 +1,70 @@
-import Link from "next/link"
-import { Play, ShieldCheck, Trophy, Calendar } from "lucide-react"
+"use client"
 
-// 🔥 MAGIA SEO: Genera el Título y Descripción para Google automáticamente
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const slugParts = params.slug.split('-');
-  // Extraemos los nombres de la URL (ej: millonarios-vs-nacional-1234)
-  const isVs = params.slug.includes('-vs-');
-  let title = "Partido en Vivo";
-  
-  if (isVs) {
-      const parts = params.slug.split('-vs-');
-      const local = parts[0].replace(/-/g, ' ').toUpperCase();
-      const visitante = parts[1].replace(/[0-9-]/g, ' ').toUpperCase().trim();
-      title = `${local} vs ${visitante} EN VIVO HOY`;
-  }
-
-  return {
-    title: `Dónde ver ${title} | Canales y Horarios Gratis`,
-    description: `Disfruta del partido ${title} en directo y en calidad HD. Revisa la agenda, los canales de transmisión como Win Sports, ESPN y sigue el minuto a minuto.`,
-  }
-}
+import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { Play, ShieldCheck, Tv, ArrowLeft } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 export default function PartidoPage({ params }: { params: { slug: string } }) {
-  const isVs = params.slug.includes('-vs-');
-  let local = "Equipo Local";
-  let visitante = "Equipo Visitante";
+  const searchParams = useSearchParams()
+  const r = searchParams.get('r')
+  const n = searchParams.get('n')
 
-  if (isVs) {
-      const parts = params.slug.split('-vs-');
-      local = parts[0].replace(/-/g, ' ').toUpperCase();
-      visitante = parts[1].replace(/[0-9-]/g, ' ').toUpperCase().trim();
-  }
+  // Descodificamos el nombre para mostrarlo bonito, o si falla, usamos el slug
+  const nombrePartido = n ? decodeURIComponent(n) : params.slug.replace(/-/g, ' ').toUpperCase();
+  
+  // Aquí está el link real que lleva a tu WebApp a monetizar
+  const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?r=${r}&n=${n}`;
 
   return (
-    <div className="min-h-screen section-gradient pt-24 pb-12">
-      <div className="max-w-4xl mx-auto px-4">
-        
-        {/* Cabecera del Partido */}
-        <div className="glass rounded-3xl p-8 md:p-12 text-center border border-white/10 relative overflow-hidden mb-10">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-400 to-primary"></div>
+    <div className="relative min-h-screen bg-background overflow-x-hidden flex flex-col w-full">
+      <Navbar />
+      
+      <main className="pt-28 pb-12 flex-1 w-full flex flex-col items-center justify-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full font-bold text-sm mb-6">
-             <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-             Transmisión Oficial
+          <Link href="/agenda-deportiva" className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Volver a la Agenda
+          </Link>
+
+          <div className="inline-flex items-center gap-2 mb-4 text-emerald-400 font-bold text-xs uppercase tracking-widest bg-emerald-400/10 px-3 py-1 rounded-md border border-emerald-400/20">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Transmisión Disponible
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-            {local} <span className="text-slate-500 text-3xl">vs</span> {visitante}
+          {/* 🚨 ESTE H1 ES EL QUE LEE GOOGLE 🚨 */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight text-balance">
+            Ver <span className="text-primary">{nombrePartido}</span> en Vivo y Gratis
           </h1>
-
-          <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
-            Sigue el minuto a minuto de este gran encuentro. Conéctate a nuestros servidores premium para disfrutar del evento sin cortes y en máxima calidad.
+          
+          <p className="text-slate-300 text-lg mb-10 max-w-xl mx-auto">
+            Estás a un solo clic de disfrutar este evento en calidad Full HD. Sin cortes, sin registros y 100% seguro.
           </p>
 
-          <Link href="/canales-premium" className="inline-flex items-center justify-center gap-3 bg-destructive hover:bg-destructive/90 text-white px-8 py-5 rounded-2xl font-black text-xl transition-all hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)] w-full md:w-auto">
-            <Play className="w-6 h-6 fill-current" />
-            REPRODUCIR SEÑAL AHORA
-          </Link>
-        </div>
-
-        {/* Texto SEO para posicionar en Google */}
-        <article className="glass rounded-2xl p-8 border border-white/5 text-slate-300 leading-relaxed space-y-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Trophy className="text-primary w-6 h-6" /> ¿Dónde y cómo ver el partido hoy?
-            </h2>
-            <p>
-                Si te estás preguntando dónde ver el partido de <strong>{local} contra {visitante}</strong>, estás en la plataforma indicada. Este evento forma parte de la cartelera deportiva más esperada de la jornada. 
-            </p>
-            <p>
-                A diferencia de otras plataformas que sufren caídas, en <strong>OleadaTV</strong> indexamos las mejores señales para canales deportivos. Dependiendo de la liga, este partido podría ser transmitido oficialmente por cadenas como ESPN, Fox Sports, DSports o Win Sports+.
-            </p>
+          <div className="glass border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="bg-white/5 p-4 rounded-xl flex items-start gap-3">
-                    <Calendar className="w-5 h-5 text-primary shrink-0 mt-1" />
-                    <div>
-                        <h4 className="font-bold text-white">Agenda Completa</h4>
-                        <p className="text-sm text-slate-400">Verifica los horarios en tu zona local ingresando al reproductor.</p>
-                    </div>
-                </div>
-                <div className="bg-white/5 p-4 rounded-xl flex items-start gap-3">
-                    <ShieldCheck className="w-5 h-5 text-green-400 shrink-0 mt-1" />
-                    <div>
-                        <h4 className="font-bold text-white">Señal Segura</h4>
-                        <p className="text-sm text-slate-400">Servidores optimizados para Smart TVs y dispositivos móviles.</p>
-                    </div>
-                </div>
+            <div className="relative z-10 flex flex-col items-center">
+              <Tv className="w-16 h-16 text-slate-500 mb-6 opacity-50" />
+              
+              <Button size="lg" className="w-full sm:w-auto text-lg px-12 py-8 rounded-2xl font-black uppercase tracking-wider bg-gradient-to-r from-primary to-[#00d4ff] hover:scale-105 shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all" asChild>
+                <Link href={linkReproductor} target="_blank" rel="noopener noreferrer">
+                  <Play className="w-6 h-6 mr-3 fill-current" /> Reproducir Partido Ahora
+                </Link>
+              </Button>
+              
+              <div className="flex items-center gap-2 mt-6 text-slate-400 text-sm font-medium">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" /> Transmisión Segura y Verificada
+              </div>
             </div>
-        </article>
+          </div>
 
-      </div>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   )
 }
