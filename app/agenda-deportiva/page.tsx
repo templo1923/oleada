@@ -45,6 +45,7 @@ function obtenerDeporte(evento: any): { nombre: string, icono: string, color: st
   if (desc.includes("NFL") || desc.includes("SUPER BOWL") || desc.includes("AMERICAN FOOTBALL") || desc.includes("AUSTRALIAN") || desc.includes("AFL")) return { nombre: "FUTBOL AMER.", icono: "🏈", color: "text-amber-600 bg-amber-600/10 border-amber-600/20" };
   if (sp.includes("VOLLEY") || desc.includes("VOLEY") || desc.includes("VOLEIBOL")) return { nombre: "VOLEIBOL", icono: "🏐", color: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20" };
   if (desc.includes("NHL") || desc.includes("HOCKEY")) return { nombre: "HOCKEY", icono: "🏒", color: "text-teal-400 bg-teal-400/10 border-teal-400/20" };
+  if (desc.includes("HOCKEY") || desc.includes("HOCKEY")) return { nombre: "HOCKEY", icono: "🏒", color: "text-teal-400 bg-teal-400/10 border-teal-400/20" };
   if (desc.includes("BILLAR") || desc.includes("SNOOKER")) return { nombre: "BILLAR", icono: "🎱", color: "text-purple-400 bg-purple-400/10 border-purple-400/20" };
   if (desc.includes("DARTS") || desc.includes("DARDOS")) return { nombre: "DARDOS", icono: "🎯", color: "text-rose-400 bg-rose-400/10 border-rose-400/20" };
   if (desc.includes("CYCLING") || desc.includes("CICLISMO") || desc.includes("TOUR DE")) return { nombre: "CICLISMO", icono: "🚴", color: "text-sky-400 bg-sky-400/10 border-sky-400/20" };
