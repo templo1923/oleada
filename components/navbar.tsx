@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 
 // 🚨 ENLACES REALES CONECTADOS AL ECOSISTEMA 🚨
 const navLinks = [
-  { href: "https://oleadatvpremium.com/SportLive/index.html", label: "Inicio", icon: Zap },
+  { href: "https://sportlive-one.vercel.app/", label: "Inicio", icon: Zap },
   { href: "/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
-  { href: "/canales-tv", label: "Canales TV", icon: Tv },
+  { href: "/canales-premium`", label: "Canales TV", icon: Tv },
   { href: "/cine", label: "Cine", icon: Film },
   { href: "https://sportlive-one.vercel.app/blog", label: "Blog", icon: FileText },
 ]
