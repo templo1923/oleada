@@ -2,15 +2,13 @@ import Link from "next/link"
 import { Tv, ChevronRight, Play, Star, Flame } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-// 🚨 MOTOR REAL 🚨
 async function getFeaturedChannels() {
   try {
-const fetchOptions = { 
-  next: { revalidate: 300 }, 
-  headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
-};
-const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
-
+    const fetchOptions = { 
+      next: { revalidate: 300 }, 
+      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+    };
+    const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
     const data = await res.json();
     
     let allChannels: any[] = [];
@@ -69,13 +67,15 @@ export async function ChannelsSection() {
           {featuredChannels.map((channel, idx) => {
             const cleanId = channel.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
             const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(channel.Canal)}&background=1e3a8a&color=fff&bold=true`;
-            const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?canal=${cleanId}`;
+            const realLogo = channel.Logo || fallbackLogo;
+            
+            // 🚨 AQUÍ ESTÁ EL AJUSTE: Ahora apunta a la página SEO del canal 🚨
+            const urlSEO = `/canal/${cleanId}?n=${encodeURIComponent(channel.Canal)}&c=${encodeURIComponent(channel.categoriaAsignada)}&l=${encodeURIComponent(realLogo)}`;
 
             return (
               <Link
                 key={idx}
-                href={linkReproductor}
-                target="_blank"
+                href={urlSEO} 
                 className="group relative rounded-2xl glass overflow-hidden card-hover block"
               >
                 <div className="absolute top-3 right-3 z-10">
@@ -86,7 +86,7 @@ export async function ChannelsSection() {
 
                 <div className="relative aspect-video flex items-center justify-center bg-gradient-to-br from-secondary to-muted/50 overflow-hidden p-4 w-full">
                   <img 
-                    src={channel.Logo || fallbackLogo} 
+                    src={realLogo} 
                     alt={channel.Canal} 
                     className="w-full h-full object-contain drop-shadow-xl"
                   />
