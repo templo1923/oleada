@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { Play, ShieldCheck, Tv, ArrowLeft, MonitorPlay, WifiHigh, Info, CheckCircle2, Search } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
+
 // 🚨 ESTA LÍNEA ES MAGIA: Obliga a Vercel a procesar la página en vivo y evita el Error 500 🚨
 export const dynamic = 'force-dynamic';
 
