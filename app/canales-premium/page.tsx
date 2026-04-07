@@ -15,7 +15,13 @@ export const metadata: Metadata = {
 // 🚨 MOTOR: Listado completo 🚨
 async function getFullCatalog() {
   try {
-    const res = await fetch('https://api.telelatinomax.shop/canales.php', { next: { revalidate: 300 } });
+const fetchOptions = { 
+  next: { revalidate: 300 }, 
+  headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+};
+const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
+
+
     const data = await res.json();
     
     let allChannels: any[] = [];
