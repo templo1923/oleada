@@ -12,4 +12,4 @@ export default function robots(): MetadataRoute.Robots {
     },
     sitemap: `${DOMINIO}/sitemap.xml`,
   }
-}x|
+}
