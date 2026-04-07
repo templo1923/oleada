@@ -4,46 +4,61 @@ import { Footer } from "@/components/footer"
 import { ChannelsHero } from "@/components/channels/channels-hero"
 import { ChannelsGrid } from "@/components/channels/channels-grid"
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
-  title: "Canales Premium TV En Vivo | ESPN, Win Sports, HBO | OleadaTV",
-  description: "Ver canales de TV premium en vivo. ESPN en vivo, Win Sports online, Fox Sports, HBO, beIN Sports y mas canales deportivos gratis en HD.",
+  title: "Canales Premium TV En Vivo | ESPN, Win Sports, HBO | SportLive",
+  description: "Ver canales de TV premium en vivo. ESPN en vivo, Win Sports online, Fox Sports, HBO, y más canales gratis en HD.",
   keywords: "ver canales deportivos gratis, win sports online, espn en vivo, fox sports gratis, hbo en vivo, canales premium tv",
-  openGraph: {
-    title: "Canales Premium TV En Vivo | ESPN, Win Sports, HBO",
-    description: "Ver canales de TV premium en vivo. ESPN, Win Sports, Fox Sports, HBO y mas.",
-    type: "website",
-  },
 }
 
-export default function CanalesPremiumPage() {
+// 🚨 MOTOR: Listado completo 🚨
+async function getFullCatalog() {
+  try {
+    const res = await fetch('https://api.telelatinomax.shop/canales.php', { next: { revalidate: 300 } });
+    const data = await res.json();
+    
+    let allChannels: any[] = [];
+    
+    for (const cat in data) {
+      if (!cat.toUpperCase().includes("EVENTO")) { 
+        const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
+        
+        const formatted = activos.map((c: any) => ({
+            id: c.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus'),
+            name: c.Canal,
+            logo: c.Logo,
+            category: cat,
+            description: `Disfruta de la mejor programación de ${c.Canal} en alta calidad Full HD, estable y sin cortes. Transmisión 24/7 en SportLive.`,
+            isLive: true,
+            currentProgram: "Programación Regular",
+            schedule: [
+                { time: "00:00", program: "Transmisión Activa 24 Horas" },
+                { time: "12:00", program: "Programación en Vivo" }
+            ]
+        }));
+        
+        allChannels = [...allChannels, ...formatted];
+      }
+    }
+    return allChannels;
+  } catch (error) {
+    return [];
+  }
+}
+
+export default async function CanalesPremiumPage() {
+  const canales = await getFullCatalog();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-16">
         <ChannelsHero />
-        <ChannelsGrid />
+        {/* Pasamos los datos al componente interactivo */}
+        <ChannelsGrid initialChannels={canales} />
       </main>
       <Footer />
-
-      {/* JSON-LD Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ItemList",
-            "name": "Canales de TV Premium",
-            "description": "Lista de canales de television premium en vivo",
-            "numberOfItems": 50,
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "ESPN" },
-              { "@type": "ListItem", "position": 2, "name": "Win Sports" },
-              { "@type": "ListItem", "position": 3, "name": "Fox Sports" },
-              { "@type": "ListItem", "position": 4, "name": "HBO" },
-            ]
-          })
-        }}
-      />
     </div>
   )
 }
