@@ -4,9 +4,20 @@ import { SatelliteDish, Play, ChevronRight } from 'lucide-react'
 async function getFeaturedData() {
   try {
     const response = await fetch('https://api.telelatinomax.shop/canales.php', {
-      cache: 'no-store' // 🔥 LA MAGIA: Le dice a Next.js que NUNCA guarde caché de esto y lo consulte en vivo SIEMPRE
+      cache: 'no-store',
+      // 🔥 LA MAGIA: Disfrazamos la petición para pasar la seguridad de tu servidor
+      headers: { 
+        'X-Requested-With': 'XMLHttpRequest',
+        'Origin': 'https://oleadatvpremium.com',
+        'Referer': 'https://oleadatvpremium.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
     });
+    
     const data = await response.json();
+    
+    // Si la API nos devuelve un error por seguridad, abortamos
+    if (data.error) return [];
     
     let eventosEspeciales: any[] = [];
     
