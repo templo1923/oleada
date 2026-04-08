@@ -4,7 +4,7 @@ import { SatelliteDish, Play, ChevronRight } from 'lucide-react'
 async function getFeaturedData() {
   try {
     const response = await fetch('https://api.telelatinomax.shop/canales.php', {
-      next: { revalidate: 300 } // Se actualiza cada 5 minutos
+      cache: 'no-store' // 🔥 LA MAGIA: Le dice a Next.js que NUNCA guarde caché de esto y lo consulte en vivo SIEMPRE
     });
     const data = await response.json();
     
