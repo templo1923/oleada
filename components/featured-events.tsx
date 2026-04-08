@@ -26,7 +26,13 @@ async function getFeaturedData() {
 export async function FeaturedEvents() {
   const destacados = await getFeaturedData();
 
-  if (destacados.length === 0) return null;
+  if (destacados.length === 0) {
+    return (
+      <div className="w-full max-w-[1000px] mx-auto mt-4 text-center border border-dashed border-red-500/50 p-4 rounded-xl text-red-400 text-xs font-bold">
+        🚨 MODO DEBUG: El componente FeaturedEvents sí está instalado aquí, pero tu API "canales.php" está devolviendo 0 canales activos con la categoría "EVENTO".
+      </div>
+    );
+  }
   
   const hayVarios = destacados.length > 1;
 
