@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Zap, Play, Trophy } from 'lucide-react'
+import { SatelliteDish, Play, ChevronRight } from 'lucide-react'
 
 async function getFeaturedData() {
   try {
@@ -27,72 +27,62 @@ export async function FeaturedEvents() {
   const destacados = await getFeaturedData();
 
   if (destacados.length === 0) return null;
+  
+  const hayVarios = destacados.length > 1;
 
   return (
-    <section className="w-full mb-10 overflow-hidden">
-      <div className="flex items-center gap-2 mb-4 px-2">
-        <Zap className="w-5 h-5 text-red-500 fill-red-500" />
-        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white">Eventos Estelares</h2>
-      </div>
-
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+    <section className="w-full mb-6 mt-2 overflow-hidden max-w-[1000px] mx-auto">
+      <div className="flex gap-4 overflow-x-auto pb-8 pt-4 px-2 scrollbar-hide snap-x snap-mandatory">
         {destacados.map((evento, idx) => {
           const cleanId = evento.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
-          const linkFinal = `https://oleadatvpremium.com/SportLive/ver.html?canal=${cleanId}`;
-          const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true`;
+          const linkFinal = `/ver.html?canal=${cleanId}`; // Apunta directo al reproductor
+          const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
           
           return (
             <Link 
               key={idx} 
               href={linkFinal}
               target="_blank"
-              className="relative min-w-[280px] sm:min-w-[400px] aspect-[21/9] rounded-[2rem] overflow-hidden group snap-start border border-white/10 shadow-2xl transition-transform hover:scale-[1.02]"
+              // 🔥 TRUCO NETFLIX: Si hay varios, ocupa el 88% en móvil. En PC 50%.
+              className={`relative group flex flex-col sm:flex-row items-center text-center sm:text-left gap-3 sm:gap-6 p-5 sm:p-7 rounded-2xl shrink-0 snap-center transition-all duration-300 bg-gradient-to-br from-[#111827] to-[#450a0a] border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(239,68,68,0.4)] hover:border-red-500 ${hayVarios ? 'w-[88%] sm:w-[calc(50%-8px)]' : 'w-full sm:w-full'}`}
             >
-              {/* Fondo con gradiente dinámico */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-red-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              {/* Etiqueta Superior (ESTELAR EN VIVO) */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[10px] font-black px-5 py-1.5 rounded-b-xl tracking-[0.15em] whitespace-nowrap z-20 shadow-lg flex items-center gap-2">
+                🔥 ESTELAR EN VIVO 🔥
+              </div>
               
-              {/* Imagen de fondo (puedes usar el logo estirado con blur o un placeholder) */}
+              {/* Logo / Escudo (Más pequeño en móvil, imponente en PC) */}
               <img 
                 src={evento.Logo || fallbackLogo} 
-                className="absolute inset-0 w-full h-full object-cover blur-sm opacity-30 scale-110 group-hover:scale-100 transition-transform duration-700" 
-                alt=""
+                className="w-14 h-14 sm:w-20 sm:h-20 object-contain drop-shadow-xl rounded-xl bg-black/20 p-1.5 shrink-0 mt-5 sm:mt-0" 
+                alt={evento.Canal}
               />
 
-              {/* Contenido del Banner */}
-              <div className="relative z-20 h-full p-6 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl p-2 shadow-2xl flex-shrink-0">
-                    <img src={evento.Logo || fallbackLogo} className="w-full h-full object-contain" alt={evento.Canal} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-red-500 uppercase tracking-widest mb-1 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> En Vivo Ahora
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-white leading-none uppercase truncate max-w-[150px] sm:max-w-[200px]">
-                      {evento.Canal}
-                    </h3>
-                    <p className="text-slate-400 text-[10px] sm:text-xs font-bold mt-2 flex items-center gap-1">
-                       <Trophy className="w-3 h-3 text-primary" /> Transmisión Estelar Premium
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all shadow-xl">
-                  <Play className="w-5 h-5 text-white fill-current ml-1" />
-                </div>
+              {/* Contenido / Texto (Permite bajar de línea) */}
+              <div className="flex-1 min-w-0 w-full">
+                <h3 className="text-base sm:text-[22px] font-black text-white uppercase leading-[1.2] mb-1 sm:mb-2 whitespace-normal break-words line-clamp-3">
+                  {evento.Canal}
+                </h3>
+                <p className="text-red-300 text-[11px] sm:text-[13px] font-semibold flex items-center justify-center sm:justify-start gap-1.5 whitespace-normal">
+                   <SatelliteDish className="w-3.5 h-3.5" /> Toca para ver la transmisión Premium
+                </p>
               </div>
 
-              {/* Etiqueta superior */}
-              <div className="absolute top-0 right-8 z-30">
-                <div className="bg-red-600 text-white text-[9px] font-black px-4 py-1.5 rounded-b-xl shadow-lg uppercase tracking-tighter">
-                  Top Evento
-                </div>
+              {/* Botón de Play (Oculto en celular, visible en PC) */}
+              <div className="hidden sm:flex shrink-0 w-12 h-12 sm:w-[60px] sm:h-[60px] rounded-full bg-red-500/15 border border-red-500/40 text-red-500 items-center justify-center transition-all duration-300 group-hover:bg-red-500 group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-1" />
               </div>
             </Link>
           )
         })}
       </div>
+      
+      {/* Texto de Pista para deslizar en móviles (Si hay más de 1 evento) */}
+      {hayVarios && (
+        <div className="text-center text-slate-500 text-[11px] font-black uppercase tracking-widest mt-[-15px] mb-2 flex items-center justify-center gap-1 sm:hidden">
+          Desliza para ver más eventos <ChevronRight className="w-3 h-3 text-primary animate-pulse" />
+        </div>
+      )}
     </section>
   )
 }
