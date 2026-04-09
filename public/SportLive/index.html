@@ -6,10 +6,10 @@
   <title>SportLive Premium | Eventos Deportivos, TV y Cine en VIVO Gratis</title>
 
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#1e3c72">
+  <meta name="theme-color" content="#080c14">
   <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
@@ -28,8 +28,8 @@
     }
 
     body {
-      font-family:Poppis, sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      font-family: 'Outfit', sans-serif; /* 🔥 Cambio a Outfit */
+      background: #080c14; /* 🔥 Tono ultra oscuro de fondo */
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -39,7 +39,7 @@
       overflow-x: hidden;
     }
 
-    /* Fondo animado */
+    /* 🔥 Fondo animado potenciado */
     .background-wrapper {
       position: fixed;
       top: 0;
@@ -58,17 +58,19 @@
       height: 100%;
       background: url('https://i.postimg.cc/76HtY8hg/deportes15.jpg') no-repeat center center;
       background-size: cover;
-      animation: slideBg 30s linear infinite;
-      filter: blur(5px);
+      animation: slideBg 60s linear infinite; /* 🔥 Más lenta y suave */
+      filter: blur(8px); /* 🔥 Más desenfoque para que resalte el texto */
+      opacity: 0.6; /* 🔥 Más oscuro */
     }
 
+    /* 🔥 Superposición de degradado para modo cine */
     .background-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4) 0%, rgba(8, 12, 20, 1) 100%);
       z-index: 2;
     }
 
@@ -82,51 +84,82 @@
       z-index: 10;
       padding: 2rem;
       max-width: 900px;
-      margin-top: 10vh;
+      margin-top: 15vh; /* 🔥 Más espacio arriba */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
+    /* 🔥 TÍTULOS PRO ACTUALIZADOS */
     h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
+      font-size: 4rem; /* 🔥 Más grande */
+      font-weight: 900; /* 🔥 Más grueso */
+      margin-bottom: 1rem;
+      line-height: 1.1;
       animation: fadeIn 1.5s ease-in-out;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, #fff 0%, #a3e635 100%); /* 🔥 Texto degradado blanco a lima */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none; /* 🔥 Quitamos la sombra vieja */
     }
 
     p {
       font-size: 1.5rem;
+      font-weight: 300; /* 🔥 Más delgado */
       line-height: 1.6;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3.5rem;
       animation: fadeIn 2s ease-in-out;
-      color: #d7eee7;
+      color: #94a3b8; /* 🔥 Tono slate para descripción */
+      max-width: 700px;
     }
 
-    /* Botón original */
+    /* 🔥 BOTÓN ULTRA PRO (PULSO DE NEÓN) */
     .btn-ingresar {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
       padding: 1.2rem 4rem;
-      font-size: 3rem;
+      font-size: 2.5rem; /* 🔥 Sigue siendo grande, pero más equilibrado */
       font-weight: 800;
       color: #fff;
-      background: #0c7557e4;
-      border-radius: 20px;
-      border: 4px solid rgb(19,213,88);
+      background: linear-gradient(135deg, #10b981 0%, #00d4ff 100%); /* 🔥 Degradado Emerald a Cyan */
+      border-radius: 50px; /* 🔥 Más redondeado */
+      border: 2px solid rgba(255, 255, 255, 0.2);
       text-decoration: none;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      animation: pulseBtn 2s infinite ease-in-out;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); /* 🔥 Glow Emerald inicial */
+      animation: pulseBtn 2.5s infinite ease-in-out, shineBtn 4s infinite 2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-ingresar::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(45deg);
+      animation: shineLoop 3s infinite;
+    }
+
+    @keyframes shineLoop {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
     }
 
     .btn-ingresar:hover {
-      transform: translateY(-3px);
-      background: #4e7af9;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      border: 4px solid rgb(0,78,247);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 50px rgba(0, 212, 255, 0.8); /* 🔥 Glow Cyan en hover */
+      border: 2px solid rgba(255, 255, 255, 0.5);
     }
 
     @keyframes pulseBtn {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); }
+      50% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0, 212, 255, 0.7); }
     }
 
     @keyframes fadeIn {
@@ -134,7 +167,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Círculos flotantes */
+    /* 🔥 PARTÍCULAS DE LUZ (REEMPLAZO DE CÍRCULOS) */
     .background-animations {
       position: fixed;
       top: 0;
@@ -145,56 +178,62 @@
       pointer-events: none;
     }
 
-    .circle, .triangle, .square {
+    .particle {
       position: absolute;
-      background: rgba(255, 255, 255, 0.15);
-      animation: float 12s infinite ease-in-out;
-      mix-blend-mode: overlay;
-    }
-
-    .circle {
-      width: 120px;
-      height: 120px;
+      background: rgba(0, 212, 255, 0.2); /* 🔥 Luz cian ultra suave */
       border-radius: 50%;
-      top: 15%;
-      left: 10%;
-      animation-delay: 0s;
+      animation: float 15s infinite ease-in-out;
+      mix-blend-mode: screen;
+      filter: blur(2px);
     }
 
-    .triangle {
-      width: 0;
-      height: 0;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-      border-bottom: 80px solid rgba(255, 255, 255, 0.15);
-      top: 60%;
-      left: 70%;
-      animation-delay: 2s;
-    }
-
-    .square {
-      width: 80px;
-      height: 80px;
-      top: 40%;
-      left: 50%;
-      transform: rotate(45deg);
-      animation-delay: 4s;
-    }
+    .particle-1 { width: 80px; height: 80px; top: 20%; left: 15%; animation-delay: 0s; }
+    .particle-2 { width: 40px; height: 40px; top: 70%; left: 80%; animation-delay: 3s; }
+    .particle-3 { width: 60px; height: 60px; top: 50%; left: 50%; animation-delay: 6s; }
+    .particle-4 { width: 20px; height: 20px; top: 10%; left: 90%; animation-delay: 9s; }
 
     @keyframes float {
-      0% { transform: translate(0, 0) scale(0.9); opacity: 0.3; }
-      50% { transform: translate(20px, 20px) scale(1.1); opacity: 0.5; }
-      100% { transform: translate(0, 0) scale(0.9); opacity: 0.3; }
+      0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      50% { transform: translate(30px, -30px) scale(1.1); opacity: 0.6; }
+      100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+    }
+
+    /* 🔥 SECCIÓN DE MINI CATÁLOGO PRO */
+    .mini-catalog {
+      display: flex;
+      gap: 30px;
+      margin-top: 5rem;
+      z-index: 10;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    .catalog-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      tracking-wider: true;
+    }
+
+    .catalog-item i {
+      font-size: 2rem;
+      color: #fff;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
     }
 
     footer {
       width: 100%;
-      padding: 2rem;
+      padding: 3rem; /* 🔥 Más padding */
       text-align: center;
       z-index: 10;
+      margin-top: auto; /* 🔥 Empujar al fondo */
     }
 
-    /* Redes sociales originales */
+    /* 🔥 REDES SOCIALES PRO (CRISTAL) */
     .social-icons a {
       display: inline-flex;
       align-items: center;
@@ -202,28 +241,36 @@
       width: 50px;
       height: 50px;
       margin: 0 0.8rem;
-      border-radius: 50%;
+      border-radius: 15px; /* 🔥 Más cuadrado moderno */
       color: #fff;
       font-size: 1.8rem;
       text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05); /* 🔥 Fondo cristal */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
     }
 
     .social-icons a:hover {
       transform: translateY(-5px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #a3e635; /* 🔥 Texto lima en hover */
     }
 
-    .social-icons .facebook { background: #3b5998; }
-    .social-icons .instagram { background: #e1306c; }
-    .social-icons .tiktok { background: #000; }
+    /* Mantenemos tus colores originales de fondo de redes por si prefieres el estilo viejo
+       (Actualmente los quitamos para usar el modo cristal, si quieres el viejo, avísame)
+    */
 
     @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      p { font-size: 1.2rem; }
-      .btn-ingresar { font-size: 1.5rem; padding: 1rem 3rem; }
-      .container { margin-top: 5vh; padding: 1rem; }
-      .social-icons a { width: 40px; height: 40px; font-size: 1.5rem; margin: 0 0.5rem; }
+      h1 { font-size: 2.8rem; }
+      p { font-size: 1.1rem; }
+      .btn-ingresar { font-size: 1.6rem; padding: 1rem 3rem; }
+      .container { margin-top: 8vh; padding: 1rem; }
+      .social-icons a { width: 45px; height: 45px; font-size: 1.5rem; margin: 0 0.5rem; }
+      .mini-catalog { gap: 15px; }
+      .catalog-item { font-size: 0.7rem; }
+      .catalog-item i { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -235,18 +282,34 @@
   </div>
 
   <div class="container">
-    <h1>¡Disfruta los mejores eventos deportivos del día!</h1>
-    <p>Con SportLive, accede a todos los partidos y eventos deportivos en un solo lugar.</p>
+    <h1>SportLive Premium:<br>TV, Deportes y Cine</h1>
+    <p>Accede a la mejor experiencia de streaming. Todos los partidos, estrenos de cine y canales premium en un solo lugar.</p>
     
     <a href="home.html" class="btn-ingresar">
-       INICIAR
+       <i class="fas fa-play-circle"></i> INGRESAR
     </a>
+
+    <div class="mini-catalog">
+        <div className="catalog-item">
+            <i class="fas fa-futbol"></i>
+            Deportes En Vivo
+        </div>
+        <div className="catalog-item">
+            <i class="fas fa-film"></i>
+            Estrenos Cine
+        </div>
+        <div className="catalog-item">
+            <i class="fas fa-tv"></i>
+            TV Premium
+        </div>
+    </div>
   </div>
 
   <div class="background-animations">
-    <div class="circle"></div>
-    <div class="triangle"></div>
-    <div class="square"></div>
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
   </div>
 
   <footer>
@@ -257,7 +320,7 @@
     </div>
   </footer>
 
-  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 15px; z-index: 99999; box-shadow: 0 20px 40px rgba(0,0,0,0.9); align-items: center; justify-content: space-between; gap: 15px; font-family:Poppis, sans-serif;">
+  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 15px; z-index: 99999; box-shadow: 0 20px 40px rgba(0,0,0,0.9); align-items: center; justify-content: space-between; gap: 15px; font-family: 'Outfit', sans-serif;">
     <div style="display: flex; align-items: center; gap: 12px;">
         <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 10px;" alt="Icon">
         <div>
@@ -267,7 +330,7 @@
     </div>
     <div style="display: flex; gap: 8px;">
         <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #64748b; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px;"><i class="fas fa-times"></i></button>
-        <button id="btn-instalar-app" style="background: #3b82f6; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">INSTALAR</button>
+        <button id="btn-instalar-app" style="background: #10b981; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">INSTALAR</button>
     </div>
   </div>
 
@@ -313,7 +376,7 @@
         installBanner.style.display = 'flex';
         btnInstalar.innerHTML = 'VER CÓMO';
         btnInstalar.addEventListener('click', () => {
-            alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadro con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
+            alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadrado con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
         });
     }
   </script>
