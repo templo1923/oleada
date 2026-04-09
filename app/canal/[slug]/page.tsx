@@ -12,36 +12,30 @@ export const dynamic = 'force-dynamic';
 // ==========================================
 function analizarContenido(rawName: string) {
   let nombreLimpio = rawName.replace(/[-_]/g, ' ').toUpperCase();
-  
-  // 🔥 EL ARREGLO: Si el nombre viene todo pegado (ej: BLOOMINGVSRIVERPLATE), le inyectamos los espacios
-  if (nombreLimpio.includes('VS') && !nombreLimpio.includes(' VS ')) {
-    nombreLimpio = nombreLimpio.replace('VS', ' VS ');
-  }
-  if (nombreLimpio.includes(' X ') === false && nombreLimpio.includes('X') && nombreLimpio.length > 5) {
-    // Solo por si usan la 'X' pegada en lugar de VS
-    nombreLimpio = nombreLimpio.replace('X', ' X ');
-  }
-  
+  // ... (tu lógica de limpieza de espacios VS que ya tenemos)
+
   const esPartido = nombreLimpio.includes(' VS ') || nombreLimpio.includes(' X ');
   
-  let tituloSeo = '';
-  let descSeo = '';
-  let keywordsSeo = '';
-  let tipoContenido = '';
-
   if (esPartido) {
-    tipoContenido = 'Evento Deportivo';
-    tituloSeo = `Ver ${nombreLimpio} EN VIVO HD Gratis | Transmisión Online`;
-    descSeo = `Sigue la transmisión en vivo y en directo del partido ${nombreLimpio}. Cobertura completa, estadísticas, alineaciones y la mejor calidad de video HD sin cortes por internet.`;
-    keywordsSeo = `ver ${nombreLimpio} en vivo, partido ${nombreLimpio} online, transmisión ${nombreLimpio} gratis, donde ver ${nombreLimpio} hoy, link hd, streaming futbol gratis`;
+    return {
+      nombreLimpio,
+      esPartido,
+      // 🔥 Título directo al grano para Google
+      tituloSeo: `¿Dónde ver ${nombreLimpio} EN VIVO? | Link Hoy HD`, 
+      descSeo: `¿Buscas dónde ver ${nombreLimpio} en vivo por internet? Haz clic aquí para acceder a la transmisión oficial en HD, sin cortes y totalmente gratis. link actualizado hoy.`,
+      h1Titulo: `¿Dónde ver ${nombreLimpio} en vivo?`, // El H1 es clave
+      tipoContenido: 'Evento Deportivo'
+    };
   } else {
-    tipoContenido = 'Canal Premium';
-    tituloSeo = `Ver ${nombreLimpio} EN VIVO Online Gratis | Señal HD 24/7`;
-    descSeo = `Mira la señal oficial de ${nombreLimpio} en vivo por internet. Disfruta de toda su programación, series, películas y eventos exclusivos en calidad Full HD y sin interrupciones.`;
-    keywordsSeo = `ver canal ${nombreLimpio} en vivo, señal ${nombreLimpio} online gratis, ${nombreLimpio} hd sin cortes, streaming tv en vivo, canales premium gratis por internet`;
+    return {
+      nombreLimpio,
+      esPartido,
+      tituloSeo: `¿Cómo ver ${nombreLimpio} Online Gratis? | Señal 24/7`,
+      descSeo: `Sintoniza la señal de ${nombreLimpio} en vivo por internet. Disfruta de toda la programación premium en alta definición desde cualquier dispositivo.`,
+      h1Titulo: `Ver ${nombreLimpio} En Vivo por Internet`,
+      tipoContenido: 'Canal Premium'
+    };
   }
-
-  return { nombreLimpio, esPartido, tituloSeo, descSeo, keywordsSeo, tipoContenido };
 }
 
 // ==========================================

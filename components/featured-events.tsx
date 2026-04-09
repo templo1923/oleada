@@ -2,29 +2,34 @@ import Link from 'next/link'
 import { SatelliteDish, Play, ChevronRight } from 'lucide-react'
 
 async function getFeaturedData() {
+  const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
   try {
-    const response = await fetch('https://api.telelatinomax.shop/canales.php', {
-      cache: 'no-store',
-      headers: { 
-        'X-Requested-With': 'XMLHttpRequest',
-        'Origin': 'https://oleadatvpremium.com',
-        'Referer': 'https://oleadatvpremium.com/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      }
+    const fetchOptions = { 
+      cache: 'no-store', 
+      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+    };
+
+    // 1. Buscamos en la agenda (donde tenemos horas)
+    const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
+    let todos = results.flatMap(r => r.data || []);
+
+    // 2. Calculamos la hora actual en Bogotá (GMT-5)
+    const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: false });
+    const timeParts = formatter.formatToParts(new Date());
+    const horaActualMinutos = (parseInt(timeParts.find(p => p.type === 'hour')?.value || "0") * 60) + parseInt(timeParts.find(p => p.type === 'minute')?.value || "0");
+
+    // 3. 🔥 FILTRO NINJA: Solo los que están en la ventana de 130 minutos 🔥
+    const destacadosEnVivo = todos.filter(evento => {
+      const horaEvento = evento.attributes.diary_hour || evento.attributes.diary_time || "00:00";
+      const [h, m] = horaEvento.split(':').map(Number);
+      const minutosEvento = h * 60 + m;
+
+      // Si el partido ya empezó (minutosEvento <= horaActual) 
+      // Y no han pasado más de 130 minutos desde que empezó
+      return horaActualMinutos >= minutosEvento && horaActualMinutos <= (minutosEvento + 130);
     });
-    
-    const data = await response.json();
-    if (data.error) return [];
-    
-    let eventosEspeciales: any[] = [];
-    
-    for (const cat in data) {
-      if (cat.toUpperCase().includes("EVENTO")) {
-        const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
-        eventosEspeciales = [...eventosEspeciales, ...activos];
-      }
-    }
-    return eventosEspeciales.slice(0, 10); // Traemos hasta 10, total se deslizan horizontalmente
+
+    return destacadosEnVivo.slice(0, 10); 
   } catch (e) {
     return [];
   }
