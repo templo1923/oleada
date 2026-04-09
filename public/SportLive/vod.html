@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Laboratorio VOD Universal - Kiamber</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: #0f172a; color: white; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 15px; border-top: 4px solid #3b82f6; margin-bottom: 30px;}
+        h1 { color: #3b82f6; text-align: center; margin-top: 0;}
+        .vimeo-header { color: #10b981; border-top-color: #10b981;}
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input[type="text"] { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #080c14; color: white;}
+        button { background: #3b82f6; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;}
+        .btn-vimeo { background: #10b981; }
+        .log-box { background: #000; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #22c55e; min-height: 100px; overflow-y: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all;}
+        .video-container { margin-top: 20px; width: 100%; aspect-ratio: 16/9; background: #000; display: none; border-radius: 10px;}
+        video { width: 100%; height: 100%; }
+        .status-error { color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Laboratorio VOD - Streamwish/Vidhide</h1>
+        <div class="input-group">
+            <input type="text" id="urlInput1" value="https://streamwish.to/e/vzqd2qlzu0ba">
+            <button onclick="probar('urlInput1', 'logBox1', 'videoWrapper1', 'videoPlayer1')">Extraer M3U8</button>
+        </div>
+        <div class="log-box" id="logBox1">Esperando URL...</div>
+        <div class="video-container" id="videoWrapper1"><video id="videoPlayer1" controls></video></div>
+    </div>
+
+    <div class="container vimeo-header">
+        <h1 style="color:#10b981;">Laboratorio VOD - Vimeos</h1>
+        <div class="input-group">
+            <input type="text" id="urlInput2" value="https://vimeos.net/embed-t0asskfapj18.html">
+            <button class="btn-vimeo" onclick="probar('urlInput2', 'logBox2', 'videoWrapper2', 'videoPlayer2')">Extraer Vimeo M3U8</button>
+        </div>
+        <div class="log-box" id="logBox2">Esperando URL Vimeos...</div>
+        <div class="video-container" id="videoWrapper2"><video id="videoPlayer2" controls></video></div>
+    </div>
+
+    <script>
+        const API_URL = "https://telelatinomax.shop/vod/extract?url=";
+        let activeHls = null;
+
+        async function probar(inputId, logId, wrapperId, playerId) {
+            const url = document.getElementById(inputId).value.trim();
+            const logBox = document.getElementById(logId);
+            const videoWrapper = document.getElementById(wrapperId);
+            const video = document.getElementById(playerId);
+            
+            if (!url) return;
+
+            logBox.innerHTML = `[*] Iniciando conexión...\n[*] Extrayendo de: ${url}\n`;
+            videoWrapper.style.display = 'none';
+            if(activeHls) activeHls.destroy();
+
+            try {
+                const response = await fetch(API_URL + encodeURIComponent(url));
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    logBox.innerHTML += `[+] ¡ÉXITO! M3U8 capturado.\n`;
+                    logBox.innerHTML += `<span style="color:#3b82f6;font-weight:bold;">URL: ${data.url}</span>\n`;
+                    
+                    videoWrapper.style.display = 'block';
+                    if (Hls.isSupported()) {
+                        activeHls = new Hls();
+                        activeHls.loadSource(data.url);
+                        activeHls.attachMedia(video);
+                        activeHls.on(Hls.Events.MANIFEST_PARSED, () => { video.play(); logBox.innerHTML += `[+] Reproduciendo...\n`; });
+                        activeHls.on(Hls.Events.ERROR, (e, d) => { if(d.fatal) logBox.innerHTML += `<span class="status-error">[-] Error HLS: ${d.type}</span>\n`; });
+                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = data.url; video.play();
+                    }
+                } else {
+                    logBox.innerHTML += `<span class="status-error">[-] ERROR DEL SERVIDOR: ${data.error}</span>\n`;
+                }
+            } catch (error) {
+                logBox.innerHTML += `<span class="status-error">[-] ERROR FRONTEND: ${error.message}</span>\n`;
+            }
+        }
+    </script>
+</body>
+</html>

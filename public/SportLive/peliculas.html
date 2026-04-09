@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    
+    <title>Sport Live - Películas VOD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+        /* DISEÑO BASE UNIFICADO PRO */
+        :root {
+            --primary: #3b82f6; 
+            --secondary: #1e3a8a;
+            --bg-dark: #080c14;
+            --card-bg: #111827;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #f8fafc; 
+            overflow-x: hidden; 
+            padding-bottom: 110px;
+            background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.2), transparent 400px);
+        }
+
+        /* HEADER PREMIUM (Igual a TV/Agenda) */
+        header { 
+            background: rgba(8, 12, 20, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { 
+            font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* BUSCADOR PRO (Unificado con TV/Agenda) */
+        .search-container-main {
+            display: flex; gap: 10px; width: 90%; max-width: 600px; margin: 20px auto; position: relative;
+        }
+        .search-wrapper { flex: 1; position: relative; }
+        .search-wrapper i {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: var(--primary); font-size: 18px;
+        }
+        .form__field {
+            width: 100%; background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; padding: 12px 15px 12px 45px; color: #fff;
+            font-size: 16px; outline: none; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .form__field:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); background: rgba(255,255,255,0.08); }
+        .btn-web { 
+            background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; border: none; 
+            border-radius: 15px; padding: 0 20px; cursor: pointer; font-weight: 800; transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        .btn-web:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
+
+        /* CAJA DE SUGERENCIAS EN VIVO (Buscador) */
+        .live-search-box {
+            position: absolute; top: 100%; left: 0; width: 100%; background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px;
+            margin-top: 8px; z-index: 100; max-height: 400px; overflow-y: auto; display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .sugerencia-item {
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px; cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; text-decoration: none; color: #fff;
+        }
+        .sugerencia-item:hover { background: rgba(59, 130, 246, 0.2); }
+        .sugerencia-img { width: 45px; height: 65px; border-radius: 6px; object-fit: cover; background: #000; }
+        .sugerencia-info h4 { margin: 0; font-size: 14px; font-weight: 700; color: #f8fafc; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .sugerencia-info p { margin: 4px 0 0 0; font-size: 11px; color: #94a3b8; font-weight: 600; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
+        .sugerencia-spinner { padding: 20px; text-align: center; color: #60a5fa; font-size: 14px; }
+
+        /* 🔥 BANNER TOP TENDENCIAS (Slider Automático) 🔥 */
+        .slider-container {
+            width: 100%; max-width: 1200px; margin: 0 auto 20px auto; padding: 0 15px;
+            position: relative; overflow: hidden; display: none; /* Oculto hasta que cargue la data */
+        }
+        .slider-title {
+            font-size: 18px; font-weight: 800; color: #f8fafc; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .slider-title i { color: #eab308; }
+        
+        .slider-track {
+            display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth;
+            padding-bottom: 15px; scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+            -webkit-overflow-scrolling: touch;
+        }
+        .slider-track::-webkit-scrollbar { display: none; } /* Ocultar scrollbar en Chrome/Safari */
+        
+        .slide-item {
+            flex: 0 0 250px; /* Ancho fijo para las tarjetas del banner */
+            position: relative; border-radius: 15px; overflow: hidden; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            aspect-ratio: 16/9; /* Formato apaisado para el banner */
+        }
+        .slide-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); border-color: var(--primary); }
+        
+        .slide-img { width: 100%; height: 100%; object-fit: cover; background: #000; transition: 0.3s;}
+        .slide-item:hover .slide-img { transform: scale(1.05); }
+        
+        .slide-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(8,12,20,1) 0%, rgba(8,12,20,0.8) 50%, transparent 100%);
+            padding: 20px 15px 15px 15px; display: flex; flex-direction: column; justify-content: flex-end;
+        }
+        .slide-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .slide-meta { font-size: 11px; color: #60a5fa; font-weight: 800; display: flex; gap: 10px; align-items: center; }
+        .slide-badge { background: #eab308; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900;}
+
+        /* BARRITA DE CATEGORÍAS VOD PRO */
+        .section-buttons {
+            display: flex; overflow-x: auto; gap: 10px; padding: 5px 15px 15px; 
+            margin: 0 auto 10px auto; max-width: 1200px; scrollbar-width: none;
+        }
+        .section-buttons::-webkit-scrollbar { display: none; }
+        .section-button {
+            background: var(--glass); color: #94a3b8; padding: 10px 22px; border-radius: 30px;
+            cursor: pointer; white-space: nowrap; font-size: 13px; font-weight: 600; 
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; display: flex; align-items: center; gap: 6px;
+        }
+        .section-button.active { 
+            background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; font-weight: 800; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); border-color: transparent;
+        }
+
+        /* GRID DE PELÍCULAS PRO (Estilo Netflix) */
+        main { max-width: 1200px; margin: 0 auto; padding: 0 15px; min-height: 50vh;}
+        .grid-peliculas { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+            gap: 15px; 
+        }
+        
+        .pelicula-card { 
+            background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.3s; 
+            position: relative; border: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .pelicula-card:hover { 
+            transform: translateY(-5px); border-color: var(--primary); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(59, 130, 246, 0.2); 
+        }
+        
+        .pelicula-card img { 
+            width: 100%; aspect-ratio: 2/3; object-fit: cover; background: #000; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .pelicula-info { 
+            padding: 12px 10px; text-align: center; flex: 1; display: flex; 
+            flex-direction: column; justify-content: space-between; gap: 8px;
+        }
+        
+        .pelicula-titulo { 
+            font-weight: 800; font-size: 13px; color: #f8fafc; line-height: 1.3;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; 
+        }
+        
+        /* Contenedor de la info extra (Año) */
+        .pelicula-meta {
+            display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; 
+            font-size: 11px; color: #94a3b8; font-weight: 600;
+        }
+
+        /* LOADER PROFESIONAL */
+        .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; grid-column: 1 / -1; padding: 50px 0; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(59, 130, 246, 0.3); border-radius: 50%; border-top-color: #3b82f6; animation: spin 1s ease-in-out infinite; margin-bottom: 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* NAVEGACIÓN MÓVIL Y DESKTOP (Unificado) */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(8, 12, 20, 0.95);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            padding: 8px 10px 15px 10px; display: flex; justify-content: space-around; align-items: center;
+            z-index: 1001; border-top: 1px solid rgba(255,255,255,0.05); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
+        }
+        .nav-item { color: #64748b; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; transition: all 0.3s; flex: 1; cursor: pointer; }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
+
+        .menu-container { position: relative; }
+        .menu-button { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 40px; height: 40px; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .menu-button:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.05); }
+        .menu-dropdown { position: absolute; top: 50px; right: 0; background: #111827; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 200px; display: none; z-index: 1002; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .menu-dropdown.active { display: block; animation: fadeIn 0.2s ease; }
+        .menu-dropdown a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .menu-dropdown a:hover { background: rgba(59, 130, 246, 0.1); color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (min-width: 768px) {
+            .grid-peliculas { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+            .pelicula-titulo { font-size: 15px; }
+            .pelicula-meta { font-size: 12px; }
+            .header-title h1 { font-size: 26px; }
+            body { padding-bottom: 0; } 
+            .bottom-nav { display: none; }
+            .desktop-nav { display: flex; gap: clamp(10px, 2vw, 25px); align-items: center; justify-content: center; flex: 1; margin: 0 15px; }
+            .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+            .desktop-nav-item:hover { color: #fff; }
+            .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
+            .slide-item { flex: 0 0 350px; } /* Banner más grande en PC */
+        }
+        @media (max-width: 767px) { .desktop-nav { display: none; } }
+</style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-film" style="color: var(--primary); font-size: 24px;"></i>
+                <h1>Sport Live VOD</h1>
+            </div>
+            
+            <nav class="desktop-nav">
+                <div class="desktop-nav-item" onclick="navegarSeguro('inicio.html')"><i class="fas fa-poll"></i> Resultados</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('agenda.html')"><i class="fas fa-calendar-alt"></i> Agenda</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('television.html')"><i class="fas fa-tv"></i> TV En Vivo</div>
+                <div class="desktop-nav-item active" onclick="navegarSeguro('peliculas.html')"><i class="fas fa-film"></i> Películas</div>
+            </nav>
+
+            <div class="menu-container">
+                <button class="menu-button" id="menuButton" title="Menú Opciones"><i class="fas fa-bars"></i></button>
+                 <div class="menu-dropdown" id="menuDropdown">
+                    <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SportLive</a>
+                    <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
+                    <a onclick="compartirWeb()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-container-main">
+        <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="input-busqueda" class="form__field" placeholder="Buscar película en todos los servidores..." autocomplete="off">
+            <div id="live-search-box" class="live-search-box"></div>
+        </div>
+        <button onclick="realizarBusquedaUnificada()" class="btn-web"><i class="fas fa-search"></i></button>
+    </div>
+
+    <div class="slider-container" id="top-slider-container">
+        <div class="slider-title"><i class="fas fa-fire"></i> Top Tendencias</div>
+        <div class="slider-track" id="slider-track">
+            </div>
+    </div>
+
+    <div class="section-buttons" id="contenedor-filtros"></div>
+
+    <main>
+        <div class="grid-peliculas" id="contenedor-peliculas">
+            <div class="loader-container" id="cargando">
+                <div class="spinner"></div>
+                <p style="color: #64748b; font-size: 14px; font-weight: 600;">Sincronizando cartelera...</p>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div onclick="navegarSeguro('inicio.html')" class="nav-item"><i class="fas fa-poll"></i><span>Resultados</span></div>
+        <div onclick="navegarSeguro('agenda.html')" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Agenda</span></div>
+        <div onclick="navegarSeguro('television.html')" class="nav-item"><i class="fas fa-tv"></i><span>TV En Vivo</span></div>
+        <div onclick="navegarSeguro('peliculas.html')" class="nav-item active"><i class="fas fa-film"></i><span>Películas</span></div>
+    </nav>
+
+<script>
+    // ==========================================
+    // 🚨 SEGURIDAD FRONTEND MAXIMA 🚨
+    // ==========================================
+    (function() {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; 
+        };
+        setInterval(function() {
+            let before = new Date().getTime();
+            debugger; 
+            let after = new Date().getTime();
+            if (after - before > 100) {
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%; font-family:sans-serif;'>Acceso Denegado</h1>";
+                window.location.replace("https://www.google.com");
+            }
+        }, 1500);
+    })();
+
+    function compartirWeb() {
+        if (navigator.share) {
+            navigator.share({ title: 'Sport Live VOD', text: '¡Mira las mejores películas gratis!', url: window.location.origin });
+        } else {
+            alert("Copia este enlace para compartir: " + window.location.origin);
+        }
+    }
+    function navegarSeguro(url) { window.location.href = url; }
+
+    // Dropdown Menú
+    const menuBtn = document.getElementById('menuButton');
+    const menuDropdown = document.getElementById('menuDropdown');
+    if (menuBtn && menuDropdown) {
+        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menuDropdown.classList.toggle('active'); });
+        document.addEventListener('click', () => { menuDropdown.classList.remove('active'); });
+    }
+
+    // ==========================================
+    // LÓGICA VOD KIAMBER
+    // ==========================================
+    const DOMINIO_API = "https://telelatinomax.shop"; 
+    let todasLasPeliculas = [];
+    let peliculasVisibles = []; 
+    let paginaActual = 0;
+    const ITEMS_POR_PAGINA = 48; 
+    let cargandoMas = false;
+    let autoScrollInterval; // Variable para el scroll automático
+
+    const contenedor = document.getElementById('contenedor-peliculas');
+    const buscador = document.getElementById('input-busqueda');
+    const cajaResultados = document.getElementById('live-search-box');
+    let temporizadorBuscador;
+
+async function cargarDatos() {
+        try {
+            const [resCat, resPelis] = await Promise.all([
+                fetch(`${DOMINIO_API}/vod/categorias`),
+                fetch(`${DOMINIO_API}/vod/peliculas`)
+            ]);
+            
+            const categorias = await resCat.json();
+            todasLasPeliculas = await resPelis.json();
+            todasLasPeliculas.reverse(); 
+
+            // 🔥 CIRUGÍA: FILTRAR SOLO LAS PELÍCULAS DE LA CATEGORÍA "TOP" PARA EL SLIDER 🔥
+            // 1. Buscamos cuál es el ID exacto de la categoría que contiene la palabra "TOP"
+            const categoriaTop = categorias.find(cat => cat.category_name && cat.category_name.toUpperCase().includes('TOP'));
+            
+            let pelisParaElSlider = [];
+            if (categoriaTop) {
+                // 2. Si existe la categoría TOP, filtramos las películas que tengan ese ID
+                pelisParaElSlider = todasLasPeliculas.filter(p => p.categories_ids && p.categories_ids.split(',').includes(categoriaTop.category_id.toString()));
+            } else {
+                // Si por alguna razón un día no existe la categoría, toma las recientes como plan B
+                pelisParaElSlider = todasLasPeliculas;
+            }
+
+            // 3. INYECTAR EL SLIDER SOLO CON LAS PELÍCULAS DEL TOP
+            construirSliderTop(pelisParaElSlider);
+
+            const divFiltros = document.getElementById('contenedor-filtros');
+            divFiltros.innerHTML = `<div class="section-button active" onclick="filtrar('todas', this)">TODOS</div>`;
+            
+            categorias.forEach(cat => {
+                if(cat.category_name) {
+                    divFiltros.innerHTML += `<div class="section-button" onclick="filtrar('${cat.category_id}', this)">${cat.category_name.toUpperCase()}</div>`;
+                }
+            });
+
+            document.getElementById('cargando').style.display = 'none';
+            peliculasVisibles = todasLasPeliculas;
+            cargarSiguientePagina(true);
+        } catch (error) { 
+            document.getElementById('cargando').innerHTML = "<i class='fas fa-exclamation-triangle'></i><br>Error al conectar con el servidor.";
+        }
+    }
+
+    // 🔥 FUNCIÓN PARA CREAR Y ROTAR EL SLIDER 🔥
+    function construirSliderTop(peliculas) {
+        const track = document.getElementById('slider-track');
+        const container = document.getElementById('top-slider-container');
+        
+        // Tomamos las 12 primeras para el Slider
+        const topPelis = peliculas.slice(0, 12);
+        if (topPelis.length === 0) return;
+
+        let htmlSlider = '';
+topPelis.forEach(p => {
+            // 🔥 MAGIA BLINDADA: Validamos que exista backdrop, si no usamos stream_icon, y si no, imagen por defecto
+            let imagenUrl = p.backdrop ? p.backdrop : (p.stream_icon ? p.stream_icon : null);
+            
+            if (imagenUrl && imagenUrl.startsWith('/')) {
+                imagenUrl = `https://image.tmdb.org/t/p/w780${imagenUrl}`;
+            } else if (!imagenUrl) {
+                imagenUrl = 'https://via.placeholder.com/780x440/111827/3b82f6?text=Kiamber+Top';
+            }
+
+            const nombreSeguro = p.name ? p.name.replace(/'/g, "\\'") : 'Sin Título';
+            const yearMostrar = p.release || 'HD';
+
+            htmlSlider += `
+                <div class="slide-item" onclick="verPelicula(${p.stream_id}, '${encodeURIComponent(nombreSeguro)}')">
+                    <img src="${imagenUrl}" alt="${p.name}" class="slide-img" loading="lazy" onerror="this.src='https://via.placeholder.com/780x440/111827/3b82f6?text=Kiamber+Top'">
+                    <div class="slide-overlay">
+                        <div class="slide-title">${p.name}</div>
+                        <div class="slide-meta">
+                            <span><i class="fas fa-calendar-alt"></i> ${yearMostrar}</span>
+                            <span class="slide-badge">TOP</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        track.innerHTML = htmlSlider;
+        container.style.display = 'block';
+
+        // Lógica de Scroll Automático (Rueda cada 3 segundos)
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(() => {
+            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' }); // Vuelve al inicio
+            } else {
+                track.scrollBy({ left: 265, behavior: 'smooth' }); // Avanza una tarjeta (250px + 15px de gap)
+            }
+        }, 3000);
+
+        // Pausar el carrusel si el usuario pone el dedo/mouse encima
+        track.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        track.addEventListener('touchstart', () => clearInterval(autoScrollInterval));
+    }
+
+    window.filtrar = function(idCategoria, btnElement) {
+        buscador.value = ''; 
+        cajaResultados.style.display = 'none';
+        document.querySelectorAll('.section-button').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        // Si filtra, ocultamos el Slider Top para no confundir. Si vuelve a "TODAS", lo mostramos.
+        document.getElementById('top-slider-container').style.display = idCategoria === 'todas' ? 'block' : 'none';
+
+        peliculasVisibles = idCategoria === 'todas' 
+            ? todasLasPeliculas 
+            : todasLasPeliculas.filter(p => p.categories_ids && p.categories_ids.split(',').includes(idCategoria.toString()));
+        
+        cargarSiguientePagina(true);
+    }
+
+    function cargarSiguientePagina(reiniciar = false) {
+        if (reiniciar) {
+            contenedor.innerHTML = '';
+            paginaActual = 0;
+        }
+
+        const inicio = paginaActual * ITEMS_POR_PAGINA;
+        const fin = inicio + ITEMS_POR_PAGINA;
+        const lote = peliculasVisibles.slice(inicio, fin);
+
+        if (lote.length === 0 && reiniciar) {
+            contenedor.innerHTML = `<div class="loader-container"><i class="fas fa-ghost" style="font-size: 30px; color:#64748b;"></i><p style="color:#64748b; margin-top:10px;">No se encontraron películas.</p></div>`;
+            return;
+        }
+
+        let htmlLote = '';
+        lote.forEach(p => {
+            let imagenUrl = p.stream_icon;
+            if (imagenUrl && imagenUrl.startsWith('/')) imagenUrl = `https://image.tmdb.org/t/p/w300${imagenUrl}`;
+            else if (!imagenUrl) imagenUrl = 'https://via.placeholder.com/200x300/111827/3b82f6?text=Kiamber';
+
+            const nombreSeguro = p.name.replace(/'/g, "\\'");
+            
+            const yearMostrar = p.release || 'HD';
+
+            htmlLote += `
+                <div class="pelicula-card" style="border-bottom: 3px solid var(--primary);" onclick="verPelicula(${p.stream_id}, '${encodeURIComponent(nombreSeguro)}')">
+                    <img src="${imagenUrl}" alt="Portada" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300/111827/3b82f6?text=Kiamber'">
+                    <div class="pelicula-info">
+                        <div class="pelicula-titulo">${p.name}</div>
+                        <div class="pelicula-meta">
+                            <span><i class="fas fa-calendar-alt"></i> ${yearMostrar}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        contenedor.insertAdjacentHTML('beforeend', htmlLote);
+        paginaActual++;
+        cargandoMas = false;
+    }
+
+    // SCROLL INFINITO
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+            if (!cargandoMas && (paginaActual * ITEMS_POR_PAGINA) < peliculasVisibles.length) {
+                cargandoMas = true;
+                cargarSiguientePagina();
+            }
+        }
+    });
+
+    window.verPelicula = function(id, nombre) {
+        window.location.href = `ver.html?peli=${id}&n=${nombre}`;
+    }
+    
+    window.verPeliculaExterna = function(id, nombre, fuente, sinopsis, fondo, año, rating) {
+        window.location.href = `ver.html?peli=${id}&n=${nombre}&fuente=${fuente}&desc=${sinopsis}&bg=${fondo}&y=${año}&r=${rating}`;
+    }
+
+    // =====================================================================
+    // 🔥 LÓGICA DEL BUSCADOR PREDICTIVO EN VIVO 🔥
+    // =====================================================================
+    buscador.addEventListener('input', function(e) {
+        const texto = e.target.value.trim().toLowerCase();
+        
+        if (texto.length < 3) {
+            cajaResultados.style.display = 'none';
+            return;
+        }
+
+        clearTimeout(temporizadorBuscador);
+        cajaResultados.style.display = 'block';
+        cajaResultados.innerHTML = '<div class="sugerencia-spinner"><i class="fas fa-circle-notch fa-spin"></i> Buscando...</div>';
+
+        temporizadorBuscador = setTimeout(async () => {
+            try {
+                // 🔥 BUSCADOR INTELIGENTE: Busca por palabras sueltas y aumentamos el límite a 8 🔥
+                const palabrasBusqueda = texto.split(' ').filter(pal => pal.length > 0);
+                const localesEncontradas = todasLasPeliculas.filter(p => {
+                    const nombreLocal = p.name.toLowerCase();
+                    return palabrasBusqueda.every(palabra => nombreLocal.includes(palabra));
+                }).slice(0, 8); 
+                
+                const req = await fetch(`https://api.telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(texto)}`);
+                const data = await req.json();
+
+                let htmlSugerencias = '';
+
+                // A. Sugerencias Locales (SV1 - AZUL)
+                localesEncontradas.forEach(p => {
+                    let imagenUrl = p.stream_icon;
+                    if (imagenUrl && imagenUrl.startsWith('/')) imagenUrl = `https://image.tmdb.org/t/p/w300${imagenUrl}`;
+                    else if (!imagenUrl) imagenUrl = 'https://via.placeholder.com/45x65/111827/3b82f6?text=KO';
+                    
+                    const nombreSeguro = p.name.replace(/'/g, "\\'");
+
+                    let peliExterna = null;
+                    if (data.data && data.data.posts) {
+                        peliExterna = data.data.posts.find(ext => 
+                            ext.title.toLowerCase().includes(p.name.toLowerCase()) || 
+                            p.name.toLowerCase().includes(ext.title.toLowerCase())
+                        );
+                    }
+                    
+                    const yearMostrar = p.release || (peliExterna ? peliExterna.year : 'HD');
+                    let ratingMostrar = (p.rating_5based && p.rating_5based > 0) ? (p.rating_5based * 2).toFixed(1) : 'N/A';
+                    if (peliExterna && peliExterna.rating) ratingMostrar = peliExterna.rating;
+
+                    htmlSugerencias += `
+                        <div class="sugerencia-item" style="border-left: 3px solid var(--primary);" onclick="verPelicula(${p.stream_id}, '${encodeURIComponent(nombreSeguro)}')">
+                            <img src="${imagenUrl}" class="sugerencia-img" onerror="this.src='https://via.placeholder.com/45x65/111827/3b82f6?text=KO'">
+                            <div class="sugerencia-info">
+                                <h4 style="color:#60a5fa; margin-bottom: 6px;">${p.name}</h4>
+                                <p style="margin: 0; font-size: 11px; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
+                                    <span>${yearMostrar}</span>
+                                    <span><i class="fas fa-star" style="color:#eab308;"></i> ${ratingMostrar}</span>
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // B. Sugerencias de la Web (SV2 - VERDE)
+                if (data.data && data.data.posts && data.data.posts.length > 0) {
+                    data.data.posts.slice(0, 8).forEach(peli => {
+                        const descSegura = encodeURIComponent(peli.overview || '');
+                        const urlReproductor = `ver.html?peli=${peli._id}&n=${encodeURIComponent(peli.title)}&fuente=${encodeURIComponent(peli.f_origen)}&y=${peli.year}&r=${peli.rating}&bg=${encodeURIComponent(peli.backdrop)}&desc=${descSegura}`;
+                        
+                        let imgPoster = peli.poster;
+                        if (imgPoster && imgPoster.startsWith("ver.php")) imgPoster = `https://api.telelatinomax.shop/api-kiamber/${imgPoster}`;
+
+                        htmlSugerencias += `
+                            <a href="${urlReproductor}" class="sugerencia-item" style="border-left: 3px solid #10b981;">
+                                <img src="${imgPoster}" class="sugerencia-img" onerror="this.src='https://via.placeholder.com/45x65/111827/10b981?text=KO'">
+                                <div class="sugerencia-info">
+                                    <h4 style="color:#10b981; margin-bottom: 6px;">${peli.title}</h4>
+                                    <p style="margin: 0; font-size: 11px; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
+                                        <span>${peli.year}</span>
+                                        <span><i class="fas fa-star" style="color:#eab308;"></i> ${peli.rating}</span>
+                                    </p>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+                
+                if (htmlSugerencias === '') {
+                    cajaResultados.innerHTML = '<div class="sugerencia-spinner" style="color:#ef4444;"><i class="fas fa-times-circle"></i> No se encontraron resultados.</div>';
+                } else {
+                    cajaResultados.innerHTML = htmlSugerencias;
+                }
+            } catch (error) {
+                cajaResultados.innerHTML = '<div class="sugerencia-spinner" style="color:#ef4444;"><i class="fas fa-exclamation-triangle"></i> Error de conexión.</div>';
+            }
+        }, 500); 
+    });
+    
+    document.addEventListener('click', function(event) {
+        if (!buscador.contains(event.target) && !cajaResultados.contains(event.target)) {
+            cajaResultados.style.display = 'none';
+        }
+    });
+
+    // =====================================================================
+    // 🔥 BUSCADOR AL PRESIONAR ENTER O BOTÓN (MUESTRA GRID COMPLETO)
+    // =====================================================================
+    async function realizarBusquedaUnificada() {
+        const termino = buscador.value.trim().toLowerCase();
+        
+        document.querySelectorAll('.section-button').forEach(b => b.classList.remove('active'));
+        cajaResultados.style.display = 'none'; 
+        
+        if (!termino) {
+            peliculasVisibles = todasLasPeliculas;
+            document.querySelector('.section-button').classList.add('active');
+            document.getElementById('top-slider-container').style.display = 'block'; // Volver a mostrar el slider
+            cargarSiguientePagina(true);
+            return;
+        }
+
+        // Ocultar Slider al buscar
+        document.getElementById('top-slider-container').style.display = 'none';
+
+        contenedor.innerHTML = `<div class="loader-container"><div class="spinner"></div><p style="color:#64748b;">Buscando "${termino}"...</p></div>`;
+        cargandoMas = false;
+
+        // 🔥 BUSCADOR INTELIGENTE PARA EL GRID PRINCIPAL 🔥
+        const palabrasBusqueda = termino.split(' ').filter(pal => pal.length > 0);
+        const resultadosLocales = todasLasPeliculas.filter(p => {
+            const nombreLocal = p.name.toLowerCase();
+            return palabrasBusqueda.every(palabra => nombreLocal.includes(palabra));
+        });
+
+        let resultadosExternos = [];
+        try {
+            const res = await fetch(`https://api.telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(termino)}`);
+            const result = await res.json();
+            if (result.data && result.data.posts) {
+                resultadosExternos = result.data.posts;
+            }
+        } catch (e) { console.log("El servidor externo no respondió."); }
+
+        contenedor.innerHTML = '';
+
+        if (resultadosLocales.length === 0 && resultadosExternos.length === 0) {
+            contenedor.innerHTML = `<div class="loader-container"><i class="fas fa-ghost" style="font-size:30px; color:#64748b;"></i><p style="color:#64748b; margin-top:10px;">No se encontró "${termino}".</p></div>`;
+            return;
+        }
+
+        // =====================================================================
+        // 🔥 DIBUJO DEL GRID DE RESULTADOS FINALES 
+        // =====================================================================
+        let htmlFinal = '';
+
+        resultadosLocales.forEach(p => {
+            let imagenUrl = p.stream_icon;
+            if (imagenUrl && imagenUrl.startsWith('/')) imagenUrl = `https://image.tmdb.org/t/p/w300${imagenUrl}`;
+            else if (!imagenUrl) imagenUrl = 'https://via.placeholder.com/200x300/111827/3b82f6?text=Kiamber';
+
+            const nombreSeguro = p.name.replace(/'/g, "\\'");
+            
+            let peliExterna = null;
+            if (resultadosExternos.length > 0) {
+                peliExterna = resultadosExternos.find(ext => 
+                    ext.title.toLowerCase().includes(p.name.toLowerCase()) || 
+                    p.name.toLowerCase().includes(ext.title.toLowerCase())
+                );
+            }
+            
+            const yearMostrar = p.release || (peliExterna ? peliExterna.year : 'HD');
+
+            htmlFinal += `
+                <div class="pelicula-card" style="border-bottom: 3px solid var(--primary);" onclick="verPelicula(${p.stream_id}, '${encodeURIComponent(nombreSeguro)}')">
+                    <img src="${imagenUrl}" alt="Portada" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300/111827/3b82f6?text=Kiamber'">
+                    <div class="pelicula-info">
+                        <div class="pelicula-titulo">${p.name}</div>
+                        <div class="pelicula-meta">
+                            <span><i class="fas fa-calendar-alt"></i> ${yearMostrar}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        resultadosExternos.forEach(p => {
+            const tituloMostrar = p.title; 
+            const idSeguro = encodeURIComponent(p._id).replace(/'/g, "%27");
+            const nombreSeguro = encodeURIComponent(p.title).replace(/'/g, "%27");
+            const origenSeguro = encodeURIComponent(p.f_origen).replace(/'/g, "%27");
+            
+            const descSegura = encodeURIComponent(p.overview || '').replace(/'/g, "%27");
+            const yearSeguro = p.year || 'HD';
+            
+            let posterFinal = p.poster;
+            if (posterFinal && posterFinal.startsWith("ver.php")) posterFinal = `https://api.telelatinomax.shop/api-kiamber/${posterFinal}`;
+
+            let fondoFinal = p.backdrop || '';
+            if (fondoFinal && fondoFinal.startsWith("ver.php")) fondoFinal = `https://api.telelatinomax.shop/api-kiamber/${fondoFinal}`;
+            const fondoSeguro = encodeURIComponent(fondoFinal).replace(/'/g, "%27");
+
+            htmlFinal += `
+                <div class="pelicula-card" style="border-bottom: 3px solid #10b981;" onclick="verPeliculaExterna('${idSeguro}', '${nombreSeguro}', '${origenSeguro}', '${descSegura}', '${fondoSeguro}', '${encodeURIComponent(yearSeguro)}', '${encodeURIComponent('N/A')}')">
+                    <img src="${posterFinal}" alt="Portada" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300/111827/10b981?text=Kiamber+Web'">
+                    <div class="pelicula-info">
+                        <div class="pelicula-titulo">${tituloMostrar}</div>
+                        <div class="pelicula-meta">
+                            <span><i class="fas fa-calendar-alt"></i> ${yearSeguro}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        contenedor.innerHTML = htmlFinal;
+    }
+
+    buscador.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') realizarBusquedaUnificada();
+    });
+
+    cargarDatos();
+</script>
+</body>
+</html>

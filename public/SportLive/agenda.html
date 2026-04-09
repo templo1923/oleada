@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SPORT LIVE - Agenda Pro Eventos En Vivo Hoy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILO PRO UNIFICADO (Mismo de TV) --- */
+        :root {
+            --primary: #3b82f6; 
+            --secondary: #1e3a8a;
+            --bg-dark: #080c14;
+            --card-bg: #111827;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #f8fafc; 
+            overflow-x: hidden; 
+            padding-bottom: 110px;
+            background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.2), transparent 400px);
+        }
+
+        /* HEADER PREMIUM (Mismo de TV) */
+        header { 
+            background: rgba(8, 12, 20, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { 
+            font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Animación del Balón (Mantenida de tu Agenda) */
+        .soccer-ball {
+            font-size: 24px; 
+            color: var(--primary);
+            animation: spin 3s linear infinite, bounce 1.2s ease-in-out infinite, glow 2s ease-in-out infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(59,130,246,0.4)); } 50% { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.8)); } }
+
+        /* Menú y Redes */
+        .menu-container { position: relative; }
+        .menu-button {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
+            width: 40px; height: 40px; color: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .menu-button:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.05); }
+        
+        .menu-dropdown {
+            position: absolute; top: 50px; right: 0; background: #111827;
+            border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            min-width: 200px; display: none; z-index: 1002; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .menu-dropdown.active { display: block; animation: fadeIn 0.2s ease; }
+        .menu-dropdown a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px;
+            color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .menu-dropdown a:hover { background: rgba(59, 130, 246, 0.1); color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Contenedor Principal Agenda */
+        main { flex: 1; padding: 20px 15px; width: 100%; max-width: 900px; margin: 0 auto; }
+
+/* --- NUEVO HERO DE AGENDA (Estilo Next.js) --- */
+.agenda-hero { text-align: center; margin-bottom: 35px; margin-top: 10px; }
+.badges-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 20px; }
+.badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 16px; border-radius: 30px; font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px; color: #fff;
+}
+.badge-date { border-color: rgba(59, 130, 246, 0.3); }
+.badge-gmt { color: #94a3b8; }
+.ping-dot {
+    width: 8px; height: 8px; background-color: #ef4444; border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444; animation: pulse-red 1.5s infinite;
+}
+.hero-title { font-size: 32px; font-weight: 900; color: #fff; margin-bottom: 12px; line-height: 1.1; letter-spacing: -0.5px; }
+.hero-title .text-primary { color: var(--primary); }
+.hero-subtitle { font-size: 14px; color: #94a3b8; max-width: 600px; margin: 0 auto; line-height: 1.5; padding: 0 10px; }
+.hero-subtitle strong { color: #fff; font-size: 15px; }
+
+@media (min-width: 768px) {
+    .hero-title { font-size: 48px; }
+    .hero-subtitle { font-size: 16px; }
+    .badge { font-size: 12px; padding: 10px 20px; }
+}
+
+        /* BUSCADOR ESTILO MODERNO (Mismo de TV) */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .search-input {
+            width: 100%; background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; padding: 12px 15px 12px 45px; color: #fff;
+            font-size: 14px; outline: none; transition: 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); background: rgba(255,255,255,0.08); }
+        .search-icon {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: var(--primary); font-size: 16px;
+        }
+        input[type="search"]::-webkit-search-cancel-button {
+            -webkit-appearance: none; height: 14px; width: 14px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233b82f6"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>') no-repeat center center;
+            cursor: pointer;
+        }
+
+        /* Filtros Agenda */
+        .filter-wrapper { position: relative; margin-bottom: 15px; }
+        .filter-wrapper::after {
+            content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%;
+            background: linear-gradient(to right, transparent, var(--bg-dark));
+            pointer-events: none; z-index: 5;
+        }
+
+        #filter-container { 
+            display: flex; gap: 10px; overflow-x: auto; 
+            padding: 5px 40px 15px 5px; scrollbar-width: none; 
+            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+        }
+        #filter-container::-webkit-scrollbar { display: none; }
+
+        .filter-btn {
+            background: var(--glass); color: #94a3b8; border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 22px; border-radius: 30px; font-size: 13px; font-weight: 600;
+            white-space: nowrap; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .filter-btn.active { 
+            background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; font-weight: 800; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); border-color: transparent; 
+        }
+
+        /* 💡 ESTILO DEL CONTADOR DE EVENTOS 💡 */
+        .cat-count {
+            background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 800;
+        }
+        .filter-btn.active .cat-count {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .scroll-hint {
+            position: absolute; right: 5px; top: 35%; transform: translateY(-50%);
+            color: var(--primary); font-size: 12px; z-index: 6; animation: moveHint 1.5s infinite;
+            pointer-events: none; opacity: 0.7;
+        }
+        @keyframes moveHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+        /* Tarjetas de Eventos */
+        .agenda-lista { display: flex; flex-direction: column; gap: 12px; }
+        .match-card { background: var(--card-bg); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); overflow: hidden; }
+        .match-info { padding: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: background 0.3s; }
+        .match-info:hover { background: #1f2937; }
+        
+        .match-time { font-size: 14px; font-weight: 900; color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 5px 10px; border-radius: 8px; min-width: 65px; text-align: center; border: 1px solid rgba(34, 197, 94, 0.2);}
+        
+        .live-dot-mini { height: 8px; width: 8px; background-color: #ef4444; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #ef4444; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .match-flag { width: 30px; height: 30px; border-radius: 50%; object-fit: contain; background: white; padding: 3px; border: 2px solid var(--secondary); }
+        .match-name { flex: 1; font-weight: 700; font-size: 14px; color: #ffffff; }
+        .toggle-icon { color: var(--primary); transition: 0.3s; }
+        .toggle-icon.rotate { transform: rotate(180deg); }
+
+        .match-channels { display: none; background: rgba(15, 23, 42, 0.8); padding: 10px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .channel-link {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 18px; color: #ffffff; text-decoration: none;
+            font-weight: 700; font-size: 13px; border-radius: 12px; margin-bottom: 6px; 
+            background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); transition: 0.3s;
+            cursor: pointer; 
+        }
+        .channel-link:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
+
+        /* 🚨 NAVEGACIÓN INFERIOR (MÓVIL - EDGE TO EDGE TIPO APP) 🚨 */
+        .bottom-nav {
+            position: fixed; 
+            bottom: 0; left: 0; width: 100%; 
+            background: rgba(8, 12, 20, 0.95); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            padding: 8px 10px 15px 10px; 
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1001; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
+        }
+        
+        .nav-item { 
+            color: #64748b; text-decoration: none; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 6px; transition: all 0.3s; flex: 1; cursor: pointer;
+        }
+        
+        .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
+        
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
+
+        /* 💻 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; } 
+            .bottom-nav { display: none; }
+            .header-title h1 { font-size: 26px; }
+
+            .header-content { justify-content: space-between; }
+            
+            .desktop-nav { 
+                display: flex; 
+                gap: clamp(10px, 2vw, 25px); 
+                align-items: center; 
+                justify-content: center; 
+                flex: 1; 
+                margin: 0 15px; 
+            }
+            
+            .desktop-nav-item { 
+                color: #94a3b8; 
+                font-size: clamp(12px, 1.2vw, 14px); 
+                font-weight: 600; cursor: pointer;
+                text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+                display: flex; align-items: center; gap: 8px;
+                white-space: nowrap; 
+            }
+            
+            .desktop-nav-item:hover { color: #fff; transform: scale(1.05); }
+            .desktop-nav-item.active { color: #ffffff; font-weight: 900; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); border-bottom: 2px solid white; padding-bottom: 2px; }
+            .desktop-nav-item i { font-size: 16px; }
+        }
+
+        /* 📱 OCULTAMOS EL MENÚ SUPERIOR EN CELULARES 📱 */
+        @media (max-width: 767px) {
+            .desktop-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <span class="soccer-ball">⚽</span>
+                <h1>Sport Live</h1>
+            </div>
+
+            <nav class="desktop-nav">
+                <div class="desktop-nav-item" onclick="navegarSeguro('inicio.html')"><i class="fas fa-poll"></i> Resultados</div>
+                <div class="desktop-nav-item active" onclick="navegarSeguro('agenda.html')"><i class="fas fa-calendar-alt"></i> Agenda</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('television.html')"><i class="fas fa-tv"></i> TV En Vivo</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('peliculas.html')"><i class="fas fa-film"></i> Películas</div>
+            </nav>
+
+            <div class="menu-container">
+                <button class="menu-button" id="menuButton" title="Menú Opciones"><i class="fas fa-bars"></i></button>
+                 <div class="menu-dropdown" id="menuDropdown">
+                    <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SporLive</a>
+                    <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
+                    <a onclick="compartirWeb()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+<div class="agenda-hero">
+    <div class="badges-container">
+        <div class="badge badge-date">
+            <span class="ping-dot"></span> Hoy: <span id="fecha-actual">...</span>
+        </div>
+<div class="badge badge-gmt">
+            <i class="fas fa-globe"></i> GMT-5 | <span id="hora-actual" style="color: #fff; margin-left: 4px; width: 75px; text-align: left; display: inline-block;">...</span>
+        </div>
+    </div>
+    <h1 class="hero-title">Agenda <span class="text-primary">Deportiva</span></h1>
+    <p class="hero-subtitle">Selecciona tu deporte favorito y no te pierdas ninguna transmisión. Hay <strong id="count-agenda">0</strong> eventos disponibles hoy.</p>
+</div>
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="search" id="searchInput" class="search-input" placeholder="Buscar equipo, torneo o deporte...">
+        </div>
+
+        <div class="filter-wrapper">
+            <div id="filter-container"></div>
+            <div class="scroll-hint" id="scrollHint"><i class="fas fa-chevron-right"></i></div>
+        </div>
+
+        <div class="agenda-lista" id="menu"></div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div onclick="navegarSeguro('inicio.html')" class="nav-item"><i class="fas fa-poll"></i><span>Resultados</span></div>
+        <div onclick="navegarSeguro('agenda.html')" class="nav-item active"><i class="fas fa-calendar-alt"></i><span>Agenda</span></div>
+        <div onclick="navegarSeguro('television.html')" class="nav-item"><i class="fas fa-tv"></i><span>TV En Vivo</span></div>
+        <div onclick="navegarSeguro('peliculas.html')" class="nav-item"><i class="fas fa-film"></i><span>Películas</span></div>
+    </nav>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    // ==========================================
+    // 🚨 SEGURIDAD FRONTEND MAXIMA (PARANOIA MODE + ANTI-IFRAME) 🚨
+    // ==========================================
+    (function() {
+        // Bloquear click derecho
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        // Bloquear atajos de teclado de desarrollador
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; 
+        };
+        // Bloquear que otra web incruste tu página en un Iframe (Clickjacking)
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+        // Bucle infinito para trabar la consola si la logran abrir
+        setInterval(function() {
+            let before = new Date().getTime();
+            debugger; 
+            let after = new Date().getTime();
+            if (after - before > 100) {
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%; font-family:sans-serif;'>Acceso Denegado</h1>";
+                window.location.replace("https://www.google.com");
+            }
+        }, 1500);
+    })();
+
+    // 🚨 Función para navegar sin previsualizar URL
+    function navegarSeguro(url) {
+        window.location.href = url;
+    }
+
+    // 🚨 Función para compartir web
+    function compartirWeb() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Sport Live - Agenda',
+                text: '¡Mira la agenda de los mejores eventos deportivos hoy!',
+                url: window.location.origin
+            });
+        } else {
+            alert("Copia este enlace para compartir: " + window.location.origin);
+        }
+    }
+
+    const $ = jQuery;
+    const AGENDA_URL = "https://api.telelatinomax.shop/api/proxy.php"; 
+    const LIVETV_URL = "https://api.telelatinomax.shop/api/proxy_livetv.php"; 
+    const EXTRA_URL = "https://api.telelatinomax.shop/api/proxy_extra.php"; 
+    const ONLIVE_URL = "https://api.telelatinomax.shop/api/proxy_onlive.php"; 
+    const IMG_BASE = "https://cdn.pltvhd.com";
+
+    let todosLosPartidosGlobal = [];
+    let categoriaActual = "TODOS";
+    let textoBusqueda = "";
+
+    $(document).ready(function () {
+        obtenerAgenda();
+
+        // 🔥 NUEVO: MOTOR DEL RELOJ EN VIVO 🔥
+        function actualizarReloj() {
+            const ahora = new Date();
+            const opciones = { hour: 'numeric', minute: '2-digit',  hour12: true };
+            document.getElementById('hora-actual').innerText = ahora.toLocaleTimeString('en-US', opciones);
+        }
+        actualizarReloj(); // Arranca de inmediato
+        setInterval(actualizarReloj, 1000); // Se actualiza cada segundo
+
+        $("#menuButton").on("click", function(e) {
+            e.stopPropagation();
+            $("#menuDropdown").toggleClass("active");
+        });
+        $(document).on("click", () => $("#menuDropdown").removeClass("active"));
+
+        $("#filter-container").on("scroll", function() {
+            if ($(this).scrollLeft() > 20) {
+                $("#scrollHint").fadeOut();
+            } else {
+                $("#scrollHint").fadeIn();
+            }
+        });
+
+        $(document).on("click", ".match-info", function() {
+            const $channels = $(this).next(".match-channels");
+            $(".match-channels").not($channels).slideUp(300);
+            $(".toggle-icon").not($(this).find(".toggle-icon")).removeClass("rotate");
+            $channels.slideToggle(300);
+            $(this).find(".toggle-icon").toggleClass("rotate");
+        });
+
+        // 🚨 EVENTO DEL BUSCADOR 🚨
+        $("#searchInput").on("input", function() {
+            textoBusqueda = $(this).val().toLowerCase();
+            renderizarLista();
+        });
+
+        setInterval(obtenerAgenda, 120000);
+    });
+
+    // Función para limpiar HTML si los títulos vienen sucios
+    function textoPuro(cadenaConHTML) {
+        const temp = document.createElement('div');
+        temp.innerHTML = cadenaConHTML;
+        return temp.textContent || temp.innerText || "";
+    }
+
+    // --- CEREBRO DE CATEGORÍAS ESTRICTO Y REFINADO ---
+    function obtenerDeporte(evento) {
+        const descHTML = evento.attributes.diary_description.toUpperCase();
+        const desc = textoPuro(descHTML).toUpperCase();
+
+        if (evento.attributes.sport_name) {
+            const sp = evento.attributes.sport_name.toUpperCase();
+            if (sp.includes("FÚTBOL") || sp.includes("FUTBOL") || sp.includes("FUTSAL") || sp.includes("SOCCER")) return "FÚTBOL";
+            if (sp.includes("VOLLEY") || sp.includes("VOLEY")) return "VOLEYBOL";
+            if (sp.includes("CRICKET") || sp.includes("CRÍQUET")) return "CRÍQUET";
+            return sp;
+        }
+
+        if (desc.includes("CRÍQUET") || desc.includes("CRICKET")) return "CRÍQUET";
+        if (desc.includes("FÚTBOL AUSTRALIANO") || desc.includes("AFL")) return "FUTBOL AMER./AUS.";
+        if (desc.includes("TENNIS") || desc.includes("TENIS") || desc.includes("ATP") || desc.includes("WTA") || desc.includes("ROLAND GARROS") || desc.includes("WIMBLEDON")) return "TENIS";
+        if (desc.includes("NBA") || desc.includes("BASKET") || desc.includes("BALONCESTO") || desc.includes("FIBA") || desc.includes("EUROLEAGUE")) return "BALONCESTO";
+        
+        if (desc.includes("MOTOR") || desc.includes("AUTOMOVILISMO") || desc.includes("MOTOCICLISMO") || desc.includes("F1") || desc.includes("FÓRMULA 1") || desc.includes("FORMULA 1") || desc.includes("GP") || desc.includes("MOTOGP") || desc.includes("NASCAR")) return "MOTOR";
+        
+        if (desc.includes("VOLEY") || desc.includes("VOLLEY") || desc.includes("VOLEIBOL") || desc.includes("VÓLEY")) return "VOLEYBOL";
+        
+        if (desc.includes("NHL") || desc.includes("HOCKEY")) return "HOCKEY";
+        if (desc.includes("MLB") || desc.includes("BÉISBOL") || desc.includes("BASEBALL") || desc.includes("BEISBOL")) return "BÉISBOL";
+        if (desc.includes("NFL") || desc.includes("AMERICAN FOOTBALL") || desc.includes("SUPER BOWL")) return "FUTBOL AMER./AUS.";
+        if (desc.includes("UFC") || desc.includes("BOXING") || desc.includes("MMA") || desc.includes("BOXEO") || desc.includes("FIGHT") || desc.includes("WWE") || desc.includes("COMBATE")) return "COMBATE";
+        if (desc.includes("BILLAR") || desc.includes("SNOOKER")) return "BILLAR";
+        if (desc.includes("DARTS") || desc.includes("DARDOS")) return "DARDOS";
+        if (desc.includes("CYCLING") || desc.includes("CICLISMO") || desc.includes("TOUR DE")) return "CICLISMO";
+        if (desc.includes("GOLF") || desc.includes("PGA")) return "GOLF";
+        if (desc.includes("RUGBY") || desc.includes("SIX NATIONS")) return "RUGBY";
+
+        if (desc.includes("FÚTBOL") || desc.includes("FUTBOL") || desc.includes(" X ") || desc.includes(" VS ") || desc.includes("FUTSAL") || desc.includes("QUEENS LEAGUE") || desc.includes("LIGA") || desc.includes("COPA") || desc.includes("SOCCER") || desc.includes("CHAMPIONS") || desc.includes("PREMIER") || desc.includes("SERIE A")) return "FÚTBOL";
+
+        return "VARIOS";
+    }
+
+    async function obtenerAgenda() {
+        const menuElement = document.getElementById("menu");
+        const titleElement = document.getElementById("title-agenda");
+        const fechaElement = document.getElementById("fecha-actual");
+        const filterElement = document.getElementById("filter-container");
+
+        const opcionesFecha = { weekday: 'long', day: 'numeric', month: 'long' };
+        fechaElement.innerText = new Date().toLocaleDateString('es-ES', opcionesFecha).toUpperCase();
+
+        try {
+            const [res1, res2, res3, res4] = await Promise.all([
+                fetch(AGENDA_URL).then(r => r.json()).catch(() => ({data: []})),
+                fetch(LIVETV_URL).then(r => r.json()).catch(() => ({data: []})),
+                fetch(EXTRA_URL).then(r => r.json()).catch(() => ({data: []})),
+                fetch(ONLIVE_URL).then(r => r.json()).catch(() => ({data: []}))
+            ]);
+
+            const mapaImagenes = {};
+            [...(res1.data || []), ...(res2.data || [])].forEach(p => {
+                const desc = p.attributes.diary_description.toUpperCase();
+                let img = p.attributes.country?.data?.attributes?.image?.data?.attributes?.url || p.attributes.country?.data?.attributes?.country_image;
+                if (img) mapaImagenes[desc] = img;
+            });
+
+            const res3Data = (res3.data || []).map(p => {
+                const descLimpia = p.attributes.diary_description.replace(/^\[[A-Z]{2}\]\s*/, '').toUpperCase();
+                if (!p.attributes.country?.data?.attributes?.country_image) {
+                    for (let nombreEnMapa in mapaImagenes) {
+                        if (descLimpia.includes(nombreEnMapa) || nombreEnMapa.includes(descLimpia)) {
+                            p.attributes.fotoAsignada = mapaImagenes[nombreEnMapa];
+                            break;
+                        }
+                    }
+                }
+                return p;
+            });
+
+            todosLosPartidosGlobal = [
+                ...(res1.data || []), 
+                ...(res2.data || []), 
+                ...(res4.data || []),
+                ...res3Data
+            ];
+            
+            if (todosLosPartidosGlobal.length === 0) {
+                menuElement.innerHTML = "<p style='text-align:center; padding:40px; color:#64748b;'><i class='fas fa-satellite-dish' style='font-size:30px; display:block; margin-bottom:10px;'></i>No hay eventos programados por ahora.</p>";
+                return;
+            }
+
+            todosLosPartidosGlobal.sort((a, b) => {
+                const hA = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
+                const hB = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
+                return hA.localeCompare(hB);
+            });
+
+            // --- LÓGICA DE ORDENAMIENTO Y CONTEO DE CATEGORÍAS ---
+            // 💡 MAGIA: Ahora contamos cuántos eventos hay por cada categoría
+            const conteoCategorias = { "TODOS": todosLosPartidosGlobal.length };
+            
+            todosLosPartidosGlobal.forEach(p => {
+                const deporte = obtenerDeporte(p);
+                conteoCategorias[deporte] = (conteoCategorias[deporte] || 0) + 1;
+            });
+            
+            let categoriasArray = Object.keys(conteoCategorias).filter(k => k !== "TODOS");
+            const ordenPrioridad = ["FÚTBOL", "BALONCESTO", "TENIS", "MOTOR", "COMBATE", "BÉISBOL"];
+            
+            categoriasArray.sort((a, b) => {
+                let indexA = ordenPrioridad.indexOf(a);
+                let indexB = ordenPrioridad.indexOf(b);
+                
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                if (indexA !== -1) return -1;
+                if (indexB !== -1) return 1;
+                return a.localeCompare(b);
+            });
+
+            categoriasArray.unshift("TODOS");
+
+            // 💡 Inyectamos el contador en el HTML de los botones
+            filterElement.innerHTML = categoriasArray.map(c => `
+                <button class="filter-btn ${c === categoriaActual ? 'active' : ''}" 
+                        onclick="cambiarFiltro('${c}')">
+                    ${c} <span class="cat-count">${conteoCategorias[c]}</span>
+                </button>
+            `).join('');
+
+            document.getElementById("count-agenda").innerText = todosLosPartidosGlobal.length;
+            renderizarLista();
+        } catch (error) { console.error(error); }
+    }
+
+    function cambiarFiltro(cat) {
+        categoriaActual = cat;
+        $(".filter-btn").removeClass("active");
+        $(".filter-btn").each(function() {
+            if ($(this).text().includes(cat)) $(this).addClass("active");
+        });
+        
+        const btn = $(`.filter-btn:contains('${cat}')`);
+        if(btn.length) {
+            const container = $('#filter-container');
+            const scrollPos = btn.position().left + container.scrollLeft() - (container.width() / 2) + (btn.width() / 2);
+            container.animate({scrollLeft: scrollPos}, 300);
+        }
+
+        renderizarLista();
+    }
+
+    function renderizarLista() {
+        const menuElement = document.getElementById("menu");
+        let html = "";
+        const ahora = new Date();
+        const horaActualNum = ahora.getHours() * 60 + ahora.getMinutes();
+
+        let filtrados = categoriaActual === "TODOS" 
+            ? todosLosPartidosGlobal 
+            : todosLosPartidosGlobal.filter(p => obtenerDeporte(p) === categoriaActual);
+
+        if (textoBusqueda !== "") {
+            filtrados = filtrados.filter(p => {
+                const nombreLimpio = textoPuro(p.attributes.diary_description).toLowerCase();
+                return nombreLimpio.includes(textoBusqueda);
+            });
+        }
+
+        if (filtrados.length === 0) {
+            menuElement.innerHTML = `<p style='text-align:center; padding:40px; color:#64748b;'><i class='fas fa-search' style='font-size:30px; display:block; margin-bottom:10px;'></i>No se encontraron eventos para "${textoBusqueda || categoriaActual}".</p>`;
+            return;
+        }
+
+        filtrados.forEach((evento) => {
+            const attr = evento.attributes;
+            const embeds = attr.embeds?.data || [];
+            const horaEvento = attr.diary_hour || attr.diary_time || "00:00";
+            const [h, m] = horaEvento.split(':').map(Number);
+            const horaPartNum = h * 60 + m;
+            const esAhora = (horaActualNum >= horaPartNum && horaActualNum <= (horaPartNum + 130)) 
+                ? '<span class="live-dot-mini"></span>' : '';
+
+            let imageUrl = attr.country?.data?.attributes?.image?.data?.attributes?.url || 
+                           attr.fotoAsignada || 
+                           attr.country?.data?.attributes?.country_image;
+
+            if (!imageUrl) {
+                imageUrl = `${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png`;
+            } else if (!imageUrl.startsWith('http')) {
+                imageUrl = `${IMG_BASE}${imageUrl}`;
+            }
+
+            const nombreMostrar = attr.diary_description;
+
+            html += `
+                <div class="match-card">
+                    <div class="match-info">
+                        <div class="match-time">${esAhora}${horaEvento.substring(0,5)}</div>
+                        <img src="${imageUrl}" class="match-flag" onerror="this.onerror=null; this.src='${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png';">
+                        <div class="match-name">${nombreMostrar}</div>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="match-channels">
+                        ${embeds.map(emb => {
+                            let rawUrl = emb.attributes.embed_iframe;
+                            let rFinal = "";
+                            
+                            if (rawUrl.includes('eventos.html?r=')) {
+                                rFinal = rawUrl.split('eventos.html?r=')[1];
+                                if (rFinal.includes('&')) rFinal = rFinal.split('&')[0]; 
+                            } 
+                            else if (rawUrl.startsWith('http')) {
+                                rFinal = btoa(rawUrl);
+                            } 
+                            else {
+                                rFinal = rawUrl;
+                            }
+
+                            let tituloCodificado = encodeURIComponent(attr.diary_description).replace(/'/g, "%27");
+
+                            return `<div onclick="navegarSeguro('ver.html?r=${rFinal}&n=${tituloCodificado}')" class="channel-link">
+                                        <span><i class="fas fa-play-circle" style="margin-right:8px; color:#60a5fa;"></i> ${emb.attributes.embed_name}</span>
+                                        <i class="fas fa-chevron-right" style="font-size:10px; opacity:0.5;"></i>
+                                    </div>`;
+                        }).join('')}
+                    </div>
+                </div>`;
+        });
+        menuElement.innerHTML = html;
+    }
+</script>
+
+
+<script>
+    async function cargarEventoDestacadoEnAgenda() {
+        try {
+            const response = await fetch('https://api.telelatinomax.shop/canales.php');
+            if (!response.ok) return;
+            const data = await response.json();
+            
+            let eventosEspeciales = [];
+            
+            for (const cat in data) {
+                if (cat.toUpperCase().includes("EVENTO")) {
+                    const canalesActivos = data[cat].filter(c => c.Estado !== "Inactivo");
+                    eventosEspeciales = eventosEspeciales.concat(canalesActivos);
+                }
+            }
+
+            if (eventosEspeciales.length > 0) {
+                const topEventos = eventosEspeciales.slice(0, 5);
+                const hayVarios = topEventos.length > 1;
+
+                let sliderHTML = `
+                <style>
+                    .destacados-slider { 
+                        display: flex; gap: 15px; overflow-x: auto; 
+                        width: 100%; max-width: 1000px; margin: 0 auto ${hayVarios ? '5px' : '20px'} auto; 
+                        padding: 10px 15px 25px 15px;
+                        scroll-snap-type: x mandatory; scrollbar-width: none;
+                        animation: slideDownFade 0.5s ease-out forwards;
+                    }
+                    .destacados-slider::-webkit-scrollbar { display: none; }
+                    
+                    .banner-destacado { 
+                        /* 🔥 TRUCO NETFLIX: Si hay varios, ocupa el 88% para dejar asomar el siguiente */
+                        flex: 0 0 ${hayVarios ? 'calc(88% - 15px)' : '100%'}; 
+                        scroll-snap-align: center;
+                        background: linear-gradient(145deg, #111827, #450a0a);
+                        border: 1px solid rgba(239, 68, 68, 0.5);
+                        border-radius: 16px; padding: 20px;
+                        display: flex; align-items: center; gap: 20px;
+                        box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+                        cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        position: relative; overflow: hidden;
+                        text-decoration: none; color: white;
+                    }
+                    
+                    /* En PC de escritorio mostramos 2 al mismo tiempo si hay varios */
+                    /* 🔥 AJUSTES PREMIUM PARA PC DE ESCRITORIO 🔥 */
+                    @media (min-width: 768px) {
+                        .banner-destacado { 
+                            flex: 0 0 ${hayVarios ? 'calc(50% - 15px)' : '100%'}; 
+                            padding: 25px 30px; /* Más respiro y elegancia interior */
+                            gap: 25px; /* Mayor separación entre logo y texto */
+                        }
+                        .destacado-img {
+                            width: 90px; /* Logo mucho más imponente */
+                            height: 90px;
+                            flex-shrink: 0;
+                        }
+                        .destacado-info h3 {
+                            font-size: 22px; /* Letra más grande y legible */
+                            white-space: normal; /* El texto baja a la otra línea si es muy largo (ya no se corta con ...) */
+                            line-height: 1.2;
+                            margin-bottom: 8px;
+                        }
+                        .destacado-info p {
+                            font-size: 14px; /* Subtítulo con mejor lectura */
+                            white-space: normal;
+                        }
+                        .destacado-play {
+                            width: 60px; /* Botón de Play más grande que invita al clic */
+                            height: 60px;
+                            font-size: 24px;
+                        }
+                    }
+                    
+                    .banner-destacado:hover { 
+                        transform: translateY(-4px); 
+                        box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4); 
+                        border-color: #ef4444; 
+                    }
+                    .destacado-badge { 
+                        position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+                        background: #ef4444; color: white;
+                        font-size: 10px; font-weight: 900; padding: 4px 20px; 
+                        border-radius: 0 0 10px 10px; letter-spacing: 1.5px; 
+                        animation: pulse-badge-agenda 1.5s infinite; z-index: 5;
+                        white-space: nowrap;
+                    }
+                    .destacado-img { 
+                        width: 70px; height: 70px; object-fit: contain; 
+                        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+                        border-radius: 10px; background: rgba(0,0,0,0.2); padding: 5px;
+                    }
+                    .destacado-info { flex: 1; min-width: 0; }
+.destacado-info h3 { 
+                        margin: 0 0 6px 0; 
+                        font-size: 19px; 
+                        font-weight: 800; 
+                        color: #fff; 
+                        text-transform: uppercase; 
+                        /* 🔥 Permite que el texto baje a la siguiente línea en todas las pantallas 🔥 */
+                        white-space: normal; 
+                        word-wrap: break-word;
+                    }
+                    .destacado-info p { 
+                        margin: 0; 
+                        font-size: 13px; 
+                        color: #fca5a5; 
+                        font-weight: 600; 
+                        /* 🔥 Permite que el subtítulo también baje de línea 🔥 */
+                        white-space: normal; 
+                    }
+                    .destacado-play { 
+                        background: rgba(239, 68, 68, 0.15); color: #ef4444; 
+                        width: 48px; height: 48px; border-radius: 50%; 
+                        display: flex; align-items: center; justify-content: center; 
+                        font-size: 20px; border: 1px solid rgba(239, 68, 68, 0.4); 
+                        transition: 0.3s; flex-shrink: 0;
+                    }
+                    .banner-destacado:hover .destacado-play { 
+                        background: #ef4444; color: white; transform: scale(1.15); box-shadow: 0 0 15px rgba(239,68,68,0.5);
+                    }
+                    
+                    /* Animaciones */
+                    @keyframes pulse-badge-agenda { 0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); } 50% { opacity: 0.8; transform: translateX(-50%) scale(1.05); } }
+                    @keyframes slideDownFade { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+                    @keyframes bounceX { 0%, 100% {transform: translateX(0);} 50% {transform: translateX(5px);} }
+                    
+                    /* Texto deslizar */
+                    .swipe-hint {
+                        text-align: center; color: #64748b; font-size: 11px; 
+                        margin-bottom: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+                        display: ${hayVarios ? 'block' : 'none'};
+                    }
+                    .swipe-hint i { animation: bounceX 1.5s infinite; color: #3b82f6;}
+
+                    @media (max-width: 600px) {
+                        .banner-destacado { 
+                            flex-direction: row; /* Mantenemos imagen y texto de lado a lado */
+                            align-items: center;
+                            gap: 15px; 
+                            padding: 20px 15px 15px 15px; /* Menos espacio arriba */
+                        }
+                        .destacado-img { 
+                            width: 50px; /* Imagen más pequeña para dejar espacio al texto */
+                            height: 50px; 
+                            margin-top: 0;
+                            flex-shrink: 0; /* Evita que la imagen se aplaste */
+                        }
+                        .destacado-info {
+                            text-align: left; /* Texto alineado a la izquierda */
+                        }
+                        .destacado-info h3 { 
+                            font-size: 15px; /* Título un poco más pequeño */
+                            white-space: normal; /* Permite que el texto baje a la siguiente línea si es muy largo */
+                            word-wrap: break-word; /* Rompe palabras gigantes si es necesario */
+                        }
+                        .destacado-info p { 
+                            font-size: 11px; /* Subtítulo más pequeño */
+                            white-space: normal; /* Permite salto de línea en el subtítulo */
+                        }
+                        .destacado-play { 
+                            display: flex; /* Mostramos el play pero chiquito */
+                            width: 32px; 
+                            height: 32px; 
+                            font-size: 12px; 
+                        }
+                    }
+                </style>
+                <div class="destacados-slider">
+                `;
+
+                topEventos.forEach(evento => {
+                    const cleanId = evento.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
+                    const linkFinal = `ver.html?canal=${cleanId}`;
+                    const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
+                    const logoUrl = evento.Logo || fallbackLogo;
+
+                    sliderHTML += `
+                        <a href="${linkFinal}" class="banner-destacado">
+                            <div class="destacado-badge">🔥 ESTELAR EN VIVO 🔥</div>
+                            <img src="${logoUrl}" class="destacado-img" onerror="this.onerror=null; this.src='${fallbackLogo}';">
+                            <div class="destacado-info">
+                                <h3>${evento.Canal}</h3>
+                                <p><i class="fas fa-satellite-dish"></i> Toca para ver la transmisión Premium</p>
+                            </div>
+                            <div class="destacado-play"><i class="fas fa-play"></i></div>
+                        </a>
+                    `;
+                });
+
+                sliderHTML += `</div>`;
+                
+                // Agregamos el texto animado si hay varios eventos
+                if (hayVarios) {
+                    sliderHTML += `<div class="swipe-hint">Desliza para ver más eventos <i>➡</i></div>`;
+                }
+
+                const mainContainer = document.querySelector('main') || document.querySelector('.page-layout') || document.body;
+                mainContainer.insertAdjacentHTML('afterbegin', sliderHTML);
+            }
+
+        } catch (e) { console.log("Módulo Eventos Destacados en espera.", e); }
+    }
+    
+    document.addEventListener('DOMContentLoaded', cargarEventoDestacadoEnAgenda);
+</script>
+
+
+</body>
+</html>

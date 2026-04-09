@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    
+    <title>Sport Live - Resultados</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6; 
+            --secondary: #1e3a8a;
+            --bg-dark: #080c14;
+            --card-bg: #111827;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: #f8fafc; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.2), transparent 400px);
+            /* 🚨 MAGIA PARA MÓVILES: Protege el espacio del menú inferior */
+            padding-bottom: 65px; 
+            overflow: hidden;
+        }
+
+        /* HEADER PREMIUM */
+        header { 
+            background: rgba(8, 12, 20, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px; 
+            position: relative; z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { 
+            font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* CONTENEDOR PRINCIPAL FLUIDO */
+        main { 
+            flex: 1; 
+            width: 100%; 
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative; 
+            /* Dejamos que el scroll lo maneje exclusivamente el iframe por dentro */
+            overflow: hidden; 
+        }
+
+        /* IFRAME 100% LIBRE */
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none;
+            display: block;
+            background: transparent;
+        }
+
+        /* NAVEGACIÓN INFERIOR (MÓVIL) */
+        .bottom-nav {
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(8, 12, 20, 0.95); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); 
+            padding: 8px 10px 15px 10px; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center;
+            z-index: 1001; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
+        }
+        
+        .nav-item { 
+            color: #64748b; text-decoration: none; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; padding: 6px; transition: all 0.3s; 
+            flex: 1; cursor: pointer;
+        }
+        
+        .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
+        
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
+
+        /* MENÚ DESPLEGABLE */
+        .menu-container { position: relative; }
+        .menu-button {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
+            width: 40px; height: 40px; color: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .menu-button:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.05); }
+        .menu-dropdown {
+            position: absolute; top: 50px; right: 0; background: #111827;
+            border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            min-width: 200px; display: none; z-index: 1002; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .menu-dropdown.active { display: block; animation: fadeIn 0.2s ease; }
+        .menu-dropdown a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px;
+            color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .menu-dropdown a:hover { background: rgba(59, 130, 246, 0.1); color: #fff; }
+        
+        /* AJUSTES PC */
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; } /* En PC no hay menú inferior que tape */
+            .header-title h1 { font-size: 26px; }
+            .bottom-nav { display: none; }
+            .header-content { justify-content: space-between; }
+            .desktop-nav { 
+                display: flex; gap: clamp(10px, 2vw, 25px); align-items: center; 
+                justify-content: center; flex: 1; margin: 0 15px; 
+            }
+            .desktop-nav-item { 
+                color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer;
+                text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+                display: flex; align-items: center; gap: 8px; white-space: nowrap; 
+            }
+            .desktop-nav-item:hover { color: #fff; }
+            .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
+            .desktop-nav-item i { font-size: 16px; }
+        }
+        @media (max-width: 767px) {
+            .desktop-nav { display: none; }
+        }
+    </style>    
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-poll" style="color: var(--primary); font-size: 24px;"></i>
+                <h1>Sport Live TV</h1>
+            </div>
+            
+            <nav class="desktop-nav">
+                <div class="desktop-nav-item active" onclick="navegarSeguro('inicio.html')"><i class="fas fa-poll"></i> Resultados</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('agenda.html')"><i class="fas fa-calendar-alt"></i> Agenda</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('television.html')"><i class="fas fa-tv"></i> TV En Vivo</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('peliculas.html')"><i class="fas fa-film"></i> Pel&iacute;culas</div>
+            </nav>
+
+            <div class="menu-container">
+                <button class="menu-button" id="menuButton" title="Men&uacute; Opciones"><i class="fas fa-bars"></i></button>
+                 <div class="menu-dropdown" id="menuDropdown">
+                    <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SportLive</a>
+                    <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
+                    <a onclick="compartirWeb()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <iframe 
+            src="proxy_scores.php" 
+            sandbox="allow-scripts allow-same-origin allow-forms" 
+            allowfullscreen>
+        </iframe>
+    </main>
+
+    <nav class="bottom-nav">
+        <div onclick="navegarSeguro('inicio.html')" class="nav-item active"><i class="fas fa-poll"></i><span>Resultados</span></div>
+        <div onclick="navegarSeguro('agenda.html')" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Agenda</span></div>
+        <div onclick="navegarSeguro('television.html')" class="nav-item"><i class="fas fa-tv"></i><span>TV En Vivo</span></div>
+        <div onclick="navegarSeguro('peliculas.html')" class="nav-item"><i class="fas fa-film"></i><span>Pel&iacute;culas</span></div>
+    </nav>
+    
+<script>
+    // ==========================================
+    // SEGURIDAD FRONTEND MAXIMA
+    // ==========================================
+    (function() {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; 
+        };
+        setInterval(function() {
+            let before = new Date().getTime();
+            debugger; 
+            let after = new Date().getTime();
+            if (after - before > 100) {
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%; font-family:sans-serif;'>Acceso Denegado</h1>";
+                window.location.replace("https://www.google.com");
+            }
+        }, 1500);
+    })();
+
+    function compartirWeb() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Sport Live TV',
+                text: '¡Mira los mejores resultados y TV en vivo gratis!',
+                url: window.location.origin
+            });
+        } else {
+            alert("Copia este enlace para compartir: " + window.location.origin);
+        }
+    }
+
+    function navegarSeguro(url) {
+        window.location.href = url;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('menuButton');
+        const menuDropdown = document.getElementById('menuDropdown');
+
+        if (menuBtn && menuDropdown) {
+            menuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuDropdown.classList.toggle('active');
+            });
+            document.addEventListener('click', () => {
+                menuDropdown.classList.remove('active');
+            });
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="seo-title">SPORT LIVE</title>
+    <meta name="referrer" content="origin">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+    /* DISEÑO BASE UNIFICADO PRO */
+    :root {
+        --primary: #3b82f6; 
+        --secondary: #1e3a8a;
+        --bg-dark: #080c14;
+        --card-bg: #111827;
+        --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    html { height: 100%; } 
+    body { 
+        min-height: 100vh; 
+        background-color: var(--bg-dark); 
+        color: #f8fafc; 
+        display: flex; flex-direction: column; overflow-x: hidden; 
+        background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.2), transparent 400px);
+    }
+
+    /* HEADER PRO */
+    header { 
+        background: rgba(8, 12, 20, 0.8); 
+        backdrop-filter: blur(15px); 
+        padding: 15px 20px; 
+        display: flex; justify-content: space-between; align-items: center; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 1000; 
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        position: sticky; top: 0;
+    }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 15px; }
+    
+    .header-title { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .logo { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 8px; width: 100%; overflow: hidden; }
+    .logo i { color: var(--primary); flex-shrink: 0; }
+    
+    #header-logo { 
+        display: block; 
+        background: linear-gradient(to right, #ffffff, var(--primary)); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        text-transform: uppercase; letter-spacing: 1px;
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis;
+        max-width: 50vw;
+    }   
+    
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    .back-btn { 
+        color: #cbd5e1; text-decoration: none; 
+        background: var(--glass); padding: 8px 16px; border-radius: 30px; 
+        font-size: 13px; font-weight: 600; cursor: pointer; 
+        border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px; 
+        transition: 0.3s; flex-shrink: 0;
+    }
+    .back-btn:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.4); }
+
+    .menu-container { position: relative; }
+    .menu-button { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 38px; height: 38px; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+    .menu-button:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.05); }
+    .menu-dropdown { position: absolute; top: 45px; right: 0; background: #111827; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 200px; display: none; z-index: 1002; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    .menu-dropdown.active { display: block; animation: fadeIn 0.2s ease; }
+    .menu-dropdown a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .menu-dropdown a:hover { background: rgba(59, 130, 246, 0.1); color: #fff; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; width: 100%; }
+    
+    .page-layout { display: flex; width: 100%; max-width: 1600px; gap: 20px; justify-content: center; align-items: flex-start; }
+    .center-column { flex: 1; max-width: 1000px; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
+    
+    /* REPRODUCTOR */
+    .player-container { 
+        width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; background: #000; 
+        border-radius: 15px; position: relative; overflow: hidden; 
+        border: 1px solid rgba(96, 165, 250, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.8); order: 1; 
+    }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    
+    /* ESTILOS VOD */
+    #player-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background-size: cover; background-position: center; z-index: 5;
+        display: none; align-items: center; justify-content: center;
+        border-radius: 15px; overflow: hidden;
+    }
+    .overlay-glass {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(8, 12, 20, 0.6); backdrop-filter: blur(3px); z-index: 1;
+    }
+    .btn-play-master {
+        position: relative; z-index: 2; background: rgba(59, 130, 246, 0.8);
+        color: white; border: 2px solid rgba(255, 255, 255, 0.2); width: 80px; height: 80px;
+        border-radius: 50%; font-size: 30px; cursor: pointer; display: flex;
+        align-items: center; justify-content: center; transition: 0.3s;
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); backdrop-filter: blur(5px);
+        padding-left: 5px; 
+    }
+    .btn-play-master:hover { transform: scale(1.1); background: var(--primary); box-shadow: 0 0 40px rgba(59, 130, 246, 0.9); }
+    
+    .vod-controls-box { width: 100%; margin-top: 15px; display: none; flex-direction: column; gap: 15px; order: 3;}
+    
+    /* SELECTOR TIPO DROPDOWN */
+    .custom-select-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+    
+    .selected-card {
+        background: linear-gradient(145deg, rgba(37, 99, 235, 0.1), rgba(29, 78, 216, 0.2));
+        border: 1px solid var(--primary); padding: 15px; border-radius: 12px;
+        display: flex; justify-content: center; align-items: center; cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.3s; position: relative;
+    }
+    .selected-card:hover { border-color: #60a5fa; background: rgba(59, 130, 246, 0.15); }
+    .selected-info { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; flex: 1; margin: 0 25px; }
+    .dropdown-icon { color: #60a5fa; transition: transform 0.3s; font-size: 16px; position: absolute; right: 15px; }
+    .dropdown-icon.open { transform: rotate(180deg); }
+
+    .options-grid {
+        display: none; 
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
+        background: rgba(17, 24, 39, 0.95); padding: 15px; border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;
+    }
+    .options-grid.open { display: grid; animation: fadeIn 0.3s ease; }
+
+    .server-card {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+        padding: 12px 10px; border-radius: 10px; cursor: pointer; transition: 0.3s;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; 
+        height: 100%; width: 100%;
+    }
+    .server-card:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+    
+    .server-name { 
+        font-size: 12px; font-weight: 800; color: #f8fafc; text-transform: uppercase; text-align: center; 
+        width: 100%; word-break: break-word; overflow-wrap: anywhere; line-height: 1.3;
+    }
+    .server-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;}
+    .server-tags span { padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+    
+    .badge-lang { background: rgba(255,255,255,0.1); color: #e2e8f0; }
+    .badge-vip { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+    .badge-ads { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+    /* ESTILOS VOD: ACORDEÓN DE DESCARGAS Y TORRENT */
+    .descargas-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+    .descargas-header {
+        background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.2));
+        border: 1px solid #10b981; padding: 15px; border-radius: 12px;
+        display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+        transition: 0.3s; color: #10b981; font-weight: 800; font-size: 14px;
+    }
+    .descargas-header:hover { background: rgba(16, 185, 129, 0.2); border-color: #34d399; }
+    .descargas-grid {
+        display: none; flex-direction: column; gap: 8px;
+        background: rgba(17, 24, 39, 0.95); padding: 15px; border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;
+    }
+    .descargas-grid.open { display: flex; animation: fadeIn 0.3s ease; }
+    .torrent-info {
+        background: rgba(59, 130, 246, 0.05); border-left: 3px solid #3b82f6;
+        padding: 12px; font-size: 12px; color: #94a3b8; border-radius: 0 8px 8px 0;
+        margin-bottom: 10px; text-align: left; line-height: 1.5;
+    }
+    .torrent-info strong { color: #60a5fa; font-size: 13px; display: block; margin-bottom: 4px; }
+    
+    .btn-descarga {
+        background: linear-gradient(145deg, #10b981, #059669); color: white; border: none;
+        padding: 12px 15px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; text-decoration: none;
+    }
+    .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
+
+    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
+    .ad-slot { 
+        background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
+        display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
+        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); 
+        overflow: hidden; transition: 0.3s; 
+    }
+    .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
+    
+    .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
+
+    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; }
+    .bottom-ad { flex: 1; height: 90px; }
+    
+    /* 🔥 CONTROLES Y BOTONES 🔥 */
+    .controls { 
+        margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 100%; 
+        justify-content: center; order: 2; flex-wrap: wrap; 
+    }
+    
+    .btn { 
+        background: var(--glass); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.05); 
+        padding: 10px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; 
+        font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; flex-shrink: 0;
+    }
+    .btn i { color: var(--primary); font-size: 16px; }
+    .btn:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.4); color: #fff; }
+
+    /* 🔥 BOTÓN COMUNIDAD 🔥 */
+    .btn-comunidad {
+        background: linear-gradient(145deg, #0088cc, #00a6c7) !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+        animation: pulse-comunidad 2s infinite;
+    }
+    .btn-comunidad i { color: white !important; }
+    .btn-comunidad:hover { transform: translateY(-2px); }
+    @keyframes pulse-comunidad { 
+        0% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
+        50% { box-shadow: 0 0 15px rgba(0, 136, 204, 0.8); } 
+        100% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
+    }
+    
+    /* 🔥 CAJA DE SEÑALES DE CANALES (FLEXBOX CENTRADO) 🔥 */
+    #multi-signals { 
+        margin-top: 20px; display: none; 
+        flex-wrap: wrap; justify-content: center;
+        gap: 12px; padding: 20px; background: var(--card-bg); 
+        border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); width: 100%; order: 3; 
+    }
+    .btn-opcion { 
+        flex: 0 0 160px; 
+        background: var(--glass); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); 
+        padding: 12px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; cursor: pointer; 
+        display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; 
+        text-transform: uppercase; letter-spacing: 0.5px; min-height: 48px; position: relative; 
+        word-break: break-word; overflow-wrap: anywhere; white-space: normal; text-align: center; line-height: 1.3; height: auto;
+    }
+    .btn-opcion i { font-size: 14px; }
+    .btn-opcion:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+    .btn-opcion:active { transform: scale(0.97); }
+    
+    
+        
+/* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
+    .btn-opcion.opcion-nativa {
+        background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #60a5fa;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    }
+
+
+    .btn-opcion.active-signal { 
+        background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; 
+        border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
+    }
+    
+    
+    
+    #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 4; font-weight: 300;}
+    
+    /* MODALES PRO */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content { 
+        background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; 
+        border-radius: 20px; width: 90%; max-width: 450px; text-align: center; position: relative; 
+        box-shadow: 0 20px 50px rgba(0,0,0,0.9); transform: translateY(20px); transition: 0.3s ease; 
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    .modal-content h3 { color: #f8fafc; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; }
+    .modal-content h3 i { color: var(--primary); font-size: 22px; }
+    .modal-content p { color: #94a3b8; font-size: 13px; margin-bottom: 20px; line-height: 1.6; font-weight: 400;}
+    .close-btn { position: absolute; top: 15px; right: 15px; color: #64748b; cursor: pointer; font-size: 20px; transition: 0.3s; background: var(--glass); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .close-btn:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+    
+    #textarea-embed { 
+        width: 100%; height: 90px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); 
+        color: #94a3b8; border-radius: 10px; padding: 15px; font-family: monospace; font-size: 12px; 
+        resize: none; margin-bottom: 20px; outline: none; transition: 0.3s;
+    }
+    #textarea-embed:focus { border-color: var(--primary); color: #fff; background: rgba(59, 130, 246, 0.05);}
+    
+    .btn-copiar { 
+        background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; border: none; padding: 14px 20px; 
+        border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; 
+        gap: 10px; transition: 0.3s; width: 100%; justify-content: center; text-transform: uppercase; letter-spacing: 1px; 
+    }
+    .btn-copiar:hover { box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5); transform: translateY(-2px);}
+    
+    .premium-upsell { 
+        margin-top: 20px; padding: 15px; background: rgba(234, 179, 8, 0.05); border: 1px dashed rgba(234, 179, 8, 0.3); 
+        border-radius: 10px; font-size: 12px; color: #facc15; display: flex; flex-direction: column; gap: 12px; text-align: center; 
+    }
+    .btn-upsell { 
+        background: linear-gradient(145deg, #eab308, #ca8a04); color: #000; border: none; padding: 12px; 
+        border-radius: 8px; font-weight: 900; font-size: 12px; cursor: pointer; display: flex; align-items: center; 
+        justify-content: center; gap: 8px; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .btn-upsell:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4); }
+    
+    .instrucciones-lista { text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+    .paso-item { display: flex; gap: 15px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
+    .paso-num { background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 14px; flex-shrink: 0; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);}
+    .paso-text h4 { margin: 0 0 6px 0; color: #f8fafc; font-size: 14px; font-weight: 800;}
+    .paso-text p { margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;}
+    
+    .btn-paypal { display: inline-flex; align-items: center; gap: 8px; background: #0070ba; color: white; text-decoration: none; padding: 10px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+    .btn-paypal:hover { background: #005ea6; transform: translateY(-2px);}
+    
+    .btn-whatsapp { 
+        background: linear-gradient(145deg, #25D366, #1ebd57); color: white; text-decoration: none; padding: 14px; 
+        border-radius: 10px; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; 
+        gap: 10px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
+    
+    /* ESTILOS PARA NAVEGACIÓN MÓVIL Y DESKTOP */
+    .bottom-nav {
+        position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(8, 12, 20, 0.95);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+        padding: 8px 10px 15px 10px; display: flex; justify-content: space-around; align-items: center;
+        z-index: 1001; border-top: 1px solid rgba(255,255,255,0.05); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
+    }
+    .nav-item { color: #64748b; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; transition: all 0.3s; flex: 1; cursor: pointer; }
+    .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
+    .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
+    .nav-item.active { color: var(--primary); }
+    .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
+
+    @media (min-width: 768px) {
+        .bottom-nav { display: none; }
+        .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
+        .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .desktop-nav-item:hover { color: #fff; }
+        .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
+    }
+
+    @media (max-width: 1200px) { .page-layout { flex-direction: column; align-items: center; gap: 15px; } .side-ad { width: 100%; max-width: 1000px; height: 80px; order: 5; position: static; } }
+    
+    /* 🔥 MÓVIL: CUADRÍCULA 3x2, TÍTULO MULTILÍNEA Y CANALES PERFECTOS 🔥 */
+    @media (max-width: 768px) { 
+        body { padding-bottom: 70px; } 
+        .desktop-nav { display: none; } 
+        
+        .text-volver { display: none; }
+        .back-btn { padding: 8px 12px; }
+        
+        #header-logo { max-width: 160px; font-size: 15px; }
+        .player-container { border-radius: 0; max-height: none; width: 100%; border: none; border-bottom: 1px solid rgba(255,255,255,0.05);} 
+        
+        .controls { 
+            padding: 0 10px; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+        } 
+        .btn { 
+            width: 100%; 
+            height: 100%;
+            flex-direction: column;
+            justify-content: center; 
+            font-size: 10px; 
+            padding: 10px 4px; 
+            border-radius: 12px;
+            gap: 5px;
+            text-align: center;
+        } 
+        .btn i { font-size: 18px; margin: 0; }
+
+        /* CANALES (Señales) CON FLEXBOX INTELIGENTE PARA CENTRAR IMPARES */
+        #multi-signals { 
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px; padding: 15px; border-radius: 0; border-left: none; border-right: none;
+        }
+        .btn-opcion { 
+            flex: 0 0 calc(50% - 5px);
+            padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; 
+        }
+        
+        .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
+        .center-column { order: 1; }
+        
+        .side-ad { order: 2; width: 100%; min-height: 90px; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
+        .ads-bottom { display: none !important; } 
+    }
+    
+    /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
+    #btn-proyectar-tv.btn-disabled {
+        background: var(--glass) !important;
+        color: #64748b !important;
+        box-shadow: none !important;
+        border: 1px dashed rgba(255, 255, 255, 0.1) !important;
+        cursor: pointer !important;
+    }
+    #btn-proyectar-tv.btn-disabled i { color: #64748b !important; }
+    #btn-proyectar-tv.btn-disabled:hover { transform: none !important; background: rgba(255,255,255,0.02) !important; }
+
+    /* 🔥 NUEVO: ALERTA TOAST 🔥 */
+    #custom-toast {
+        position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+        background: #1e293b; border-left: 4px solid #ef4444; color: #f8fafc;
+        padding: 15px 25px; border-radius: 8px; font-size: 13px; font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 99999;
+        display: flex; align-items: center; gap: 12px; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: max-content; max-width: 90vw; text-align: left; line-height: 1.4;
+    }
+    #custom-toast.show { bottom: 80px; }
+    
+</style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <div class="logo"><i class="fas fa-play-circle"></i> <span id="header-logo">SPORT LIVE</span></div>
+            </div>
+            
+            <nav class="desktop-nav">
+                <div class="desktop-nav-item" onclick="navegarSeguro('inicio.html')"><i class="fas fa-poll"></i> Resultados</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('agenda.html')"><i class="fas fa-calendar-alt"></i> Agenda</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('television.html')"><i class="fas fa-tv"></i> TV En Vivo</div>
+                <div class="desktop-nav-item" onclick="navegarSeguro('peliculas.html')"><i class="fas fa-film"></i> Películas</div>
+            </nav>
+
+            <div class="header-actions">
+                <button onclick="volverAtras()" class="back-btn"><i class="fas fa-arrow-left"></i> <span class="text-volver">VOLVER</span></button>
+                <div class="menu-container">
+                    <button class="menu-button" id="menuButton"><i class="fas fa-bars"></i></button>
+                    <div class="menu-dropdown" id="menuDropdown">
+                        <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SportLive</a>
+                        <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
+                        <a onclick="compartirCanal()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-layout">
+            
+            <div class="ad-slot side-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
+                    ESPACIO BANNER 1
+                </a>
+            </div>
+            
+            <div class="center-column">
+                <div class="player-container">
+                    <div id="player-overlay">
+                        <div class="overlay-glass"></div>
+                        <button class="btn-play-master" id="btn-play-peli" onclick="iniciarPeliculaVOD()"><i class="fas fa-play"></i></button>
+                    </div>
+                    <iframe id="main-motor" src="" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" onclick="let iframe = document.getElementById('main-motor'); iframe.src = iframe.src;"><i class="fas fa-sync-alt"></i> Recargar</button>
+                    
+                    <button class="btn btn-comunidad" onclick="window.open('https://t.me/TU_GRUPO', '_blank')">
+                        <i class="fab fa-telegram"></i> Comunidad
+                    </button>
+
+                    <button class="btn" onclick="toggleFS()"><i class="fas fa-expand"></i> Ampliar</button>
+                    <button class="btn" onclick="compartirCanal()"><i class="fas fa-share-alt"></i> Compartir</button>
+                    <button class="btn" onclick="abrirModalEmbed()"><i class="fas fa-code"></i> Insertar</button>
+                    
+                    <button class="btn" id="btn-proyectar-tv" style="display:none;" onclick="iniciarCasteo()">
+                        <i class="fa-brands fa-chromecast"></i> Proyectar
+                    </button>
+                </div>
+
+                <div id="multi-signals"></div>
+
+                <div id="vod-controls" class="vod-controls-box">
+                    <h4 style="color:#60a5fa; margin-bottom:10px; text-align:center; font-size:14px; font-weight:800; letter-spacing: 1px;">
+                        <i class="fas fa-server"></i> SELECCIONA UN SERVIDOR
+                    </h4>
+                    
+                    <div id="servidores-list" class="servidores-grid"></div>
+
+                    <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;">
+                        </div>
+                </div>
+
+                <div id="seo-content"></div>
+            </div>
+            
+            <div class="ad-slot side-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
+                    ESPACIO BANNER 2
+                </a>
+            </div>
+        </div>
+
+        <div class="ads-bottom">
+            <div class="ad-slot bottom-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 3</a>
+            </div>
+            <div class="ad-slot bottom-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 4</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
+
+    <nav class="bottom-nav">
+        <div onclick="navegarSeguro('inicio.html')" class="nav-item"><i class="fas fa-poll"></i><span>Resultados</span></div>
+        <div onclick="navegarSeguro('agenda.html')" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Agenda</span></div>
+        <div onclick="navegarSeguro('television.html')" class="nav-item"><i class="fas fa-tv"></i><span>TV En Vivo</span></div>
+        <div onclick="navegarSeguro('peliculas.html')" class="nav-item"><i class="fas fa-film"></i><span>Películas</span></div>
+    </nav>
+
+    <div id="modal-embed" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="cerrarModalEmbed()"><i class="fas fa-times"></i></span>
+            <h3><i class="fas fa-laptop-code"></i> Insertar en tu Web</h3>
+            <p>Copia este código y pégalo en el HTML de tu página.</p>
+            <textarea id="textarea-embed" readonly></textarea>
+            <button class="btn-copiar" id="btn-copiar-obj" onclick="copiarCodigoEmbed()"><i class="fas fa-copy"></i> Copiar Código Gratis</button>
+            <div class="premium-upsell">
+                <span><i class="fas fa-exclamation-triangle"></i> La versión gratuita inyectará publicidad en tu web. ¿Quieres la señal limpia y monetizar tú mismo?</span>
+                <button class="btn-upsell" onclick="abrirModalPremium()"><i class="fas fa-crown"></i> Ver Licencia Premium</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-premium" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="cerrarModalPremium()"><i class="fas fa-times"></i></span>
+            <h3 style="color: #facc15;"><i class="fas fa-crown"></i> Licencia Premium VIP</h3>
+            <p style="margin-bottom: 20px;">Elimina todos los anuncios de nuestro reproductor por solo <strong>$5 USD / mes</strong>.</p>
+            <div class="instrucciones-lista">
+                <div class="paso-item"><div class="paso-num">1</div><div class="paso-text"><h4>Realiza tu pago</h4><p>Completa la suscripción. Aceptamos pagos internacionales por PayPal o transferencias por Wompi en Colombia.</p><a href="https://paypal.me/TU_USUARIO/5" target="_blank" class="btn-paypal"><i class="fab fa-paypal"></i> Pagar Suscripción</a></div></div>
+                <div class="paso-item"><div class="paso-num">2</div><div class="paso-text"><h4>Prepara tus datos</h4><p>Necesitarás tener a la mano: El dominio de tu página web (ej. tuweb.com) y tu comprobante de pago.</p></div></div>
+                <div class="paso-item"><div class="paso-num">3</div><div class="paso-text"><h4>Activación Inmediata</h4><p>Envíanos tus datos por WhatsApp y agregaremos tu web a la lista blanca de inmediato.</p></div></div>
+            </div>
+            <a href="https://wa.me/573000000000?text=Hola,%20acabo%20de%20pagar%20la%20Licencia%20Premium.%20%0A%0AMis%20datos%20son:%0A-%20Web:%20[Escribe%20tu%20dominio]%0A-%20Comprobante:%20[Pega%20el%20ID%20o%20foto]" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Activar mi Dominio</a>
+        </div>
+    </div>
+
+<script>
+    if (document.referrer === "" && !window.location.href.includes('&ref=vip')) {
+        const linkFantasma = document.createElement('a');
+        linkFantasma.href = window.location.href + '&ref=vip';
+        document.body.appendChild(linkFantasma);
+        linkFantasma.click();
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const channelId = params.get('canal'); 
+    const rDirecto = params.get('r');        
+    const nNombre = params.get('n');    
+    const peliId = params.get('peli');
+    
+    // 🔥 CIRUGÍA: EVITAR EL HUECO EN MÓVILES DESDE EL MILISEGUNDO CERO 🔥
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        const btnCastInit = document.getElementById("btn-proyectar-tv");
+        if (btnCastInit) {
+            btnCastInit.style.display = "flex";
+            btnCastInit.classList.add("btn-disabled");
+        }
+    }
+
+    function navegarSeguro(url) { window.location.href = url; }
+
+    function volverAtras() {
+        if (channelId) window.location.href = 'television.html';
+        else if (peliId) window.location.href = 'peliculas.html';
+        else window.location.href = 'agenda.html';
+    }
+
+    const menuBtn = document.getElementById('menuButton');
+    const menuDropdown = document.getElementById('menuDropdown');
+    if (menuBtn && menuDropdown) {
+        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menuDropdown.classList.toggle('active'); });
+        document.addEventListener('click', () => { menuDropdown.classList.remove('active'); });
+    }
+
+    function toggleFS() {
+        const player = document.getElementById('main-motor');
+        if (player.requestFullscreen) player.requestFullscreen();
+        else if (player.webkitRequestFullscreen) player.webkitRequestFullscreen();
+        else if (player.msRequestFullscreen) player.msRequestFullscreen();
+        else {
+            const container = document.querySelector('.player-container');
+            if (container.requestFullscreen) container.requestFullscreen();
+        }
+    }
+
+    function compartirCanal() {
+        const urlActual = window.location.href;
+        const tituloPartido = document.title;
+        const textoInvitacion = '⚽ ¡Mira este evento en vivo y en calidad HD por SPORT LIVE!\\n\\n Únete aquí: ';
+
+        if (navigator.share) {
+            navigator.share({ title: tituloPartido, text: textoInvitacion, url: urlActual })
+            .catch(error => console.log('Error compartiendo:', error));
+        } else {
+            const inputTemp = document.createElement("input");
+            inputTemp.value = textoInvitacion + urlActual;
+            document.body.appendChild(inputTemp);
+            inputTemp.select();
+            document.execCommand("copy");
+            document.body.removeChild(inputTemp);
+            alert("¡Enlace copiado! Ya puedes pegarlo en WhatsApp o Facebook.");
+        }
+    }
+
+    function abrirModalEmbed() {
+        const iframeSrc = document.getElementById('main-motor').getAttribute('src');
+        if (!iframeSrc) return;
+        
+        const urlBase = window.location.href.split('?')[0].replace('ver.html', '');
+        let urlFinal = iframeSrc.startsWith('http') ? iframeSrc : urlBase + iframeSrc.replace(/^\.\//, ''); 
+
+        const codigoIframe = `<iframe src="${urlFinal}" width="100%" height="500" frameborder="0" allowfullscreen="true" scrolling="no"></iframe>`;
+        document.getElementById('textarea-embed').value = codigoIframe;
+        document.getElementById('modal-embed').classList.add('active');
+    }
+
+    function cerrarModalEmbed() { document.getElementById('modal-embed').classList.remove('active'); }
+
+    function copiarCodigoEmbed() {
+        const textarea = document.getElementById('textarea-embed');
+        textarea.select();
+        textarea.setSelectionRange(0, 99999); 
+        document.execCommand("copy");
+        const btn = document.getElementById('btn-copiar-obj');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+        btn.style.background = 'linear-gradient(145deg, #16a34a, #15803d)';
+        btn.style.boxShadow = '0 0 15px rgba(22, 163, 74, 0.5)';
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = ''; 
+            btn.style.boxShadow = '';
+        }, 2000);
+    }
+
+    function abrirModalPremium() { cerrarModalEmbed(); document.getElementById('modal-premium').classList.add('active'); }
+    function cerrarModalPremium() { document.getElementById('modal-premium').classList.remove('active'); }
+
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+    });
+
+    function textoPuro(cadenaConHTML) {
+        const temp = document.createElement('div');
+        temp.innerHTML = cadenaConHTML;
+        return temp.textContent || temp.innerText || "";
+    }
+
+    const SERVIDORES_VIP = ['streamwish', 'medixiru', 'niramirus', 'embedwish', 'vimeos', 'vimeus', 'goodstream', 'vidhide'];
+
+    async function setupVer() {
+        const peliId = params.get('peli');
+        const nNombre = params.get('n');
+        const fuenteExterna = params.get('fuente'); 
+
+        // =======================================================
+        // 🔥 1. LÓGICA HÍBRIDA: PELÍCULAS Y SERIES (VOD)
+        // =======================================================
+        if (peliId && nNombre) {
+            document.getElementById('main-motor').removeAttribute('sandbox');
+            
+            const tituloOriginal = decodeURIComponent(nNombre);
+            const tituloLimpio = textoPuro(tituloOriginal).replace(/\r?\n|\r/g, " ").replace(/\s+/g, " ").trim();
+            
+            document.title = `${tituloLimpio} - SPORT LIVE MOVIES`;
+            document.getElementById('header-logo').innerText = `MOVIES - ${tituloLimpio}`;
+            document.getElementById('seo-content').innerText = `Cargando información de la película...`;
+
+            let imagenParaOverlay = ""; 
+
+            if (!fuenteExterna) {
+                try {
+                    const resInfo = await fetch(`https://telelatinomax.shop/vod/info/${peliId}`);
+                    const dataInfo = await resInfo.json();
+                    if (dataInfo && dataInfo.info) {
+                        const info = dataInfo.info;
+                        let fondo = info.backdrop_path && Array.isArray(info.backdrop_path) ? info.backdrop_path[0] : (info.backdrop_path || (dataInfo.movie_data && dataInfo.movie_data.backdrop));
+                        if (fondo) {
+                            imagenParaOverlay = fondo.startsWith('http') ? fondo : `https://image.tmdb.org/t/p/original${fondo}`;
+                            document.body.style.backgroundImage = `linear-gradient(to bottom, rgba(8,12,20,0.85), rgba(8,12,20,1)), url('${imagenParaOverlay}')`;
+                            document.body.style.backgroundSize = 'cover';
+                            document.body.style.backgroundPosition = 'center top';
+                            document.body.style.backgroundAttachment = 'fixed';
+                        }
+                        
+                        const tieneRating = info.rating && info.rating !== "0";
+                        const tieneDuracion = info.duration && info.duration !== "00:00:00";
+                        const tieneGenero = info.genre && !info.genre.match(/^[0-9,]+$/); 
+                        document.getElementById('seo-content').innerHTML = `
+                            <div style="background: rgba(17, 24, 39, 0.7); padding: 20px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3); text-align: left; margin-top: 20px; backdrop-filter: blur(10px);">
+                                <h2 style="color: #60a5fa; margin: 0 0 10px 0; font-size: 24px;">${info.name || tituloLimpio}</h2>
+                                <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px; color: #94a3b8; flex-wrap: wrap;">
+                                    ${tieneRating ? `<span><i class="fas fa-star" style="color: #eab308;"></i> ${info.rating}</span>` : ''}
+                                    ${info.releaseDate ? `<span><i class="fas fa-calendar"></i> ${info.releaseDate}</span>` : ''}
+                                    ${tieneGenero ? `<span><i class="fas fa-film"></i> ${info.genre}</span>` : ''}
+                                    ${tieneDuracion ? `<span><i class="fas fa-clock"></i> ${info.duration}</span>` : ''}
+                                </div>
+                                <p style="color: #f8fafc; font-size: 15px; line-height: 1.6; margin-bottom: 15px;">${info.plot || info.description || 'Disfruta de esta película en la mejor calidad.'}</p>
+                            </div>
+                        `;
+                    }
+                } catch (e) { console.log("No se pudo cargar TMDB"); }
+            } else {
+                const descExterna = params.get('desc') || '';
+                const bgExterno = params.get('bg') || '';
+                const yearExterno = params.get('y') || 'HD';
+                const ratingExterno = params.get('r') || 'N/A';
+
+                if (bgExterno && bgExterno !== 'undefined' && bgExterno !== '') {
+                    imagenParaOverlay = decodeURIComponent(bgExterno);
+                    if (imagenParaOverlay.startsWith('ver.php')) imagenParaOverlay = `https://api.telelatinomax.shop/api-kiamber/${imagenParaOverlay}`;
+                    document.body.style.backgroundImage = `linear-gradient(to bottom, rgba(8,12,20,0.85), rgba(8,12,20,1)), url('${imagenParaOverlay}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center top';
+                    document.body.style.backgroundAttachment = 'fixed';
+                }
+
+                document.getElementById('seo-content').innerHTML = `
+                    <div style="background: rgba(17, 24, 39, 0.7); padding: 20px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3); text-align: left; margin-top: 20px; backdrop-filter: blur(10px);">
+                        <h2 style="color: #10b981; margin: 0 0 10px 0; font-size: 24px;">${tituloLimpio}</h2>
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px; color: #94a3b8; flex-wrap: wrap;">
+                            ${ratingExterno !== 'N/A' && ratingExterno !== 'undefined' ? `<span><i class="fas fa-star" style="color: #eab308;"></i> ${ratingExterno}</span>` : ''}
+                            ${yearExterno !== 'HD' && yearExterno !== 'undefined' ? `<span><i class="fas fa-calendar"></i> ${yearExterno}</span>` : ''}
+                            <span><i class="fas fa-globe"></i> Catálogo Web Unificado</span>
+                        </div>
+                        <p style="color: #f8fafc; font-size: 15px; line-height: 1.6; margin-bottom: 15px;">
+                            ${descExterna === 'undefined' || !descExterna ? 'Disfruta de esta película en la mejor calidad.' : decodeURIComponent(descExterna)}
+                        </p>
+                    </div>
+                `;
+            }
+
+            try {
+                let enlaces = [];
+                let descargas = [];
+
+                if (fuenteExterna) {
+                    const response = await fetch(`https://api.telelatinomax.shop/api-kiamber/get-player.php?id=${peliId}&f=${fuenteExterna}`);
+                    const dataObj = await response.json();
+                    if (dataObj.data) {
+                        enlaces = dataObj.data.embeds || [];
+                        descargas = dataObj.data.downloads || [];
+                    }
+                } else {
+                    const response = await fetch(`https://telelatinomax.shop/vod/enlaces/${peliId}`);
+                    const arrayLinks = await response.json();
+                    enlaces = arrayLinks.map(l => {
+                        let host = "Servidor";
+                        try { host = new URL(l.url).hostname.replace('www.', '').split('.')[0]; } catch(e){}
+                        
+                        let idiomaReal = l.language ? l.language.toUpperCase() : 'LAT';
+                        if (idiomaReal === 'ENGLISH') idiomaReal = 'SUB';
+                        if (idiomaReal === 'LATINO') idiomaReal = 'LAT';
+                        
+                        return { 
+                            url: l.url, 
+                            server: host,
+                            lang: idiomaReal, 
+                            quality: l.quality ? l.quality.toUpperCase() : 'HD' 
+                        };
+                    });
+                }
+
+                if (enlaces.length > 0) {
+                    enlaces.sort((a, b) => {
+                        const aIsVip = SERVIDORES_VIP.some(s => a.url.includes(s));
+                        const bIsVip = SERVIDORES_VIP.some(s => b.url.includes(s));
+                        return (aIsVip === bIsVip) ? 0 : aIsVip ? -1 : 1;
+                    });
+
+                    const servidoresProcesados = enlaces.map((link) => {
+                        const esVip = SERVIDORES_VIP.some(s => link.url.includes(s));
+                        let provider = link.server;
+                        if (!provider || provider === 'Online' || provider === 'voe') {
+                            try { provider = new URL(link.url).hostname.replace('www.', '').split('.')[0]; } catch(e){ provider = "Servidor"; }
+                        }
+                        const idioma = link.lang || "LAT";
+                        const calidad = link.quality || "HD";
+                        return { url: link.url, provider: provider.toUpperCase(), idioma, calidad, esVip };
+                    });
+
+                    document.getElementById('main-motor').style.display = 'none'; 
+                    const overlay = document.getElementById('player-overlay');
+                    overlay.style.display = 'flex'; 
+                    if (imagenParaOverlay) overlay.style.backgroundImage = `url('${imagenParaOverlay}')`;
+
+                    window.urlSeleccionadaVOD = servidoresProcesados[0].url;
+
+                    const listEl = document.getElementById('servidores-list');
+                    const primer = servidoresProcesados[0];
+                    const badgePrimer = primer.esVip ? `<span class="badge-vip"><i class="fas fa-crown"></i> PRO HD</span>` : `<span class="badge-ads">${primer.calidad} (Ads)</span>`;
+                    
+                    listEl.innerHTML = `
+                        <div class="custom-select-wrapper">
+                            <div class="selected-card" onclick="toggleDropdownVOD()">
+                                <div class="selected-info" id="selected-server-info">
+                                    <span class="server-name"><i class="fas fa-server"></i> ${primer.provider}</span>
+                                    <div class="server-tags">
+                                        <span class="badge-lang">${primer.idioma}</span>
+                                        ${badgePrimer}
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-icon" id="dropdown-arrow"></i>
+                            </div>
+
+                            <div class="options-grid" id="options-dropdown">
+                                ${servidoresProcesados.map(s => {
+                                    return `
+                                    <div class="server-card" onclick="seleccionarOpcionVOD('${s.url}', '${s.provider}', '${s.idioma}', ${s.esVip}, '${s.calidad}')">
+                                        <div class="server-name"><i class="fas fa-play-circle"></i> ${s.provider}</div>
+                                        <div class="server-tags">
+                                            <span class="badge-lang">${s.idioma}</span>
+                                            ${s.esVip ? `<span class="badge-vip"><i class="fas fa-crown"></i> VIP</span>` : `<span class="badge-ads">${s.calidad}</span>`}
+                                        </div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('multi-signals').style.display = 'none';
+                    document.getElementById('vod-controls').style.display = 'flex';
+
+                    if (descargas.length > 0) {
+                        document.getElementById('descargas-container').style.display = 'block';
+                        
+                        let tieneTorrent = descargas.some(d => d.url.startsWith('magnet'));
+                        let torrentMsg = tieneTorrent ? `
+                            <div class="torrent-info">
+                                <strong><i class="fas fa-info-circle"></i> ¿Cómo descargar enlaces Torrent?</strong>
+                                Los botones de <b>TORRENT</b> requieren que tengas instalada una aplicación (como <b>uTorrent</b>, <b>BitTorrent</b> o <b>Flud</b>) en tu celular o PC. Al hacer clic, la app se abrirá automáticamente y descargará la película a máxima velocidad.
+                            </div>
+                        ` : '';
+
+                        document.getElementById('descargas-container').innerHTML = `
+                            <div class="descargas-wrapper">
+                                <div class="descargas-header" onclick="document.getElementById('descargas-grid').classList.toggle('open'); document.getElementById('descargas-arrow').classList.toggle('open');">
+                                    <span><i class="fas fa-cloud-download-alt"></i> OPCIONES DE DESCARGA</span>
+                                    <i class="fas fa-chevron-down dropdown-icon" id="descargas-arrow"></i>
+                                </div>
+                                <div class="descargas-grid" id="descargas-grid">
+                                    ${torrentMsg}
+                                    ${descargas.map(d => {
+                                        let prov = (d.server || 'Enlace').toUpperCase();
+                                        let icon = "fa-file-video";
+                                        
+                                        if (d.url.startsWith('magnet')) { 
+                                            prov = 'TORRENT'; 
+                                            icon = "fa-magnet"; 
+                                        }
+                                        
+                                        let infoExtra = [];
+                                        if (d.quality) infoExtra.push(d.quality);
+                                        if (d.lang) infoExtra.push(d.lang.toUpperCase());
+                                        if (d.size) infoExtra.push(d.size);
+
+                                        return `<a href="${d.url}" target="_blank" class="btn-descarga">
+                                            <i class="fas ${icon}" style="font-size: 16px;"></i> 
+                                            ${prov} | ${infoExtra.join(' - ')}
+                                        </a>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    window.toggleDropdownVOD = function() {
+                        document.getElementById('options-dropdown').classList.toggle('open');
+                        document.getElementById('dropdown-arrow').classList.toggle('open');
+                    };
+
+                    window.seleccionarOpcionVOD = function(url, provider, idioma, esVip, calidad) {
+                        window.urlSeleccionadaVOD = url; 
+                        
+                        const badgeGenerado = esVip ? `<span class="badge-vip"><i class="fas fa-crown"></i> PRO HD</span>` : `<span class="badge-ads">${calidad} (Ads)</span>`;
+                        
+                        document.getElementById('selected-server-info').innerHTML = `
+                            <span class="server-name"><i class="fas fa-server"></i> ${provider}</span>
+                            <div class="server-tags"><span class="badge-lang">${idioma}</span>${badgeGenerado}</div>
+                        `;
+                        
+                        window.toggleDropdownVOD(); 
+                        window.iniciarPeliculaVOD(); 
+                    };
+
+                    window.iniciarPeliculaVOD = async function() {
+                        const btnPlay = document.getElementById('btn-play-peli');
+                        const urlFinal = window.urlSeleccionadaVOD; 
+                        const esVIP = SERVIDORES_VIP.some(s => urlFinal.includes(s));
+
+                        document.getElementById('main-motor').src = '';
+
+                        if (overlay.style.display !== 'none') {
+                            btnPlay.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
+                        }
+
+                        if (esVIP) {
+                            try {
+                                const req = await fetch(`https://telelatinomax.shop/vod/extract?url=${encodeURIComponent(urlFinal)}`);
+                                const data = await req.json();
+                                if (data.success && data.url) {
+                                    loadMotor(data.url, tituloLimpio, false);
+                                    overlay.style.display = 'none';
+                                    document.getElementById('main-motor').style.display = 'block';
+                                    btnPlay.innerHTML = '<i class="fas fa-play"></i>'; 
+                                    return; 
+                                }
+                            } catch (e) { console.log("Extracción fallida, cargando normal."); }
+                        }
+
+                        loadMotor(urlFinal, tituloLimpio, false);
+                        overlay.style.display = 'none';
+                        document.getElementById('main-motor').style.display = 'block';
+                        btnPlay.innerHTML = '<i class="fas fa-play"></i>';
+                    };
+
+                } else {
+                    document.getElementById('seo-content').innerText = "Lo sentimos, no hay enlaces disponibles para esta película.";
+                }
+            } catch (e) { console.error("Error VOD Híbrido:", e); }
+            
+            return; 
+        }
+
+        // =======================================================
+// =======================================================
+        // 🔥 2. LÓGICA ORIGINAL: AGENDA DEPORTIVA
+        // =======================================================
+        if (rDirecto && nNombre) {
+            const tituloOriginal = decodeURIComponent(nNombre);
+            const tituloLimpio = textoPuro(tituloOriginal).replace(/\r?\n|\r/g, " ").replace(/\s+/g, " ").trim();
+            
+            document.title = `${tituloLimpio} En Vivo - SPORT LIVE`;
+            document.getElementById('header-logo').innerText = `${tituloLimpio}`;
+            document.getElementById('seo-content').innerText = `Mira ${tituloLimpio} en vivo y en directo por SPORT LIVE. Disfruta de la mejor transmisión deportiva online gratis.`;
+
+            try {
+                const proxies = ['https://api.telelatinomax.shop/api/proxy.php', 'https://api.telelatinomax.shop/api/proxy_livetv.php', 'https://api.telelatinomax.shop/api/proxy_extra.php', 'https://api.telelatinomax.shop/api/proxy_onlive.php'];
+                const res = await Promise.all(proxies.map(p => fetch(p).then(r => r.json()).catch(() => ({data:[]} ))));
+                const allData = res.flatMap(r => r.data || []);
+
+                const partido = allData.find(item => {
+                    let nombreJsonLimpio = textoPuro(item.attributes.diary_description);
+                    nombreJsonLimpio = nombreJsonLimpio.replace(/\s+/g, " ").trim().toLowerCase();
+                    const tituloBuscado = tituloLimpio.toLowerCase(); 
+                    return nombreJsonLimpio === tituloBuscado || nombreJsonLimpio.includes(tituloBuscado) || tituloBuscado.includes(nombreJsonLimpio);
+                });
+
+                if (partido && partido.attributes.embeds.data.length > 0) {
+                    const box = document.getElementById('multi-signals');
+                    box.style.display = 'flex'; 
+                    
+                    let tituloSeguro = decodeURIComponent(nNombre); 
+                    tituloSeguro = textoPuro(tituloSeguro); 
+                    tituloSeguro = tituloSeguro.replace(/[\r\n]+/g, " "); 
+                    tituloSeguro = tituloSeguro.replace(/'/g, "\\'"); 
+
+                    // 🔥 CIRUGÍA ORDENAMIENTO: Extraemos, evaluamos y ordenamos 🔥
+                    let embedsExtraidos = partido.attributes.embeds.data.map(emb => {
+                        const rawIframe = emb.attributes.embed_iframe;
+                        let linkExtra = rawIframe;
+                        
+                        if (rawIframe.includes('r=')) {
+                            let partesR = rawIframe.split('r=');
+                            if (partesR.length > 1) {
+                                linkExtra = partesR[1].split('"')[0].split('&padre=')[0]; 
+                            }
+                        } else if (rawIframe.includes('src="')) {
+                            linkExtra = rawIframe.split('src="')[1].split('"')[0];
+                        }
+
+                        // Comprobamos si el enlace crudo es un M3U8 directo
+                        let esNativo = false;
+                        try {
+                            const dec = atob(linkExtra);
+                            esNativo = dec.includes('.m3u8') && !dec.includes('drm.php');
+                        } catch(e) {
+                            esNativo = linkExtra.includes('.m3u8') && !linkExtra.includes('drm.php');
+                        }
+
+                        return { originalData: emb, link: linkExtra, esNativo: esNativo };
+                    });
+
+                    // Ponemos los nativos primero
+                    embedsExtraidos.sort((a, b) => (a.esNativo === b.esNativo) ? 0 : a.esNativo ? -1 : 1);
+
+                    // Cargamos el motor con la opción #1 (la ganadora)
+                    loadMotor(embedsExtraidos[0].link, tituloOriginal, true);
+
+                    let htmlBotones = embedsExtraidos.map((obj, index) => {
+                        const activeClass = (index === 0) ? 'active-signal' : '';
+                        const nativaClass = obj.esNativo ? 'opcion-nativa' : '';
+                        const iconHtml = obj.esNativo ? '<i class="fas fa-gem" style="color:#eab308;"></i>' : '<i class="fas fa-play-circle"></i>';
+                        const nombreLlamativo = obj.esNativo ? obj.originalData.attributes.embed_name + ' (HD PRO)' : obj.originalData.attributes.embed_name;
+
+                        return `<button class="btn-opcion ${nativaClass} ${activeClass}" onclick="cambiarSenal(this, '${obj.link}', '${tituloSeguro}', true)">${iconHtml} ${nombreLlamativo}</button>`;
+                    }).join('');
+
+                    box.innerHTML = htmlBotones;
+                } else {
+                    // Si no se encuentra en la agenda, carga el original
+                    loadMotor(rDirecto, tituloOriginal, true);
+                }
+            } catch (e) { 
+                console.error("Error al cargar agenda:", e); 
+                loadMotor(rDirecto, tituloOriginal, true); 
+            }
+        }
+        
+        // =======================================================
+        // 🔥 3. LÓGICA ORIGINAL: TV EN VIVO
+        // =======================================================
+        if (channelId) {
+            try {
+                const response = await fetch('https://api.telelatinomax.shop/canales.php');
+                if(!response.ok) throw new Error("Acceso a canales denegado");
+                
+                const data = await response.json();
+                let signals = [];
+                
+                Object.values(data).forEach(cat => {
+                    if(Array.isArray(cat)) { 
+                        cat.forEach(c => {
+                            const cleanName = c.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
+                            if (cleanName === channelId) signals.push(c);
+                        });
+                    }
+                });
+
+                if (signals.length > 0) {
+                    const channelName = signals[0].Canal;
+                    document.title = `${channelName} En Vivo - SPORT LIVE`;
+                    document.getElementById('header-logo').innerText = `${channelName}`;
+                    document.getElementById('seo-content').innerText = `Disfruta de la programación de ${channelName} en vivo por internet.`;
+
+                    loadMotor(signals[0].Link, channelName, false);
+
+                    const box = document.getElementById('multi-signals');
+                    box.style.display = 'flex'; 
+                    const tituloSeguro = channelName.replace(/'/g, "\\'");
+
+                    let htmlBotones = signals.map((s, i) => {
+                        const activeClass = (i === 0) ? 'active-signal' : '';
+                        let optionName = s.Señal || 'OPCIÓN ' + (i+1);
+                        let iconClass = s.Link.includes('token=') ? 'fa-crown' : 'fa-tv';
+                        
+                        return `<button class="btn-opcion ${activeClass}" onclick="cambiarSenal(this, '${s.Link}', '${tituloSeguro}', false)"><i class="fas ${iconClass}"></i> ${optionName}</button>`;
+                    }).join('');
+
+                    box.innerHTML = htmlBotones;
+                    } else {
+                    // 🔥 REDIRECCIÓN ANTI-PÉRDIDA DE TRÁFICO (Canal no encontrado) 🔥
+                    window.location.replace("https://oleadatvpremium.com/SportLive/agenda.html");
+                }
+            } catch (e) { 
+                console.error("Error en TV:", e); 
+                window.location.replace("https://oleadatvpremium.com/SportLive/agenda.html");
+            }
+        } else if (!peliId && !rDirecto && !channelId) {
+            // Si entran al ver.html sin ningún parámetro, también los mandamos a la web
+            window.location.replace("https://oleadatvpremium.com/SportLive/agenda.html");
+        }
+    }
+    
+    function loadMotor(url, name, yaEsB64) {
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            const btnCast = document.getElementById("btn-proyectar-tv");
+            if (btnCast) {
+                btnCast.style.display = "flex";
+                btnCast.classList.add("btn-disabled");
+            }
+            window.castHabilitado = false; 
+        }
+
+        let finalR = url;
+        
+        if (yaEsB64) {
+            try {
+                let decoded = atob(url);
+                if (decoded.includes('eventos.html?r=')) {
+                    finalR = decoded.split('eventos.html?r=')[1];
+                } else {
+                    finalR = url;
+                }
+            } catch(e) { 
+                finalR = btoa(url); 
+            }
+        } else {
+            finalR = url.startsWith('http') ? btoa(url) : url;
+        }
+        
+        let dominioPadre = "";
+        try {
+            if (window.top !== window.self && document.referrer) {
+                dominioPadre = new URL(document.referrer).hostname;
+            } else {
+                dominioPadre = window.location.hostname;
+            }
+        } catch(e) {}
+
+        document.getElementById('main-motor').src = `https://player.telelatinomax.shop/embed/eventos.html?r=${finalR}&n=${encodeURIComponent(name)}&padre=${dominioPadre}`;
+    }
+    
+    async function cambiarSenal(elemento, url, nombre, yaEsB64) {
+        document.querySelectorAll('.btn-opcion').forEach(btn => btn.classList.remove('active-signal'));
+        elemento.classList.add('active-signal');
+
+        const esVIP = SERVIDORES_VIP.some(s => url.includes(s));
+
+        if (esVIP && !yaEsB64) { 
+            const textoOriginal = elemento.innerHTML;
+            
+            elemento.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: #eab308;"></i> Conectando VIP...';
+            
+            try {
+                const req = await fetch(`https://telelatinomax.shop/vod/extract?url=${encodeURIComponent(url)}`);
+                const data = await req.json();
+                
+                if (data.success && data.url) {
+                    elemento.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;"></i> Reproduciendo PRO';
+                    loadMotor(data.url, nombre, false);
+                    return; 
+                }
+            } catch (e) { console.log("Extracción silenciosa fallida, activando Iframe con Ads"); }
+            
+            elemento.innerHTML = textoOriginal;
+        }
+
+        loadMotor(url, nombre, yaEsB64);
+    }
+    
+    setupVer();
+    
+    // 🔥 RECEPTOR DEL ENLACE DESDE EL IFRAME PARA PROYECTAR A TV 🔥
+    let urlListaParaCast = "";
+    window.castHabilitado = false; 
+
+    window.addEventListener("message", function(event) {
+        let esMovil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (!esMovil) return;
+
+        const btnCast = document.getElementById("btn-proyectar-tv");
+
+        if (event.data && event.data.accion === "mostrarProyectar") {
+            urlListaParaCast = event.data.urlVideo;
+            window.castHabilitado = true;
+            btnCast.style.display = "flex";
+            btnCast.classList.remove("btn-disabled");
+        } 
+        else if (event.data && event.data.accion === "deshabilitarProyectar") {
+            window.castHabilitado = false;
+            btnCast.style.display = "flex";
+            btnCast.classList.add("btn-disabled");
+        }
+    });
+
+    function iniciarCasteo() {
+        if (!window.castHabilitado) {
+            const toast = document.getElementById("custom-toast");
+            document.getElementById("toast-msg").innerText = "Proyección a TV no disponible para este canal. Intenta seleccionando otra opción de servidor.";
+            toast.classList.add("show");
+            setTimeout(() => { toast.classList.remove("show"); }, 4000);
+            return;
+        }
+
+        if (urlListaParaCast) {
+            let castUrl = "wvc-x-callback://open?url=" + encodeURIComponent(urlListaParaCast);
+            window.location.href = castUrl;
+            setTimeout(function() { 
+                window.location.href = "market://launch?id=com.instantbits.cast.webvideo"; 
+            }, 500);
+        }
+    }
+    
+</script>
+
+</body>
+</html>
