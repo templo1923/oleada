@@ -6,21 +6,13 @@ import { ChannelsSection } from "@/components/home/channels-section"
 import { MoviesSection } from "@/components/home/movies-section"
 import { CTASection } from "@/components/home/cta-section"
 
-// 🔥 1. IMPORTAMOS EL COMPONENTE DE EVENTOS ESTELARES 🔥
-import { FeaturedEvents } from "@/components/featured-events"
-
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-16">
         <HeroSection />
-        
-        {/* 🔥 2. COLOCAMOS LOS EVENTOS DESTACADOS AQUÍ, ANTES DE LOS DEPORTES NORMALES 🔥 */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-4 sm:mt-8">
-          <FeaturedEvents />
-        </div>
-
+        {/* Ya no llamamos a FeaturedEvents aquí */}
         <SportsSection />
         <ChannelsSection />
         <MoviesSection />
