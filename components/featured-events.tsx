@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Play, Zap } from 'lucide-react'
+import { SatelliteDish, Play, ChevronRight } from 'lucide-react'
 
 async function getFeaturedData() {
   try {
@@ -24,8 +24,7 @@ async function getFeaturedData() {
         eventosEspeciales = [...eventosEspeciales, ...activos];
       }
     }
-    // 🔥 Aumentamos el límite a 12 para que no se te quede ningún evento por fuera 🔥
-    return eventosEspeciales.slice(0, 12); 
+    return eventosEspeciales.slice(0, 10); // Traemos hasta 10, total se deslizan horizontalmente
   } catch (e) {
     return [];
   }
@@ -35,62 +34,75 @@ export async function FeaturedEvents() {
   const destacados = await getFeaturedData();
 
   if (destacados.length === 0) return null;
+  
+  const hayVarios = destacados.length > 1;
 
   return (
-    <section className="w-full mb-8 mx-auto">
-      {/* Título de la sección con estilo Pro */}
-      <div className="flex items-center gap-2 mb-4 px-2">
-        <Zap className="w-5 h-5 text-red-500 fill-red-500 animate-pulse" />
-        <h2 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-white drop-shadow-md">
+    <section className="w-full mb-8 overflow-hidden mx-auto">
+      {/* Título de la Sección */}
+      <div className="flex items-center gap-2 mb-2 px-4 max-w-7xl mx-auto">
+        <span className="relative flex h-3 w-3">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+          <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
+        </span>
+        <h2 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-white">
           Eventos Estelares en Vivo
         </h2>
       </div>
 
-      {/* 🔥 EL TRUCO: Flex (Slider) en celular, y Grid (Cuadrícula) en PC 🔥 */}
-      <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto sm:overflow-visible pb-6 pt-2 px-2 scrollbar-hide snap-x snap-mandatory">
+      {/* Contenedor del Slider (Scroll Horizontal garantizado) */}
+      <div className="flex gap-4 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide snap-x snap-mandatory max-w-7xl mx-auto">
         {destacados.map((evento, idx) => {
           const cleanId = evento.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
-          const linkFinal = `/ver.html?canal=${cleanId}`;
+          
+          // 🔥 MAGIA SEO: Ahora apunta a tu página de Next.js para indexar todo en Google 🔥
+          const linkFinal = `/canal/${cleanId}`; 
           const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
           
           return (
             <Link 
               key={idx} 
               href={linkFinal}
-              target="_blank"
-              // 🔥 DISEÑO TIPO CUADRITO PREMIUM (Inspirado en tu web de TV) 🔥
-              className="relative group flex flex-col items-center justify-center text-center p-4 rounded-[1.25rem] shrink-0 snap-center transition-all duration-300 bg-gradient-to-b from-[#111827] to-[#3f0f0f] border border-red-500/40 shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(239,68,68,0.4)] hover:border-red-500 w-[135px] sm:w-auto aspect-[1/1.1] sm:aspect-square overflow-hidden"
+              // Ya no usamos target="_blank" para que fluya natural en tu propia web SEO
+              className="relative group flex flex-row items-center text-left gap-4 sm:gap-6 p-4 sm:p-6 rounded-2xl shrink-0 snap-center transition-all duration-300 bg-gradient-to-br from-[#111827] to-[#450a0a] border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(239,68,68,0.4)] hover:border-red-500 w-[88%] sm:w-[400px] md:w-[450px]"
             >
-              {/* Etiqueta Superior Pequeña */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[8px] sm:text-[9px] font-black px-3 py-1 rounded-b-lg tracking-widest shadow-md z-10 flex items-center gap-1 w-max">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> EN VIVO
+              {/* Etiqueta Superior */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[9px] sm:text-[10px] font-black px-4 sm:px-5 py-1 sm:py-1.5 rounded-b-xl tracking-[0.15em] whitespace-nowrap z-20 shadow-lg">
+                🔥 ESTELAR EN VIVO 🔥
               </div>
               
-              {/* Logo del equipo/evento */}
+              {/* Imagen GRANDE y protagonista */}
               <img 
                 src={evento.Logo || fallbackLogo} 
-                className="w-14 h-14 sm:w-20 sm:h-20 object-contain drop-shadow-xl rounded-xl bg-black/20 p-1.5 shrink-0 mt-4 mb-2 z-10 transition-transform duration-300 group-hover:scale-110" 
+                className="w-[65px] h-[65px] sm:w-[90px] sm:h-[90px] object-contain drop-shadow-xl rounded-xl bg-black/20 p-2 shrink-0 mt-2 sm:mt-0 group-hover:scale-110 transition-transform duration-300" 
                 alt={evento.Canal}
               />
 
-              {/* Título del Evento */}
-              <div className="flex flex-col items-center w-full z-10">
-                <h3 className="text-[11px] sm:text-[13px] font-black text-slate-100 uppercase leading-tight mb-1 w-full line-clamp-2 px-1">
+              {/* Textos sin recortes */}
+              <div className="flex-1 min-w-0 w-full mt-2 sm:mt-0">
+                <h3 className="text-[16px] sm:text-[22px] font-black text-white uppercase leading-[1.2] mb-1 sm:mb-2 whitespace-normal break-words">
                   {evento.Canal}
                 </h3>
+                <p className="text-red-300 text-[11px] sm:text-[13px] font-semibold flex items-center justify-start gap-1.5 whitespace-normal">
+                   <SatelliteDish className="w-3 sm:w-4 h-3 sm:h-4 shrink-0" /> Transmisión Premium
+                </p>
               </div>
 
-              {/* Hover Overlay con Botón Play Central (Efecto Mágico) */}
-              <div className="absolute inset-0 bg-[#450a0a]/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col items-center justify-center backdrop-blur-[2px]">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-500 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.8)] group-hover:scale-110 transition-transform mb-2">
-                  <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white ml-0.5" />
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-black text-white uppercase tracking-widest">Ver Ahora</span>
+              {/* Botón Play */}
+              <div className="flex shrink-0 w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full bg-red-500/15 border border-red-500/40 text-red-500 items-center justify-center transition-all duration-300 group-hover:bg-red-500 group-hover:text-white group-hover:scale-110">
+                <Play className="w-3 h-3 sm:w-5 sm:h-5 fill-current ml-0.5 sm:ml-1" />
               </div>
             </Link>
           )
         })}
       </div>
+      
+      {/* Pista visual para celular */}
+      {hayVarios && (
+        <div className="text-center text-slate-500 text-[11px] font-black uppercase tracking-widest mt-[-10px] mb-2 flex items-center justify-center gap-1 sm:hidden">
+          Desliza para ver más <ChevronRight className="w-3 h-3 text-primary animate-pulse" />
+        </div>
+      )}
     </section>
   )
 }
