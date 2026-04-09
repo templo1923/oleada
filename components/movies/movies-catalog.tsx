@@ -469,10 +469,14 @@ export function MoviesCatalog() {
                     {/* CTAs */}
                     <div className="flex flex-wrap gap-3 mt-6">
                       <Button 
-                        className="flex-1 sm:flex-none bg-gradient-to-r from-accent to-destructive text-background font-semibold py-6 shine glow-orange hover:opacity-90 transition-opacity"
+                        className="flex-1 sm:flex-none bg-gradient-to-r from-accent to-destructive text-background font-semibold py-6 shine glow-orange hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(239,68,68,0.4)]"
+                        onClick={() => {
+                           // El usuario cae en la trampa y es llevado a tu catálogo real
+                           window.open(`https://oleadatvpremium.com/SportLive/peliculas.html?q=${encodeURIComponent(selectedMovie.title)}`, "_blank")
+                        }}
                       >
                         <Play className="mr-2 h-5 w-5 fill-current" />
-                        Ver Ahora
+                        Ver Película Ahora
                       </Button>
                       
                       {selectedMovie.videos?.find((v) => v.type === "Trailer" && v.site === "YouTube") && (
