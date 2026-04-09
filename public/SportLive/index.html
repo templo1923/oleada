@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Fútbol Libre - Eventos en VIVO Gratis</title>
+  <title>SportLive Premium | Eventos Deportivos, TV y Cine en VIVO Gratis</title>
 
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#3b82f6">
+  <meta name="theme-color" content="#080c14">
   <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
-  <meta name="description" content="Fútbol Libre sitio para ver canales de TV online en vivo y en directo gratis por internet. Canales de television de manera Gratuita y Online Canales libres por Futbol Libre.">
-  <meta name="keywords" content="Fútbol Libre, canales de TV online, eventos deportivos, streaming gratis">
-  <meta name="author" content="Fútbol Libre">
-  <meta property="og:site_name" content="FÚTBOL LIBRE | CANALES POR INTERNET">
-  <meta property="og:url" content="https://futbol-libretv.neocities.org">
+  <meta name="description" content="Accede a la mejor plataforma de streaming. SportLive Premium te ofrece canales de TV online en vivo, eventos deportivos exclusivos y estrenos de cine gratis por internet.">
+  <meta name="keywords" content="Fútbol Libre, canales de TV online, eventos deportivos, streaming gratis, cine online, tv en vivo">
+  <meta name="author" content="SportLive">
+  <meta property="og:site_name" content="SPORTLIVE PREMIUM | STREAMING ONLINE">
+  <meta property="og:url" content="https://oleadatvpremium.com">
   <meta property="og:image" content="https://i.postimg.cc/fyL6vn3H/unnamed-1.png">
 
   <style>
@@ -28,17 +28,19 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      font-family: 'Outfit', sans-serif;
+      background-color: #080c14; /* Tono oscuro premium a juego con la app */
       color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       overflow-x: hidden;
+      position: relative;
     }
 
+    /* Fondo animado oscuro */
     .background-wrapper {
       position: fixed;
       top: 0;
@@ -47,231 +49,228 @@
       height: 100%;
       z-index: 1;
       overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #111827 0%, #080c14 100%);
     }
 
-    .background-image {
+    /* Glows de colores al estilo de tu Next.js */
+    .glow-blue {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 100%;
-      background: url('https://i.postimg.cc/76HtY8hg/deportes15.jpg') no-repeat center center;
-      background-size: cover;
-      animation: slideBg 30s linear infinite;
-      filter: blur(5px);
+      top: -10%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: rgba(59, 130, 246, 0.15);
+      filter: blur(100px);
+      border-radius: 50%;
+      animation: pulseGlow 8s infinite alternate;
     }
 
-    .background-overlay {
+    .glow-purple {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 2;
+      bottom: -10%;
+      right: -10%;
+      width: 40vw;
+      height: 40vw;
+      background: rgba(139, 92, 246, 0.15);
+      filter: blur(100px);
+      border-radius: 50%;
+      animation: pulseGlow 10s infinite alternate-reverse;
     }
 
-    @keyframes slideBg {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    @keyframes pulseGlow {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 1; }
     }
 
     .container {
       text-align: center;
       z-index: 10;
       padding: 2rem;
-      max-width: 900px;
-      margin-top: 10vh;
+      max-width: 800px;
+      display: flex;
+      flex-col;
+      align-items: center;
+    }
+
+    /* Logo principal */
+    .logo-img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 2rem;
+      animation: fadeInDown 1s ease-out;
+      filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
     }
 
     h1 {
       font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      animation: fadeIn 1.5s ease-in-out;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInUp 1s ease-out 0.2s both;
     }
 
     p {
-      font-size: 1.5rem;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      animation: fadeIn 2s ease-in-out;
-      color: #d7eee7;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: #94a3b8;
+      margin-bottom: 3rem;
+      animation: fadeInUp 1s ease-out 0.4s both;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 1.2rem 4rem;
-      font-size: 3rem;
+    /* Botón Premium */
+    .btn-ingresar {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      padding: 1.2rem 3.5rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #fff;
-      background: #0c7557e4;
-      border-radius: 20px;
-      border: 4px solid rgb(19,213,88);
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      border-radius: 100px;
       text-decoration: none;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      animation: pulse 2s infinite ease-in-out;
+      box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.7);
+      animation: fadeInUp 1s ease-out 0.6s both, pulseBtn 2s infinite 2s;
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      background: #4e7af9;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      border: 4px solid rgb(0,78,247);
+    .btn-ingresar::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.2);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
     }
 
-    @keyframes pulse {
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .btn-ingresar:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.9);
+    }
+
+    @keyframes pulseBtn {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.02); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .background-animations {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .circle, .triangle, .square {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.15);
-      animation: float 12s infinite ease-in-out;
-      mix-blend-mode: overlay;
-    }
-
-    .circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      top: 15%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .triangle {
-      width: 0;
-      height: 0;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-      border-bottom: 80px solid rgba(255, 255, 255, 0.15);
-      top: 60%;
-      left: 70%;
-      animation-delay: 2s;
-    }
-
-    .square {
-      width: 80px;
-      height: 80px;
-      top: 40%;
-      left: 50%;
-      transform: rotate(45deg);
-      animation-delay: 4s;
-    }
-
-    @keyframes float {
-      0% { transform: translate(0, 0) scale(0.9); opacity: 0.3; }
-      50% { transform: translate(20px, 20px) scale(1.1); opacity: 0.5; }
-      100% { transform: translate(0, 0) scale(0.9); opacity: 0.3; }
-    }
-
+    /* Footer y Redes */
     footer {
+      position: absolute;
+      bottom: 2rem;
       width: 100%;
-      padding: 2rem;
       text-align: center;
       z-index: 10;
+      animation: fadeIn 2s ease-in 1s both;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
     }
 
     .social-icons a {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
-      margin: 0 0.8rem;
-      border-radius: 50%;
-      color: #fff;
-      font-size: 1.8rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 1.2rem;
       text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
     .social-icons a:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      color: #fff;
+      transform: translateY(-3px);
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.5);
     }
 
-    .social-icons .facebook { background: #3b5998; }
-    .social-icons .twitter { background: #1da1f2; }
-    .social-icons .instagram { background: #e1306c; }
-    .social-icons .tiktok { background: #000; }
-
     @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      p { font-size: 1.2rem; }
-      .btn { font-size: 1.5rem; padding: 1rem 3rem; }
-      .container { margin-top: 5vh; padding: 1rem; }
-      .social-icons a { width: 40px; height: 40px; font-size: 1.5rem; margin: 0 0.5rem; }
+      h1 { font-size: 2.2rem; }
+      p { font-size: 1rem; padding: 0 10px; }
+      .btn-ingresar { font-size: 1.2rem; padding: 1rem 2.5rem; }
+      .logo-img { width: 90px; margin-bottom: 1.5rem; }
     }
   </style>
 </head>
 <body ondragstart="return false;">
 
   <div class="background-wrapper">
-    <div class="background-image"></div>
-    <div class="background-overlay"></div>
+    <div class="glow-blue"></div>
+    <div class="glow-purple"></div>
   </div>
 
   <div class="container">
-    <h1>¡Disfruta los mejores eventos deportivos del día!</h1>
-    <p>Con SportLive, accede a todos los partidos y eventos deportivos en un solo lugar.</p>
-    <a href="home.html" class="btn">INICIAR</a>
-  </div>
-
-  <div class="background-animations">
-    <div class="circle"></div>
-    <div class="triangle"></div>
-    <div class="square"></div>
+    <img src="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" alt="SportLive Premium Logo" class="logo-img">
+    
+    <h1>Streaming Sin Límites</h1>
+    <p>La mejor experiencia en TV Premium, Deportes en Vivo y Cine. Todo en un solo lugar, rápido y seguro.</p>
+    
+    <a href="home.html" class="btn-ingresar">
+      <i class="fas fa-play-circle"></i> INGRESAR AHORA
+    </a>
   </div>
 
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/" target="_blank" class="facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/" target="_blank" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://tiktok.com/@" target="_blank" class="tiktok" aria-label="tiktok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/@" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     </div>
   </footer>
 
-  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 15px; padding: 15px; z-index: 99999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); align-items: center; justify-content: space-between; gap: 15px; font-family: 'Outfit', sans-serif;">
+  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 15px; z-index: 99999; box-shadow: 0 20px 40px rgba(0,0,0,0.9); align-items: center; justify-content: space-between; gap: 15px;">
     <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 12px;" alt="Icon">
+        <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 10px;" alt="Icon">
         <div>
-            <h4 style="margin: 0; color: #fff; font-size: 15px; font-weight: 800;">SportLive App</h4>
-            <p style="margin: 0; color: #94a3b8; font-size: 11px;">Instala para acceso rápido y sin publicidad</p>
+            <h4 style="margin: 0; color: #fff; font-size: 14px; font-weight: 800;">SportLive Premium</h4>
+            <p style="margin: 0; color: #94a3b8; font-size: 11px; margin-top: 2px;">Instalar App rápida y ligera</p>
         </div>
     </div>
     <div style="display: flex; gap: 8px;">
-        <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; font-weight: bold; cursor: pointer; padding: 5px;">X</button>
-        <button id="btn-instalar-app" style="background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">INSTALAR</button>
+        <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #64748b; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px;"><i class="fas fa-times"></i></button>
+        <button id="btn-instalar-app" style="background: #3b82f6; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">INSTALAR</button>
     </div>
   </div>
 
   <script>
-    // 1. Registrar el Service Worker (Tu "Maik Shield")
+    // 1. Registrar el Service Worker Básico
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('🛡️ Maik Shield Activado:', reg.scope);
-            }).catch(err => console.log('Error Maik Shield:', err));
+                console.log('PWA Service Worker Activado');
+            }).catch(err => console.log('Error SW:', err));
         });
     }
 
@@ -281,7 +280,6 @@
     const btnInstalar = document.getElementById('btn-instalar-app');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevenir el banner nativo de Google (Queremos mostrar el nuestro que es más bonito)
         e.preventDefault();
         deferredPrompt = e;
         installBanner.style.display = 'flex';
@@ -292,12 +290,12 @@
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            console.log(`El usuario decidió: ${outcome}`);
+            console.log(`Instalación: ${outcome}`);
             deferredPrompt = null;
         }
     });
 
-    // Detectar iOS (Apple no deja instalar automático, hay que enseñarles cómo)
+    // Detectar iOS
     const isIos = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod/.test( userAgent );
@@ -308,7 +306,7 @@
         installBanner.style.display = 'flex';
         btnInstalar.innerHTML = 'VER CÓMO';
         btnInstalar.addEventListener('click', () => {
-            alert("En iPhone/iPad: Toca el ícono de 'Compartir' (el cuadro con la flechita hacia arriba) y luego selecciona 'Agregar a Inicio'.");
+            alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadrado con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
         });
     }
   </script>
