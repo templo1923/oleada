@@ -218,7 +218,7 @@ export default async function CanalPage(props: any) {
               <div className="flex items-center gap-4 mb-6 border-b border-white/5 pb-5">
                  <Radio className="w-7 h-7 text-blue-400" />
                  <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wide">
-                   ¿Cómo ver la señal online?
+                   ¿Cómo ver la señal de <strong className="text-white">{nombreLimpio}</strong>, online Gratis por internet?
                  </h2>
               </div>
               <p className="text-slate-400 text-[15px] leading-relaxed mb-6">
