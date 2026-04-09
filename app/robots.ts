@@ -1,14 +1,15 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  // 🚨 CAMBIA ESTO POR TU DOMINIO FINAL 🚨
-  const DOMINIO = 'https://sportlive-one.vercel.app';
+  // 🔥 ESTRATEGIA MULTI-DOMINIO: Detecta el dominio automáticamente
+  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/'], // Evitamos que Google indexe tus rutas internas de API
+      // Evitamos que Google pierda tiempo rastreando código interno o APIs
+      disallow: ['/api/', '/_next/', '/public/'], 
     },
     sitemap: `${DOMINIO}/sitemap.xml`,
   }
