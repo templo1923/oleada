@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button"
 // 🚨 ENLACES REALES CONECTADOS AL ECOSISTEMA 🚨
 const navLinks = [
   { href: "https://sportlive-one.vercel.app/", label: "Inicio", icon: Zap },
-  { href: "/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
-  { href: "/canales-premium`", label: "Canales TV", icon: Tv },
-  { href: "/cine", label: "Cine", icon: Film },
+  { href: "https://sportlive-one.vercel.app/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
+  { href: "https://sportlive-one.vercel.app/canales-premium", label: "Canales TV", icon: Tv },
+  { href: "https://sportlive-one.vercel.app/cine", label: "Cine", icon: Film },
   { href: "https://sportlive-one.vercel.app/blog", label: "Blog", icon: FileText },
 ]
 
