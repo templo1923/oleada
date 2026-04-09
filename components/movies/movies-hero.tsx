@@ -34,8 +34,8 @@ export function MoviesHero() {
           <div className="mt-10 flex flex-wrap justify-center gap-4 lg:gap-8">
             {[
               { icon: Film, label: "10,000+ Peliculas" },
-              { icon: Star, label: "Calidad 4K" },
-              { icon: Clock, label: "Sin Anuncios" },
+              { icon: Star, label: "Calidad HD" },
+              { icon: Clock, label: "24/7" },
             ].map((feature) => (
               <div key={feature.label} className="flex items-center gap-2 text-muted-foreground">
                 <feature.icon className="h-5 w-5 text-accent" />
