@@ -8,10 +8,20 @@ import { Button } from "@/components/ui/button"
 export const dynamic = 'force-dynamic';
 
 // ==========================================
-// 🧠 1. CEREBRO SEO (Detecta si es Partido o Canal)
+// 🧠 1. CEREBRO SEO PRO (Detecta si es Partido o Canal aunque venga pegado)
 // ==========================================
 function analizarContenido(rawName: string) {
-  const nombreLimpio = rawName.replace(/-/g, ' ').toUpperCase();
+  let nombreLimpio = rawName.replace(/[-_]/g, ' ').toUpperCase();
+  
+  // 🔥 EL ARREGLO: Si el nombre viene todo pegado (ej: BLOOMINGVSRIVERPLATE), le inyectamos los espacios
+  if (nombreLimpio.includes('VS') && !nombreLimpio.includes(' VS ')) {
+    nombreLimpio = nombreLimpio.replace('VS', ' VS ');
+  }
+  if (nombreLimpio.includes(' X ') === false && nombreLimpio.includes('X') && nombreLimpio.length > 5) {
+    // Solo por si usan la 'X' pegada en lugar de VS
+    nombreLimpio = nombreLimpio.replace('X', ' X ');
+  }
+  
   const esPartido = nombreLimpio.includes(' VS ') || nombreLimpio.includes(' X ');
   
   let tituloSeo = '';
@@ -23,7 +33,7 @@ function analizarContenido(rawName: string) {
     tipoContenido = 'Evento Deportivo';
     tituloSeo = `Ver ${nombreLimpio} EN VIVO HD Gratis | Transmisión Online`;
     descSeo = `Sigue la transmisión en vivo y en directo del partido ${nombreLimpio}. Cobertura completa, estadísticas, alineaciones y la mejor calidad de video HD sin cortes por internet.`;
-    keywordsSeo = `ver ${nombreLimpio} en vivo, partido ${nombreLimpio} online, transmisión ${nombreLimpio} gratis, donde ver ${nombreLimpio} hoy, link ${nombreLimpio} hd, streaming futbol gratis`;
+    keywordsSeo = `ver ${nombreLimpio} en vivo, partido ${nombreLimpio} online, transmisión ${nombreLimpio} gratis, donde ver ${nombreLimpio} hoy, link hd, streaming futbol gratis`;
   } else {
     tipoContenido = 'Canal Premium';
     tituloSeo = `Ver ${nombreLimpio} EN VIVO Online Gratis | Señal HD 24/7`;

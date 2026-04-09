@@ -56,7 +56,7 @@ export async function FeaturedEvents() {
           const cleanId = evento.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
           
           // 🔥 MAGIA SEO: Ahora apunta a tu página de Next.js para indexar todo en Google 🔥
-          const linkFinal = `/canal/${cleanId}`; 
+          const linkFinal = `/canal/${cleanId}?n=${encodeURIComponent(evento.Canal)}`; 
           const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
           
           return (
