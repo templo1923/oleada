@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title id="seo-title">SPORT LIVE</title>
+  
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
+
     <meta name="referrer" content="origin">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -1188,6 +1193,68 @@
     }
     
 </script>
+
+  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 15px; padding: 15px; z-index: 99999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); align-items: center; justify-content: space-between; gap: 15px; font-family: 'Outfit', sans-serif;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 12px;" alt="Icon">
+        <div>
+            <h4 style="margin: 0; color: #fff; font-size: 15px; font-weight: 800;">SportLive App</h4>
+            <p style="margin: 0; color: #94a3b8; font-size: 11px;">Instala para acceso rápido y sin publicidad</p>
+        </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; font-weight: bold; cursor: pointer; padding: 5px;">X</button>
+        <button id="btn-instalar-app" style="background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">INSTALAR</button>
+    </div>
+  </div>
+
+  <script>
+    // 1. Registrar el Service Worker (Tu "Maik Shield")
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                console.log('🛡️ Maik Shield Activado:', reg.scope);
+            }).catch(err => console.log('Error Maik Shield:', err));
+        });
+    }
+
+    // 2. Lógica de Instalación PWA
+    let deferredPrompt;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const btnInstalar = document.getElementById('btn-instalar-app');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevenir el banner nativo de Google (Queremos mostrar el nuestro que es más bonito)
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'flex';
+    });
+
+    btnInstalar.addEventListener('click', async () => {
+        installBanner.style.display = 'none';
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`El usuario decidió: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
+
+    // Detectar iOS (Apple no deja instalar automático, hay que enseñarles cómo)
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test( userAgent );
+    }
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+    if (isIos() && !isInStandaloneMode()) {
+        installBanner.style.display = 'flex';
+        btnInstalar.innerHTML = 'VER CÓMO';
+        btnInstalar.addEventListener('click', () => {
+            alert("En iPhone/iPad: Toca el ícono de 'Compartir' (el cuadro con la flechita hacia arriba) y luego selecciona 'Agregar a Inicio'.");
+        });
+    }
+  </script>
 
 </body>
 </html>

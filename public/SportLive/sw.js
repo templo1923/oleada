@@ -1,4 +1,6 @@
-// sw.js - EL ANIQUILADOR MAIK SPORT (VERSIÓN FINAL)
+// sw.js - EL ANIQUILADOR  SPORT (VERSI脫N FINAL)
+const CACHE_NAME = 'sportlive-v2';
+
 const BLACKLIST = [
     'aclib', 'acscdn', 'suv5', 'suurl5', 'adexchangeclear', 
     'playafterdark', 'popads', 'adsterra', 'onclickads', 
@@ -6,21 +8,21 @@ const BLACKLIST = [
     'dontfoid', 'betting', 'casino', 'lust'
 ];
 
-// Instalación inmediata
+// 1. Instalaci贸n inmediata
 self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// Activación y toma de control total de las pestañas
+// 2. Activaci贸n y toma de control total de las pesta帽as
 self.addEventListener('activate', (event) => {
     event.waitUntil(clients.claim());
 });
 
-// Interceptor de red (El corazón del Adblock)
+// 3. Interceptor de red (El coraz贸n del Adblock y PWA)
 self.addEventListener('fetch', (event) => {
     const url = event.request.url.toLowerCase();
 
-    // 1. REGLA DE ORO: Dejar pasar el video y el reproductor esencial
+    // REGLA 1: Dejar pasar el video y el reproductor esencial sin tocarlos
     if (
         url.includes('.m3u8') || 
         url.includes('.ts') || 
@@ -28,17 +30,26 @@ self.addEventListener('fetch', (event) => {
         url.includes('clappr') || 
         url.includes('p2p-engine')
     ) {
-        return;
+        return; // El navegador hace su petici贸n normal
     }
 
-    // 2. BLOQUEO AGRESIVO: Si la URL tiene cualquier término prohibido, la matamos
+    // REGLA 2: BLOQUEO AGRESIVO. Si la URL tiene un t茅rmino prohibido, la matamos
     const isAds = BLACKLIST.some(term => url.includes(term));
 
     if (isAds) {
-        console.warn('🛑 MAIK SHIELD BLOQUEÓ:', url);
+        console.warn('馃洝锔� SHIELD BLOQUE脫:', url);
         event.respondWith(new Response('', { 
             status: 403, 
-            statusText: 'Maik Shield Blocked' 
+            statusText: 'SHIELD Blocked' 
         }));
+        return;
     }
+
+    // REGLA 3: Requisito PWA. Dejar pasar todo el tr谩fico limpio de la p谩gina
+    event.respondWith(
+        fetch(event.request).catch(() => {
+            // Si el usuario se queda sin internet, mostramos un error gen茅rico
+            return new Response('Est谩s offline o hay un problema de conexi贸n.');
+        })
+    );
 });

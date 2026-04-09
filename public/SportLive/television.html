@@ -6,6 +6,11 @@
     <meta name="robots" content="noindex, nofollow, noarchive">
     
     <title>Sport Live - TV Premium en Vivo</title>
+
+    <link rel="manifest" href="./manifest.json">
+   <meta name="theme-color" content="#3b82f6">
+   <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -60,15 +65,15 @@
         }
         .form__field:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); background: rgba(255,255,255,0.08); }
 
-        /* BARRITA DE SCROLL PRO PARA CATEGOR0ˆ1AS */
-        /* BARRITA DE SCROLL PRO PARA CATEGOR0ˆ1AS */
+        /* BARRITA DE SCROLL PRO PARA CATEGORï¿½0ï¿½1AS */
+        /* BARRITA DE SCROLL PRO PARA CATEGORï¿½0ï¿½1AS */
         .section-buttons {
             display: flex; 
             overflow-x: auto; 
             gap: 10px; 
             padding: 5px 15px 15px; /* Ajustamos un poco el padding lateral */
             margin: 0 auto; /* La centramos horizontalmente */
-            max-width: 1200px; /* ”9Ù5 EL SECRETO: Le damos el mismo ancho m¨¢ximo que al resto de la web ”9Ù5 */
+            max-width: 1200px; /* ï¿½9ï¿½5 EL SECRETO: Le damos el mismo ancho mï¿½ï¿½ximo que al resto de la web ï¿½9ï¿½5 */
             scrollbar-width: thin; 
             scrollbar-color: var(--primary) rgba(255,255,255,0.05);
         }
@@ -120,7 +125,7 @@
         }
         .card:hover img { transform: scale(1.1); }
 
-        /* •04 ESTILO ESPECIAL LLAMATIVO PARA LOS EVENTOS •04 */
+        /* ï¿½0ï¿½4 ESTILO ESPECIAL LLAMATIVO PARA LOS EVENTOS ï¿½0ï¿½4 */
         .card.evento-style {
             background: linear-gradient(145deg, #111827, #3f0f0f);
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -151,7 +156,7 @@
             50% { opacity: 0.85; transform: translateX(-50%) scale(1.05); } 
         }
 
-        /* Bot¨®n de Favorito */
+        /* Botï¿½ï¿½n de Favorito */
         .fav-btn {
             position: absolute; top: 8px; right: 8px; z-index: 10;
             background: rgba(0,0,0,0.5); border: none; border-radius: 50%;
@@ -174,16 +179,16 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-/* •04 NAVEGACI0ˆ7N INFERIOR (M0ˆ7VIL - EDGE TO EDGE TIPO APP) •04 */
+/* ï¿½0ï¿½4 NAVEGACIï¿½0ï¿½7N INFERIOR (Mï¿½0ï¿½7VIL - EDGE TO EDGE TIPO APP) ï¿½0ï¿½4 */
         .bottom-nav {
             position: fixed; 
             bottom: 0; /* Pegado al borde inferior */
             left: 0; 
             width: 100%; /* Ancho completo */
-            background: rgba(8, 12, 20, 0.95); /* M¨¢s oscuro para fusionarse con el borde */
+            background: rgba(8, 12, 20, 0.95); /* Mï¿½ï¿½s oscuro para fusionarse con el borde */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); 
-            padding: 8px 10px 15px 10px; /* Un poco m¨¢s de padding abajo por el ¨¢rea de gestos de iPhone/Android */
+            padding: 8px 10px 15px 10px; /* Un poco mï¿½ï¿½s de padding abajo por el ï¿½ï¿½rea de gestos de iPhone/Android */
             display: flex; 
             justify-content: space-around; 
             align-items: center;
@@ -252,9 +257,9 @@
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ”9Ü1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
-/* ”9Ü1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
-/* ”9Ü1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
+        /* ï¿½9ï¿½1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
+/* ï¿½9ï¿½1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
+/* ï¿½9ï¿½1 AJUSTES PARA PANTALLAS GRANDES (PC/Laptops) */
         @media (min-width: 768px) {
             .cards { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
             .card { padding: 20px; }
@@ -267,32 +272,32 @@
             
             /* Ajuste para que el Header maneje bien el espacio interior */
             .header-content { 
-                justify-content: space-between; /* Mantiene logo a la izq. y men¨² hamburguesa a la der. */
+                justify-content: space-between; /* Mantiene logo a la izq. y menï¿½ï¿½ hamburguesa a la der. */
             }
             
-            /* El men¨² de PC se centra, usa gap flexible y no permite que el texto se rompa */
+            /* El menï¿½ï¿½ de PC se centra, usa gap flexible y no permite que el texto se rompa */
             .desktop-nav { 
                 display: flex; 
-                gap: clamp(10px, 2vw, 25px); /* El espacio entre botones se ajusta seg¨²n el tama0Š9o de la pantalla */
+                gap: clamp(10px, 2vw, 25px); /* El espacio entre botones se ajusta segï¿½ï¿½n el tamaï¿½0ï¿½9o de la pantalla */
                 align-items: center; 
                 justify-content: center; /* Centra los botones en el espacio disponible */
-                flex: 1; /* Le dice al men¨² que ocupe todo el espacio libre entre el logo y la hamburguesa */
-                margin: 0 15px; /* Peque0Š9o margen para que no toque los extremos */
+                flex: 1; /* Le dice al menï¿½ï¿½ que ocupe todo el espacio libre entre el logo y la hamburguesa */
+                margin: 0 15px; /* Pequeï¿½0ï¿½9o margen para que no toque los extremos */
             }
             
             .desktop-nav-item { 
-                color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); /* Ajusta el tama0Š9o de la fuente si es necesario */
+                color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); /* Ajusta el tamaï¿½0ï¿½9o de la fuente si es necesario */
                 font-weight: 600; cursor: pointer;
                 text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
                 display: flex; align-items: center; gap: 8px;
-                white-space: nowrap; /* ”9Ù5 CR0ˆ1TICO: Impide que "TV En Vivo" se parta en dos l¨ªneas ”9Ù5 */
+                white-space: nowrap; /* ï¿½9ï¿½5 CRï¿½0ï¿½1TICO: Impide que "TV En Vivo" se parta en dos lï¿½ï¿½neas ï¿½9ï¿½5 */
             }
             
             .desktop-nav-item:hover { color: #fff; }
             .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
             .desktop-nav-item i { font-size: 16px; }
         }
-        /* ”9á5 OCULTAMOS EL MEN0‰3 SUPERIOR EN CELULARES ”9á5 */
+        /* ï¿½9ï¿½5 OCULTAMOS EL MENï¿½0ï¿½3 SUPERIOR EN CELULARES ï¿½9ï¿½5 */
         @media (max-width: 767px) {
             .desktop-nav { display: none; }
         }
@@ -351,7 +356,7 @@
     
 <script>
     // ==========================================
-    // •04 SEGURIDAD FRONTEND MAXIMA (PARANOIA MODE) •04
+    // ï¿½0ï¿½4 SEGURIDAD FRONTEND MAXIMA (PARANOIA MODE) ï¿½0ï¿½4
     // ==========================================
     (function() {
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -381,7 +386,7 @@
         if (navigator.share) {
             navigator.share({
                 title: 'Sport Live TV',
-                text: '0„3Mira los mejores eventos y TV en vivo gratis!',
+                text: 'ï¿½0ï¿½3Mira los mejores eventos y TV en vivo gratis!',
                 url: window.location.origin
             });
         } else {
@@ -389,13 +394,13 @@
         }
     }
 
-    // Navegaci¨®n Segura para los canales (Oculta la URL inferior)
+    // Navegaciï¿½ï¿½n Segura para los canales (Oculta la URL inferior)
     function navegarSeguro(url) {
         window.location.href = url;
     }
 
     // ==========================================
-    // L0ˆ7GICA DE CANALES, FAVORITOS Y BUSCADOR
+    // Lï¿½0ï¿½7GICA DE CANALES, FAVORITOS Y BUSCADOR
     // ==========================================
     let allData = {};
     let currentCategory = "TODOS";
@@ -459,7 +464,7 @@
         }
     }
 
-    // Renderizar botones de categor¨ªas
+    // Renderizar botones de categorï¿½ï¿½as
     function renderCategories() {
         if (!categoryBox) return;
         
@@ -482,17 +487,17 @@
 
         let html = "";
         
-        // 1. Bot¨®n TODOS (Siempre primero)
+        // 1. Botï¿½ï¿½n TODOS (Siempre primero)
         const isTodosActive = currentCategory === "TODOS" ? "active" : "";
         html += `<div class="section-button ${isTodosActive}" onclick="filterCat('TODOS', this)">TODOS <span class="cat-count">${countTodos}</span></div>`;
 
-        // 2. Bot¨®n Favoritos (Siempre segundo si existe. Corregido con icono HTML puro)
+        // 2. Botï¿½ï¿½n Favoritos (Siempre segundo si existe. Corregido con icono HTML puro)
         if (favCount > 0) {
             const isActive = currentCategory === "FAVORITOS" ? "active" : "";
             html += `<div class="section-button ${isActive}" onclick="filterCat('FAVORITOS', this)"><i class="fas fa-heart" style="color: #ef4444;"></i> FAVORITOS <span class="cat-count" style="background:rgba(239, 68, 68, 0.4);">${favCount}</span></div>`;
         }
 
-        // 3. Buscar y agregar las categor¨ªas de Eventos primero
+        // 3. Buscar y agregar las categorï¿½ï¿½as de Eventos primero
         Object.keys(allData).forEach(cat => {
             if (cat.toUpperCase().includes("EVENTO")) {
                 const count = getUniqueCount(allData[cat]);
@@ -503,7 +508,7 @@
             }
         });
 
-        // 4. Agregar el resto de categor¨ªas (Saltando las de eventos que ya agregamos)
+        // 4. Agregar el resto de categorï¿½ï¿½as (Saltando las de eventos que ya agregamos)
         Object.keys(allData).forEach(cat => {
             if (!cat.toUpperCase().includes("EVENTO")) {
                 const count = getUniqueCount(allData[cat]);
@@ -557,7 +562,7 @@
         const nombresRenderizados = new Set();
 
         if (channelsToDisplay.length === 0) {
-            container.innerHTML = `<p style='text-align:center; width:100%; grid-column: 1 / -1; padding:50px; color:#64748b;'><i class="fas fa-satellite-dish" style="font-size:30px; margin-bottom:10px; display:block;"></i>No hay canales aqu¨ª.</p>`;
+            container.innerHTML = `<p style='text-align:center; width:100%; grid-column: 1 / -1; padding:50px; color:#64748b;'><i class="fas fa-satellite-dish" style="font-size:30px; margin-bottom:10px; display:block;"></i>No hay canales aquï¿½ï¿½.</p>`;
             return;
         }
 
@@ -572,7 +577,7 @@
             const favIcon = isFav ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
             const favClass = isFav ? 'active' : '';
 
-            // •04 VERIFICAR SI EL CANAL PERTENECE A UNA CATEGOR0ˆ1A DE "EVENTO" •04
+            // ï¿½0ï¿½4 VERIFICAR SI EL CANAL PERTENECE A UNA CATEGORï¿½0ï¿½1A DE "EVENTO" ï¿½0ï¿½4
             const isEvento = c.parentCategory && c.parentCategory.toUpperCase().includes("EVENTO");
             const eventoClass = isEvento ? 'evento-style' : '';
             const eventoBadge = isEvento ? '<div class="badge-evento">EN VIVO</div>' : '';
@@ -586,7 +591,7 @@
 
             // Inyectar el CSS especial y la etiqueta si es un evento
             li.innerHTML = `
-                <button class="fav-btn ${favClass}" onclick="toggleFavorite(event, '${cleanId}')" title="A0Š9adir a Favoritos">
+                <button class="fav-btn ${favClass}" onclick="toggleFavorite(event, '${cleanId}')" title="Aï¿½0ï¿½9adir a Favoritos">
                     ${favIcon}
                 </button>
                 <div class="card ${eventoClass}" onclick="navegarSeguro('${linkFinal}')">
@@ -609,7 +614,7 @@
             allData = await response.json();
             if(allData.error) { throw new Error(allData.error); }
 
-            // •04 ETIQUETAR CADA CANAL CON SU CATEGOR0ˆ1A PADRE PARA SABER SI ES EVENTO •04
+            // ï¿½0ï¿½4 ETIQUETAR CADA CANAL CON SU CATEGORï¿½0ï¿½1A PADRE PARA SABER SI ES EVENTO ï¿½0ï¿½4
             Object.keys(allData).forEach(cat => {
                 allData[cat].forEach(c => c.parentCategory = cat);
             });
@@ -652,5 +657,68 @@
         loadData();
     });
 </script>
+
+  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 15px; padding: 15px; z-index: 99999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); align-items: center; justify-content: space-between; gap: 15px; font-family: 'Outfit', sans-serif;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 12px;" alt="Icon">
+        <div>
+            <h4 style="margin: 0; color: #fff; font-size: 15px; font-weight: 800;">SportLive App</h4>
+            <p style="margin: 0; color: #94a3b8; font-size: 11px;">Instala para acceso rÃ¡pido y sin publicidad</p>
+        </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #94a3b8; font-size: 12px; font-weight: bold; cursor: pointer; padding: 5px;">X</button>
+        <button id="btn-instalar-app" style="background: linear-gradient(145deg, #3b82f6, #2563eb); color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">INSTALAR</button>
+    </div>
+  </div>
+
+  <script>
+    // 1. Registrar el Service Worker (Tu "Maik Shield")
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                console.log('ðŸ›¡ï¸ Maik Shield Activado:', reg.scope);
+            }).catch(err => console.log('Error Maik Shield:', err));
+        });
+    }
+
+    // 2. LÃ³gica de InstalaciÃ³n PWA
+    let deferredPrompt;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const btnInstalar = document.getElementById('btn-instalar-app');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevenir el banner nativo de Google (Queremos mostrar el nuestro que es mÃ¡s bonito)
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'flex';
+    });
+
+    btnInstalar.addEventListener('click', async () => {
+        installBanner.style.display = 'none';
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`El usuario decidiÃ³: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
+
+    // Detectar iOS (Apple no deja instalar automÃ¡tico, hay que enseÃ±arles cÃ³mo)
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test( userAgent );
+    }
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+    if (isIos() && !isInStandaloneMode()) {
+        installBanner.style.display = 'flex';
+        btnInstalar.innerHTML = 'VER CÃ“MO';
+        btnInstalar.addEventListener('click', () => {
+            alert("En iPhone/iPad: Toca el Ã­cono de 'Compartir' (el cuadro con la flechita hacia arriba) y luego selecciona 'Agregar a Inicio'.");
+        });
+    }
+  </script>
+
 </body>
 </html>
