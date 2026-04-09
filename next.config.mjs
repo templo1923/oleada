@@ -17,19 +17,6 @@ const nextConfig = {
       },
     ]
   },
-
-  // 🔥 REWRITES (El Tubo Secreto hacia tu Servidor en cPanel) 🔥
-  async rewrites() {
-    return [
-      {
-        // 1. Cuando el usuario entra a tu carpeta de siempre:
-        source: '/SportLive/:path*', 
-        
-        // 2. Vercel va silenciosamente a tu nuevo subdominio en Cloudflare
-        destination: 'https://origen.oleadatvpremium.com/SportLive/:path*', 
-      },
-    ]
-  },
 }
 
 export default nextConfig
