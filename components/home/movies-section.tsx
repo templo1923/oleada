@@ -82,10 +82,11 @@ export function MoviesSection() {
           ) : (
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
               {movies.map((movie, index) => (
+                // 🔥 ENLACE ACTUALIZADO HACIA LA RUTA SEO DINÁMICA 🔥
                 <Link
                   key={movie.id}
-                  href="/cine-estrenos"
-                  className="group relative flex-shrink-0 w-[180px] sm:w-[200px] snap-start"
+                  href={`/pelicula/${movie.id}`}
+                  className="group relative flex-shrink-0 w-[180px] sm:w-[200px] snap-start block"
                 >
                   {/* Poster */}
                   <div className="relative aspect-[2/3] rounded-xl overflow-hidden glass card-hover">
@@ -162,7 +163,7 @@ export function MoviesSection() {
           >
             <Link href="/cine-estrenos">
               <Film className="mr-2 h-5 w-5" />
-              Explorar Catalogo VOD
+              Explorar Catalogo Completo
               <ChevronRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Search, Star, Play, X, Calendar, Clock, Film, ChevronRight, Heart, Info } from "lucide-react"
+import Link from "next/link"
+import { Search, Star, Play, Calendar, Film, ChevronRight, Heart } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -27,24 +28,13 @@ interface Genre {
   name: string
 }
 
-interface MovieDetails extends Movie {
-  runtime: number
-  genres: Genre[]
-  tagline: string
-  credits?: {
-    cast: Array<{ name: string; character: string; profile_path: string | null }>
-    crew: Array<{ name: string; job: string }>
-  }
-  videos?: Array<{ key: string; type: string; site: string; name: string }>
-}
-
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p"
 
 const categories = [
   { id: "popular", name: "Populares" },
   { id: "now_playing", name: "En Cartelera" },
   { id: "top_rated", name: "Mejor Valoradas" },
-  { id: "upcoming", name: "Proximos Estrenos" },
+  { id: "upcoming", name: "Próximos Estrenos" },
 ]
 
 export function MoviesCatalog() {
@@ -55,8 +45,6 @@ export function MoviesCatalog() {
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("popular")
   const [selectedGenre, setSelectedGenre] = useState(0)
-  const [selectedMovie, setSelectedMovie] = useState<MovieDetails | null>(null)
-  const [movieDetailsLoading, setMovieDetailsLoading] = useState(false)
   const [favorites, setFavorites] = useState<number[]>([])
 
   // Fetch genres on mount
@@ -107,24 +95,8 @@ export function MoviesCatalog() {
     }
   }, [search, movies])
 
-  const fetchMovieDetails = async (movieId: number) => {
-    setMovieDetailsLoading(true)
-    try {
-      const res = await fetch(`/api/movies/${movieId}`)
-      const data = await res.json()
-      setSelectedMovie(data)
-    } catch (error) {
-      console.error("Error fetching movie details:", error)
-    } finally {
-      setMovieDetailsLoading(false)
-    }
-  }
-
-  const handleMovieClick = (movie: Movie) => {
-    fetchMovieDetails(movie.id)
-  }
-
   const toggleFavorite = (e: React.MouseEvent, movieId: number) => {
+    e.preventDefault() // Evita que se abra la ruta de la película
     e.stopPropagation()
     setFavorites((prev) =>
       prev.includes(movieId) ? prev.filter((id) => id !== movieId) : [...prev, movieId]
@@ -133,12 +105,6 @@ export function MoviesCatalog() {
 
   const getGenreName = (genreId: number) => {
     return genres.find((g) => g.id === genreId)?.name || ""
-  }
-
-  const formatRuntime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60)
-    const mins = minutes % 60
-    return `${hours}h ${mins}m`
   }
 
   return (
@@ -151,7 +117,7 @@ export function MoviesCatalog() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Buscar peliculas..."
+              placeholder="Buscar películas..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-12 h-14 text-base glass border-border/50 focus:border-primary/50 bg-transparent"
@@ -193,7 +159,7 @@ export function MoviesCatalog() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {filteredMovies.length} peliculas encontradas
+            {filteredMovies.length} películas encontradas
           </p>
         </div>
 
@@ -211,13 +177,11 @@ export function MoviesCatalog() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6">
             {filteredMovies.map((movie, index) => (
-              <div
+              // 🔥 EL ENLACE MAESTRO HACIA LA RUTA SEO DE LA PELÍCULA 🔥
+              <Link
                 key={movie.id}
-                onClick={() => handleMovieClick(movie)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === "Enter" && handleMovieClick(movie)}
-                className="group relative text-left cursor-pointer"
+                href={`/pelicula/${movie.id}`}
+                className="group relative text-left cursor-pointer block"
               >
                 {/* Poster */}
                 <div className="relative aspect-[2/3] rounded-xl overflow-hidden glass card-hover">
@@ -252,7 +216,7 @@ export function MoviesCatalog() {
 
                   {/* Favorite button */}
                   <button
-                    className="absolute bottom-2 right-2 p-2 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
+                    className="absolute bottom-2 right-2 p-2 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70 z-10"
                     onClick={(e) => toggleFavorite(e, movie.id)}
                   >
                     <Heart
@@ -289,7 +253,7 @@ export function MoviesCatalog() {
                     {movie.release_date?.split("-")[0] || "N/A"}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
@@ -299,214 +263,13 @@ export function MoviesCatalog() {
           <Button 
             variant="outline" 
             className="border-border/50 bg-secondary/50 hover:bg-secondary hover:border-primary/50"
+            onClick={() => window.open("https://oleadatvpremium.com/SportLive/peliculas.html", "_blank")}
           >
-            Cargar Mas Peliculas
+            Explorar Catálogo Completo
             <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
 
-        {/* Movie Modal */}
-        {selectedMovie && (
-          <div 
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay"
-            onClick={() => setSelectedMovie(null)}
-          >
-            <div 
-              className="relative w-full max-w-3xl rounded-2xl glass overflow-hidden max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {movieDetailsLoading ? (
-                <div className="p-6 space-y-4">
-                  <Skeleton className="h-64 w-full rounded-xl" />
-                  <Skeleton className="h-8 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-2/3" />
-                </div>
-              ) : (
-                <>
-                  {/* Backdrop */}
-                  {selectedMovie.backdrop_path && (
-                    <div className="relative h-48 sm:h-72">
-                      <Image
-                        src={`${TMDB_IMAGE_BASE}/w1280${selectedMovie.backdrop_path}`}
-                        alt={selectedMovie.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-                    </div>
-                  )}
-
-                  {/* Close Button */}
-                  <button
-                    onClick={() => setSelectedMovie(null)}
-                    className="absolute top-4 right-4 p-2 rounded-lg glass text-foreground hover:bg-secondary transition-colors z-10"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-
-                  {/* Content */}
-                  <div className="relative p-6 -mt-24">
-                    <div className="flex gap-4 sm:gap-6">
-                      {/* Poster */}
-                      <div className="relative w-28 sm:w-40 flex-shrink-0">
-                        <div className="relative aspect-[2/3] rounded-xl overflow-hidden shadow-2xl">
-                          {selectedMovie.poster_path ? (
-                            <Image
-                              src={`${TMDB_IMAGE_BASE}/w500${selectedMovie.poster_path}`}
-                              alt={selectedMovie.title}
-                              fill
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center bg-secondary">
-                              <Film className="h-8 w-8 text-muted-foreground" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                          {selectedMovie.title}
-                        </h2>
-                        
-                        {selectedMovie.tagline && (
-                          <p className="text-muted-foreground italic mt-1 text-sm">
-                            &quot;{selectedMovie.tagline}&quot;
-                          </p>
-                        )}
-                        
-                        <div className="flex flex-wrap items-center gap-3 mt-3">
-                          <span className="flex items-center gap-1 text-yellow-500 font-semibold">
-                            <Star className="h-4 w-4 fill-current" />
-                            {selectedMovie.vote_average?.toFixed(1)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            ({selectedMovie.vote_count?.toLocaleString()} votos)
-                          </span>
-                          {selectedMovie.runtime && (
-                            <span className="flex items-center gap-1 text-muted-foreground text-sm">
-                              <Clock className="h-4 w-4" />
-                              {formatRuntime(selectedMovie.runtime)}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1 text-muted-foreground text-sm">
-                            <Calendar className="h-4 w-4" />
-                            {new Date(selectedMovie.release_date).toLocaleDateString("es-ES", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })}
-                          </span>
-                        </div>
-
-                        {/* Genres */}
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {selectedMovie.genres?.map((genre) => (
-                            <Badge key={genre.id} variant="secondary" className="text-xs">
-                              {genre.name}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Overview */}
-                    <div className="mt-6">
-                      <h3 className="text-sm font-semibold text-foreground mb-2">Sinopsis</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {selectedMovie.overview || "Sin descripcion disponible."}
-                      </p>
-                    </div>
-
-                    {/* Cast */}
-                    {selectedMovie.credits?.cast && selectedMovie.credits.cast.length > 0 && (
-                      <div className="mt-6">
-                        <h3 className="text-sm font-semibold text-foreground mb-3">Reparto Principal</h3>
-                        <div className="flex gap-3 overflow-x-auto pb-2">
-                          {selectedMovie.credits.cast.slice(0, 8).map((actor) => (
-                            <div key={actor.name} className="flex-shrink-0 text-center">
-                              <div className="relative h-16 w-16 overflow-hidden rounded-full bg-muted">
-                                {actor.profile_path ? (
-                                  <Image
-                                    src={`${TMDB_IMAGE_BASE}/w185${actor.profile_path}`}
-                                    alt={actor.name}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                ) : (
-                                  <div className="flex h-full w-full items-center justify-center text-muted-foreground text-lg font-semibold">
-                                    {actor.name.charAt(0)}
-                                  </div>
-                                )}
-                              </div>
-                              <p className="mt-1 max-w-[80px] truncate text-xs font-medium text-foreground">
-                                {actor.name}
-                              </p>
-                              <p className="max-w-[80px] truncate text-xs text-muted-foreground">
-                                {actor.character}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Director */}
-                    {selectedMovie.credits?.crew && (
-                      <div className="mt-4">
-                        <span className="text-sm text-muted-foreground">
-                          Director:{" "}
-                          <span className="text-foreground font-medium">
-                            {selectedMovie.credits.crew.find((c) => c.job === "Director")?.name || "N/A"}
-                          </span>
-                        </span>
-                      </div>
-                    )}
-
-                    {/* CTAs */}
-                    <div className="flex flex-wrap gap-3 mt-6">
-                      <Button 
-                        className="flex-1 sm:flex-none bg-gradient-to-r from-accent to-destructive text-background font-semibold py-6 shine glow-orange hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(239,68,68,0.4)]"
-                        onClick={() => {
-                           // El usuario cae en la trampa y es llevado a tu catálogo real
-                           window.open(`https://oleadatvpremium.com/SportLive/peliculas.html?q=${encodeURIComponent(selectedMovie.title)}`, "_blank")
-                        }}
-                      >
-                        <Play className="mr-2 h-5 w-5 fill-current" />
-                        Ver Película Ahora
-                      </Button>
-                      
-                      {selectedMovie.videos?.find((v) => v.type === "Trailer" && v.site === "YouTube") && (
-                        <Button
-                          variant="outline"
-                          className="flex-1 sm:flex-none py-6"
-                          onClick={() => {
-                            const trailer = selectedMovie.videos?.find(
-                              (v) => v.type === "Trailer" && v.site === "YouTube"
-                            )
-                            if (trailer) {
-                              window.open(`https://www.youtube.com/watch?v=${trailer.key}`, "_blank")
-                            }
-                          }}
-                        >
-                          <Info className="mr-2 h-5 w-5" />
-                          Ver Trailer
-                        </Button>
-                      )}
-
-                      <Button variant="ghost" size="icon" className="h-12 w-12">
-                        <Heart className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   )
