@@ -10,7 +10,7 @@ const navLinks = [
   { href: "https://sportlive-one.vercel.app/", label: "Inicio", icon: Zap },
   { href: "https://sportlive-one.vercel.app/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
   { href: "https://sportlive-one.vercel.app/canales-premium", label: "Canales TV", icon: Tv },
-  { href: "https://sportlive-one.vercel.app/cine", label: "Cine", icon: Film },
+  { href: "https://sportlive-one.vercel.app/cine-estrenos", label: "Cine", icon: Film },
   { href: "https://sportlive-one.vercel.app/blog", label: "Blog", icon: FileText },
 ]
 
