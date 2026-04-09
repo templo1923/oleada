@@ -1,44 +1,33 @@
 import Link from 'next/link'
 import { Play, ChevronRight, Activity } from 'lucide-react'
 
-// Función para limpiar nombres (Igual a la de tu agenda)
-function textoPuro(html: string) {
-  if (!html) return "Evento Deportivo";
-  let limpio = html.replace(/<[^>]*>?/gm, '').trim();
-  limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN|TURCO|HÚNGARO|ALEMÁN|GRIEGO|ITALIANO|SUECO)/gi, '').trim();
-  limpio = limpio.replace(/\(Señal Activa.*?\)/gi, '').trim();
-  return limpio.replace(/^[,\-\s]+|[,\-\s]+$/g, '');
-}
-
+// 🔥 1. VOLVEMOS A LEER DIRECTAMENTE DE TU CARPETA DE TV (canales.php) 🔥
 async function getFeaturedData() {
-  const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
   try {
-    const fetchOptions = { 
-      cache: 'no-store', 
-      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
-    };
-
-    // 1. Buscamos en la agenda (donde tenemos horas)
-    const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
-    let todos = results.flatMap(r => r.data || []);
-
-    // 2. Calculamos la hora actual en Bogotá (GMT-5)
-    const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: false });
-    const timeParts = formatter.formatToParts(new Date());
-    const horaActualMinutos = (parseInt(timeParts.find(p => p.type === 'hour')?.value || "0") * 60) + parseInt(timeParts.find(p => p.type === 'minute')?.value || "0");
-
-    // 3. Filtro de 130 minutos en vivo
-    const destacadosEnVivo = todos.filter(evento => {
-      const horaEvento = evento.attributes.diary_hour || evento.attributes.diary_time || "00:00";
-      const [h, m] = horaEvento.split(':').map(Number);
-      const minutosEvento = h * 60 + m;
-      return horaActualMinutos >= minutosEvento && horaActualMinutos <= (minutosEvento + 130);
+    const response = await fetch('https://api.telelatinomax.shop/canales.php', {
+      cache: 'no-store',
+      headers: { 
+        'X-Requested-With': 'XMLHttpRequest',
+        'Origin': 'https://oleadatvpremium.com',
+        'Referer': 'https://oleadatvpremium.com/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
     });
-
-    // Ordenamos por hora
-    destacadosEnVivo.sort((a, b) => (a.attributes.diary_hour || "00:00").localeCompare(b.attributes.diary_hour || "00:00"));
-
-    return destacadosEnVivo.slice(0, 10); 
+    
+    const data = await response.json();
+    if (data.error) return [];
+    
+    let eventosEspeciales: any[] = [];
+    
+    // Solo toma los de tu M3U que estén en una categoría con la palabra "EVENTO"
+    for (const cat in data) {
+      if (cat.toUpperCase().includes("EVENTO")) {
+        // Filtra los que tú mismo marcas como Inactivos
+        const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
+        eventosEspeciales = [...eventosEspeciales, ...activos];
+      }
+    }
+    return eventosEspeciales.slice(0, 10);
   } catch (e) {
     return [];
   }
@@ -66,28 +55,14 @@ export async function FeaturedEvents() {
 
       <div className="flex gap-4 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide snap-x snap-mandatory max-w-7xl mx-auto">
         {destacados.map((evento, idx) => {
-          // 🔥 AHORA SÍ LEEMOS BIEN DE LA AGENDA 🔥
-          const rawName = textoPuro(evento.attributes.diary_description);
+          // El nombre ahora vuelve a ser el original de tu M3U
+          const rawName = evento.Canal; 
           const cleanId = rawName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
           
-          // Extraemos el enlace R en Base64 para el reproductor
-          let rBase64 = "";
-          try {
-            if (evento.attributes.embeds && evento.attributes.embeds.data && evento.attributes.embeds.data.length > 0) {
-              const iframeStr = evento.attributes.embeds.data[0].attributes.embed_iframe;
-              if (iframeStr.includes('r=')) {
-                rBase64 = iframeStr.split('r=')[1].split('"')[0].split('&')[0];
-              } else if (iframeStr.includes('src="')) {
-                 const srcUrl = iframeStr.split('src="')[1].split('"')[0];
-                 rBase64 = typeof btoa !== 'undefined' ? btoa(srcUrl) : srcUrl;
-              }
-            }
-          } catch(e) {}
-
-          // Generamos el enlace SEO que lleva a la página de partido
-          const linkFinal = `/partido/${cleanId}?n=${encodeURIComponent(rawName)}&r=${rBase64}`; 
+          // 🔥 ENLACE SEO CORRECTO PARA EVENTOS M3U 🔥
+          const linkFinal = `/canal/${cleanId}?n=${encodeURIComponent(rawName)}`; 
           
-          // Lógica para el Logo (Sacando iniciales)
+          // Lógica visual para generar el Logo si no lo trae el M3U
           let equipoA = rawName;
           let equipoB = "";
           const nombreLimpio = rawName.toUpperCase();
@@ -115,7 +90,8 @@ export async function FeaturedEvents() {
               </div>
               
               <img 
-                src={fallbackLogo} 
+                // Toma el Logo de tu M3U si existe, si no, usa las iniciales
+                src={evento.Logo || fallbackLogo} 
                 className="w-[65px] h-[65px] sm:w-[90px] sm:h-[90px] object-contain drop-shadow-xl rounded-xl bg-black/20 p-2 shrink-0 mt-2 sm:mt-0 group-hover:scale-110 transition-transform duration-300" 
                 alt={rawName}
               />
@@ -125,7 +101,7 @@ export async function FeaturedEvents() {
                   {rawName}
                 </h3>
                 <p className="text-red-300 text-[11px] sm:text-[13px] font-semibold flex items-center justify-start gap-1.5 whitespace-normal">
-                   <Activity className="w-3 sm:w-4 h-3 sm:h-4 shrink-0" /> Transmisión Activa
+                   <Activity className="w-3 sm:w-4 h-3 sm:h-4 shrink-0" /> Transmisión VIP
                 </p>
               </div>
 
