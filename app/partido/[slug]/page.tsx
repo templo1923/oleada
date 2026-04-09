@@ -56,7 +56,7 @@ export default async function PartidoPage(props: any) {
   const { equipoA, equipoB, nombreLimpio } = procesarPartido(n);
   
   // Enlace al reproductor
-  const linkReproductor = `/ver.html?r=${r}&n=${encodeURIComponent(n)}`;
+  const linkReproductor = `https://oleadatvpremium.com/SportLive/ver.html?r=${r}&n=${encodeURIComponent(n)}`;
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit']">
