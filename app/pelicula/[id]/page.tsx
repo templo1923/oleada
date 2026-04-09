@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Play, Star, Calendar, Clock, Film, ArrowLeft, ShieldCheck, CheckCircle2, Info } from 'lucide-react'
+import { Play, Star, Calendar, Clock, Film, ArrowLeft, ShieldCheck, CheckCircle2, Info, Youtube, User } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
 export const dynamic = 'force-dynamic';
@@ -12,12 +12,13 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p";
 
 // ==========================================
-// 🧠 CEREBRO CONSUMIDOR DE TMDB (Trae la info de la peli)
+// 🧠 CEREBRO CONSUMIDOR DE TMDB (Ahora trae Actores y Tráilers)
 // ==========================================
 async function getMovieDetails(id: string) {
   try {
-    const res = await fetch(`${TMDB_BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&language=es-ES`, {
-      next: { revalidate: 86400 } // Cache de 24 horas para no saturar la API
+    // 🔥 EL TRUCO: Le agregamos &append_to_response=credits,videos para traer todo de golpe 🔥
+    const res = await fetch(`${TMDB_BASE_URL}/movie/${id}?api_key=${TMDB_API_KEY}&language=es-ES&append_to_response=credits,videos`, {
+      next: { revalidate: 86400 } // Cache de 24 horas
     });
     if (!res.ok) return null;
     return await res.json();
@@ -56,7 +57,7 @@ export async function generateMetadata(props: any): Promise<Metadata> {
 }
 
 // ==========================================
-// 🎨 DISEÑO PREMIUM DE LA PÁGINA
+// 🎨 DISEÑO PREMIUM DE LA PÁGINA (Con Reparto y Tráilers)
 // ==========================================
 export default async function PeliculaPage(props: any) {
   const params = await props.params;
@@ -79,7 +80,12 @@ export default async function PeliculaPage(props: any) {
   const backdropUrl = movie.backdrop_path ? `${TMDB_IMAGE_BASE}/w1280${movie.backdrop_path}` : '';
   const posterUrl = movie.poster_path ? `${TMDB_IMAGE_BASE}/w500${movie.poster_path}` : '';
   
-  // 🔥 LA TRAMPA MAESTRA: Los enviamos a tu web de VOD buscando el nombre de la peli 🔥
+  // Extraer Director, Actores y Tráiler
+  const director = movie.credits?.crew?.find((c: any) => c.job === "Director")?.name || "N/A";
+  const cast = movie.credits?.cast?.slice(0, 8) || [];
+  const trailer = movie.videos?.results?.find((v: any) => v.type === "Trailer" && v.site === "YouTube");
+
+  // Enlace al reproductor
   const linkReproductor = `https://oleadatvpremium.com/SportLive/peliculas.html?q=${encodeURIComponent(movie.title)}`;
 
   return (
@@ -89,14 +95,13 @@ export default async function PeliculaPage(props: any) {
       <main className="flex-1 w-full flex flex-col items-center">
         
         {/* 🌌 HERO GIGANTE CON EL FONDO DE LA PELÍCULA */}
-        <div className="relative w-full h-[50vh] sm:h-[70vh] flex items-end pb-12">
+        <div className="relative w-full h-[60vh] sm:h-[75vh] flex items-end pb-12">
           {backdropUrl && (
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
               style={{ backgroundImage: `url('${backdropUrl}')` }}
             ></div>
           )}
-          {/* Gradientes para fundir el fondo con la página */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#080c14] via-[#080c14]/80 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#080c14] via-transparent to-transparent"></div>
 
@@ -111,10 +116,10 @@ export default async function PeliculaPage(props: any) {
                 <img 
                   src={posterUrl} 
                   alt={`Póster de ${movie.title}`} 
-                  className="w-32 sm:w-48 md:w-64 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 shrink-0 md:-mb-24 relative z-20"
+                  className="w-36 sm:w-48 md:w-64 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10 shrink-0 md:-mb-24 relative z-20"
                 />
               ) : (
-                <div className="w-32 sm:w-48 md:w-64 aspect-[2/3] rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 md:-mb-24 relative z-20">
+                <div className="w-36 sm:w-48 md:w-64 aspect-[2/3] rounded-2xl bg-slate-800 border border-white/10 flex items-center justify-center shrink-0 md:-mb-24 relative z-20">
                   <Film className="w-12 h-12 text-slate-500" />
                 </div>
               )}
@@ -138,10 +143,17 @@ export default async function PeliculaPage(props: any) {
                 </h1>
                 
                 {movie.tagline && (
-                  <p className="text-slate-300 italic font-medium text-lg mb-6 drop-shadow-md">
+                  <p className="text-slate-300 italic font-medium text-lg mb-4 drop-shadow-md">
                     "{movie.tagline}"
                   </p>
                 )}
+
+                {/* Director */}
+                <div className="mb-6">
+                  <span className="text-sm text-slate-400">
+                    Director: <strong className="text-white">{director}</strong>
+                  </span>
+                </div>
 
                 {/* Etiquetas de Género */}
                 <div className="flex flex-wrap gap-2 mb-8">
@@ -152,23 +164,67 @@ export default async function PeliculaPage(props: any) {
                   ))}
                 </div>
 
-                {/* Botón Call To Action */}
-                <div className="w-full sm:max-w-md">
-                  <Button size="lg" className="w-full py-8 rounded-2xl font-black text-base sm:text-lg uppercase tracking-widest bg-gradient-to-r from-blue-600 to-[#00d4ff] hover:scale-[1.03] transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)] border border-white/20 text-white" asChild>
+                {/* Botones Call To Action */}
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:max-w-xl">
+                  <Button size="lg" className="flex-1 py-7 sm:py-8 rounded-2xl font-black text-sm sm:text-base uppercase tracking-widest bg-gradient-to-r from-blue-600 to-[#00d4ff] hover:scale-[1.03] transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)] border border-white/20 text-white" asChild>
                     <Link href={linkReproductor} target="_blank" rel="noopener noreferrer">
-                      <Play className="w-6 h-6 mr-3 fill-current" /> Reproducir Película
+                      <Play className="w-5 h-5 mr-2 fill-current" /> Reproducir Película
                     </Link>
                   </Button>
+                  
+                  {trailer && (
+                    <Button size="lg" variant="outline" className="py-7 sm:py-8 rounded-2xl font-bold text-sm sm:text-base uppercase tracking-widest bg-[#111827]/80 hover:bg-[#1f2937] border border-white/10 text-white hover:text-white transition-all backdrop-blur-md" asChild>
+                      <Link href={`https://www.youtube.com/watch?v=${trailer.key}`} target="_blank" rel="noopener noreferrer">
+                        <Youtube className="w-5 h-5 mr-2 text-red-500" /> Ver Tráiler
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 📝 SECCIÓN SEO: TEXTOS Y SINOPSIS */}
+        {/* 📝 SECCIÓN SEO: TEXTOS, REPARTO Y SINOPSIS */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full mt-16 md:mt-32 mb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           <div className="lg:col-span-2 space-y-8">
+            
+            {/* Actores (Reparto) */}
+            {cast.length > 0 && (
+              <div className="bg-[#111827]/60 border border-white/5 rounded-[2rem] p-8 backdrop-blur-sm">
+                <h2 className="text-xl font-black text-white uppercase flex items-center gap-3 mb-6">
+                  <User className="text-blue-400 w-6 h-6" /> Reparto Principal
+                </h2>
+                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+                  {cast.map((actor: any) => (
+                    <div key={actor.name} className="flex-shrink-0 w-[80px] sm:w-[90px] snap-start text-center">
+                      <div className="relative h-20 w-20 sm:h-24 sm:w-24 mx-auto overflow-hidden rounded-full border-2 border-white/10 bg-slate-800 shadow-lg mb-3">
+                        {actor.profile_path ? (
+                          <img
+                            src={`${TMDB_IMAGE_BASE}/w185${actor.profile_path}`}
+                            alt={actor.name}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-slate-500 text-2xl font-black">
+                            {actor.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-[12px] sm:text-[13px] font-bold text-white leading-tight mb-1 line-clamp-2">
+                        {actor.name}
+                      </p>
+                      <p className="text-[10px] sm:text-[11px] text-slate-400 leading-tight line-clamp-2">
+                        {actor.character}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Sinopsis */}
             <div className="bg-[#111827]/60 border border-white/5 rounded-[2rem] p-8 backdrop-blur-sm">
               <h2 className="text-xl font-black text-white uppercase flex items-center gap-3 mb-6">
                 <Info className="text-blue-400 w-6 h-6" /> ¿De qué trata {movie.title}?
@@ -193,6 +249,7 @@ export default async function PeliculaPage(props: any) {
             </div>
           </div>
 
+          {/* Lateral */}
           <div className="space-y-8">
             <div className="bg-gradient-to-b from-blue-900/20 to-transparent border border-blue-500/20 rounded-[2rem] p-8 backdrop-blur-sm">
               <h2 className="text-xl font-black text-white uppercase flex items-center gap-3 mb-6">
