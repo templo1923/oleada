@@ -580,6 +580,7 @@
 
             document.getElementById("count-agenda").innerText = todosLosPartidosGlobal.length;
             renderizarLista();
+            buscarEventoPorURL();
         } catch (error) { console.error(error); }
     }
 
@@ -649,6 +650,7 @@
                         <div class="match-time">${esAhora}${horaEvento.substring(0,5)}</div>
                         <img src="${imageUrl}" class="match-flag" onerror="this.onerror=null; this.src='${IMG_BASE}/uploads/sin_imagen_d36205f0e8.png';">
                         <div class="match-name">${nombreMostrar}</div>
+                        <i class="fas fa-share-nodes share-match" data-name="${encodeURIComponent(nombreMostrar)}" style="color: #3b82f6; font-size: 16px; margin-right: 15px; cursor: pointer; transition: 0.3s;" title="Compartir Evento"></i>
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="match-channels">
@@ -956,6 +958,77 @@
             alert("En iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadro con la flechita hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
         });
     }
+
+    // ==========================================
+    // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO 🔥
+    // ==========================================
+    $(document).on("click", ".share-match", function(e) {
+        e.stopPropagation(); // Evita que la tarjeta se abra al tocar el botón de compartir
+        
+        const nombreBuscado = decodeURIComponent($(this).data("name"));
+        // Creamos la URL limpia agregando el parámetro ?e=NombreDelPartido
+        const urlLimpia = window.location.origin + "/SportLive/agenda?e=" + encodeURIComponent(nombreBuscado);
+
+        if (navigator.share) {
+            navigator.share({
+                title: '🔴 ' + nombreBuscado,
+                text: 'Míralo EN VIVO y sin cortes en SportLive Premium 👇',
+                url: urlLimpia
+            });
+        } else {
+            navigator.clipboard.writeText(urlLimpia).then(() => {
+                alert("¡Enlace del evento copiado! Ya puedes pegarlo en WhatsApp.");
+            });
+        }
+    });
+
+    // ==========================================
+    // 🔥 2. AUTO-BUSCAR EVENTO AL ENTRAR (DEEP LINKING) 🔥
+    // ==========================================
+    function buscarEventoPorURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventoCompartido = urlParams.get('e'); // Busca el parámetro ?e=...
+        
+        if (eventoCompartido) {
+            const nombreDecodificado = decodeURIComponent(eventoCompartido);
+            
+            // Buscar la tarjeta que tenga exactamente ese nombre
+            const $tarjetaEncontrada = $(".match-name").filter(function() {
+                return $(this).text() === nombreDecodificado;
+            }).closest(".match-card");
+
+            if ($tarjetaEncontrada.length > 0) {
+                // Hacer scroll suave hasta el evento (dejando espacio para el header)
+                $('html, body').animate({ 
+                    scrollTop: $tarjetaEncontrada.offset().top - 120 
+                }, 800);
+                
+                // Desplegar los canales automáticamente
+                $tarjetaEncontrada.find(".match-channels").slideDown(400);
+                $tarjetaEncontrada.find(".toggle-icon").addClass("rotate");
+                
+                // Efecto visual premium (brillo neón temporal)
+                $tarjetaEncontrada.css({
+                    "box-shadow": "0 0 30px rgba(59, 130, 246, 0.6)",
+                    "border-color": "#3b82f6",
+                    "transform": "scale(1.02)",
+                    "transition": "all 0.5s ease"
+                });
+
+                // Quitar el brillo después de 3 segundos
+                setTimeout(() => {
+                    $tarjetaEncontrada.css({
+                        "box-shadow": "none",
+                        "border-color": "rgba(255, 255, 255, 0.03)",
+                        "transform": "scale(1)"
+                    });
+                }, 3000);
+            }
+        }
+    }
+
+
+
   </script>
 
 </body>

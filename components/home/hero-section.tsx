@@ -47,7 +47,7 @@ export function HeroSection() {
                 className="bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black text-lg px-10 py-6 rounded-2xl hover:scale-105 transition-all shadow-[0_0_25px_rgba(59,130,246,0.5)]"
                 asChild
               >
-                <Link href="https://oleadatvpremium.com/SportLive/index" target="_blank" rel="noopener noreferrer">
+                <Link href="https://oleadatvpremium.com/SportLive/index.html" target="_blank" rel="noopener noreferrer">
                   <Play className="mr-2 h-6 w-6 fill-current" />
                   Abrir WebApp Gratis
                 </Link>

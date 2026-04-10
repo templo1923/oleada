@@ -24,8 +24,8 @@ export default function SharePage() {
       <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>Cargando SportLive Premium... ⚽🎬</h2>
       
       {/* 🔥 MAGIA SEO: Redirección automática instantánea 🔥 */}
-      <meta httpEquiv="refresh" content="0; url=/SportLive/index" />
-      <script dangerouslySetInnerHTML={{ __html: "window.location.replace('/SportLive/index');" }} />
+      <meta httpEquiv="refresh" content="0; url=/SportLive/index.html" />
+      <script dangerouslySetInnerHTML={{ __html: "window.location.replace('/SportLive/index.html');" }} />
     </div>
   );
 }
