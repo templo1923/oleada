@@ -376,20 +376,22 @@
 
     // 🚨 Función para compartir web
 // 🚨 Función para compartir web (URL Limpia)
+// 🚨 Función para compartir web (URL Limpia - Optimizada PC/Móvil)
     function compartirWeb() {
-        const urlLimpia = "https://oleadatvpremium.com/app"; // 🔥 Aquí definimos la URL bonita
+        const urlLimpia = "https://oleadatvpremium.com/app";
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        if (navigator.share) {
+        if (navigator.share && isMobile) {
             navigator.share({
                 title: 'SportLive Premium',
                 text: '🔥 ¡Únete a SportLive Premium! La mejor App para ver Fútbol, Cine y TV en vivo. 100% Gratis.',
                 url: urlLimpia
-            });
+            }).catch(err => console.log('Share cancelado', err));
         } else {
-            // Si el navegador no soporta compartir nativo, copia al portapapeles
+            // En PC copiamos directo al portapapeles (Mejor UX)
             navigator.clipboard.writeText(urlLimpia).then(() => {
-                alert("¡Enlace copiado al portapapeles! " + urlLimpia);
-            });
+                alert("¡Enlace copiado al portapapeles! Ya puedes pegarlo.");
+            }).catch(() => { prompt("Copia este enlace:", urlLimpia); });
         }
     }
 
@@ -1041,23 +1043,27 @@ function cambiarFiltro(cat) {
     // ==========================================
     // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO 🔥
     // ==========================================
+// ==========================================
+    // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO (Optimizado) 🔥
+    // ==========================================
     $(document).on("click", ".share-match", function(e) {
         e.stopPropagation(); // Evita que la tarjeta se abra al tocar el botón de compartir
         
         const nombreBuscado = decodeURIComponent($(this).data("name"));
-        // Creamos la URL limpia agregando el parámetro ?e=NombreDelPartido
         const urlLimpia = window.location.origin + "/SportLive/agenda?e=" + encodeURIComponent(nombreBuscado);
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-        if (navigator.share) {
+        if (navigator.share && isMobile) {
             navigator.share({
                 title: '🔴 ' + nombreBuscado,
                 text: 'Míralo EN VIVO y sin cortes en SportLive Premium 👇',
                 url: urlLimpia
-            });
+            }).catch(err => console.log('Share cancelado', err));
         } else {
+            // En PC copia directo al portapapeles
             navigator.clipboard.writeText(urlLimpia).then(() => {
-                alert("¡Enlace del evento copiado! Ya puedes pegarlo en WhatsApp.");
-            });
+                alert("¡Enlace del evento copiado al portapapeles! Pégalo en WhatsApp Web.");
+            }).catch(() => { prompt("Copia el enlace manualmente:", urlLimpia); });
         }
     });
 
