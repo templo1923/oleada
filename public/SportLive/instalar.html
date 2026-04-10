@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Descargar SportLive Premium</title>
+
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#030712">
+  <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    html, body {
+      width: 100%; height: 100%; height: 100dvh; overflow: hidden; 
+      background-color: #030712; font-family: 'Outfit', sans-serif; color: #fff;
+    }
+
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+
+    /* 🔥 FONDOS ULTRA PREMIUM (IGUAL QUE EL INICIO) 🔥 */
+    .bg-aurora {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 150vw; height: 150vh;
+      background: 
+        radial-gradient(circle at 15% 30%, rgba(0, 212, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+      filter: blur(60px); z-index: 1; animation: auroraPulse 15s ease-in-out infinite alternate;
+    }
+
+    .bg-grid {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 30px 30px; z-index: 2;
+      mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
+    }
+
+    @keyframes auroraPulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    .container {
+      position: relative; z-index: 10; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; width: 100%; max-width: 600px; padding: 0 1.5rem;
+    }
+
+    /* 🔥 LOGO VECTORIAL 🔥 */
+    .brand-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem; animation: fadeInDown 1s ease-out; }
+    .logo-icon { width: 70px; height: 70px; margin-bottom: 10px; filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6)); }
+    .brand-logo h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -1px; line-height: 1;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
+    }
+    .premium-badge {
+      font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 6px; color: #00d4ff;
+      background: rgba(0, 212, 255, 0.1); padding: 3px 12px; border-radius: 50px;
+      border: 1px solid rgba(0, 212, 255, 0.3); margin-top: 5px;
+    }
+
+    /* 🔥 TARJETA DE INSTALACIÓN (EL NÚCLEO DE LA PÁGINA) 🔥 */
+    .install-card {
+      width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; padding: 2rem;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      animation: fadeInUp 1s ease-out 0.3s forwards; opacity: 0;
+      display: none; /* Se ocultan por defecto y se muestran con JS */
+      flex-direction: column; align-items: center; gap: 15px;
+    }
+
+    .install-card.active { display: flex; }
+
+    .install-card h2 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
+    .install-card p { font-size: 0.95rem; color: #94a3b8; line-height: 1.5; font-weight: 300; }
+
+    /* ESTADO 1: IN-APP BROWSER (WhatsApp/FB) - Alerta Roja */
+    .card-warning { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1); }
+    .card-warning i { font-size: 3rem; color: #ef4444; margin-bottom: 10px; animation: pulseWarning 2s infinite; }
+    .card-warning h2 { color: #f87171; }
+    .step-box { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; width: 100%; margin-top: 10px; border: 1px dashed rgba(255,255,255,0.1); }
+
+    /* ESTADO 2: CHROME/ANDROID - Botón Gigante */
+    .card-success { border-color: rgba(0, 212, 255, 0.3); }
+    .card-success i.main-icon { font-size: 3.5rem; color: #00d4ff; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(0,212,255,0.5)); }
+    
+    .btn-download {
+      margin-top: 15px; width: 100%; padding: 1rem; border-radius: 16px; border: none;
+      background: linear-gradient(135deg, #00d4ff 0%, #10b981 100%); color: #fff;
+      font-size: 1.2rem; font-weight: 800; cursor: pointer; text-transform: uppercase;
+      box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3); transition: all 0.3s ease;
+      display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif;
+    }
+    .btn-download:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(0, 212, 255, 0.5); }
+    .btn-download:active { transform: translateY(0) scale(0.98); }
+
+    /* ESTADO 3: iOS - Instrucciones visuales */
+    .card-ios i.main-icon { font-size: 3.5rem; color: #a855f7; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(168,85,247,0.5)); }
+    .ios-steps { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; text-align: left; }
+    .ios-step { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; }
+    .ios-step i { font-size: 1.5rem; color: #fff; margin: 0; width: 30px; text-align: center; }
+    .ios-step span { font-size: 0.9rem; color: #cbd5e1; font-weight: 400; }
+
+    /* Pequeñas etiquetas de seguridad */
+    .security-tags { display: flex; justify-content: center; gap: 15px; margin-top: 1rem; opacity: 0; animation: fadeInUp 1s ease-out 0.6s forwards; }
+    .tag { font-size: 0.7rem; color: #64748b; display: flex; align-items: center; gap: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .tag i { color: #10b981; }
+
+    @keyframes pulseWarning { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+  </style>
+</head>
+<body ondragstart="return false;">
+
+  <div class="bg-aurora"></div>
+  <div class="bg-grid"></div>
+
+  <div class="container">
+    
+    <div class="brand-logo">
+      <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="none" stroke="url(#grad1)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M40 35 L70 50 L40 65 Z" fill="url(#grad1)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <h1>SportLive</h1>
+      <span class="premium-badge">App Oficial</span>
+    </div>
+
+    <div id="state-inapp" class="install-card card-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h2>Navegador No Compatible</h2>
+      <p>Estás usando el navegador interno de la red social. Para descargar la App, debes abrir este enlace en tu navegador principal.</p>
+      <div class="step-box">
+        <p style="color: #fff; font-weight: 600; font-size: 1rem;"><i class="fas fa-ellipsis-v" style="font-size: 1rem; color: #fff; margin:0;"></i> Toca los 3 puntos arriba a la derecha y selecciona <strong>"Abrir en Chrome"</strong> o "Abrir en el navegador".</p>
+      </div>
+    </div>
+
+    <div id="state-ios" class="install-card card-ios">
+      <i class="fab fa-apple main-icon"></i>
+      <h2>Instalar en iOS</h2>
+      <p>SportLive no requiere App Store. Instálala directamente en tu pantalla de inicio en 2 sencillos pasos:</p>
+      <div class="ios-steps">
+        <div class="ios-step">
+          <i class="fas fa-external-link-square-alt"></i>
+          <span><strong>Paso 1:</strong> Toca el ícono de "Compartir" en el menú inferior de Safari.</span>
+        </div>
+        <div class="ios-step">
+          <i class="fas fa-plus-square"></i>
+          <span><strong>Paso 2:</strong> Selecciona "Agregar a Inicio" y luego "Agregar".</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="state-android" class="install-card card-success">
+      <i class="fas fa-cloud-download-alt main-icon"></i>
+      <h2>Descarga Lista</h2>
+      <p>Estás a un clic de la mejor experiencia de streaming. Haz clic en el botón de abajo para instalar la app oficial.</p>
+      <button id="btn-install-apk" class="btn-download">
+        <i class="fas fa-download"></i> INSTALAR APP AHORA
+      </button>
+    </div>
+
+    <div id="state-installed" class="install-card card-success">
+      <i class="fas fa-check-circle main-icon" style="color: #10b981;"></i>
+      <h2>¡App Instalada!</h2>
+      <p>Ya tienes SportLive Premium en tu dispositivo. Búscala en tu pantalla de inicio o en el cajón de aplicaciones.</p>
+      <a href="index.html" class="btn-download" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: none; text-decoration: none;">
+        <i class="fas fa-play"></i> ABRIR PLATAFORMA
+      </a>
+    </div>
+
+    <div class="security-tags">
+      <span class="tag"><i class="fas fa-shield-alt"></i> 100% Segura</span>
+      <span class="tag"><i class="fas fa-bolt"></i> Ultra Ligera</span>
+      <span class="tag"><i class="fas fa-ban"></i> Sin Virus</span>
+    </div>
+
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW:', err)); });
+    }
+
+    // 🧠 EL CEREBRO: DETECCIÓN INTELIGENTE
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isInstagram = (ua.indexOf('Instagram') > -1);
+    const isFacebook = (ua.indexOf('FBAV') > -1 || ua.indexOf('FBAN') > -1);
+    const isWhatsApp = (ua.indexOf('WhatsApp') > -1 || ua.indexOf('wv') > -1);
+    const isInAppBrowser = isInstagram || isFacebook || isWhatsApp;
+    
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    // Referencias a los contenedores
+    const stateInApp = document.getElementById('state-inapp');
+    const stateIOS = document.getElementById('state-ios');
+    const stateAndroid = document.getElementById('state-android');
+    const stateInstalled = document.getElementById('state-installed');
+    const btnInstallApk = document.getElementById('btn-install-apk');
+
+    let deferredPrompt;
+
+    // Lógica de visualización basada en el dispositivo
+    if (isStandalone) {
+        // Si ya está instalada
+        stateInstalled.classList.add('active');
+    } else if (isInAppBrowser) {
+        // Si viene de Facebook/WhatsApp y está en el navegador interno
+        stateInApp.classList.add('active');
+    } else if (isIOS) {
+        // Si es un iPhone/iPad en Safari
+        stateIOS.classList.add('active');
+    } else {
+        // Si es Android/Chrome o PC normal (Esperamos a que Google libere el prompt)
+        stateAndroid.classList.add('active');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        btnInstallApk.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    stateAndroid.classList.remove('active');
+                    stateInstalled.classList.add('active');
+                }
+                deferredPrompt = null;
+            } else {
+                alert("Tu navegador no soporta instalación automática. Intenta usar Google Chrome o añade la página a tu inicio manualmente desde el menú.");
+            }
+        });
+    }
+  </script>
+
+</body>
+</html>
