@@ -304,6 +304,76 @@
         @media (max-width: 767px) {
             .desktop-nav { display: none; }
         }
+
+        /* 🔥 BOTÓN FLOTANTE (FAB) MULTI-ACCIÓN 🔥 */
+        .fab-container {
+            position: fixed;
+            bottom: 80px; /* Ajustado para que no tape el menú inferior del celular */
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column-reverse; /* Los items se apilan hacia arriba */
+            align-items: center;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .fab-container { bottom: 30px; right: 30px; } /* En PC va más abajo */
+        }
+
+        .fab-main {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff 0%, #10b981 100%);
+            color: #fff; font-size: 24px;
+            display: flex; align-items: center; justify-content: center;
+            border: none; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .fab-main i { transition: transform 0.3s ease; }
+        .fab-container.active .fab-main i { transform: rotate(45deg); } /* La cruz gira al abrir */
+        
+        .fab-options {
+            display: flex; flex-direction: column; gap: 15px;
+            opacity: 0; pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fab-container.active .fab-options {
+            opacity: 1; pointer-events: auto; transform: translateY(0);
+        }
+
+        .fab-item {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: #1e293b; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.2s ease; position: relative;
+        }
+
+        .fab-item:hover { transform: scale(1.1); background: #334155; }
+        
+        /* Tooltips (Las etiquetitas con texto) */
+        .fab-item::before {
+            content: attr(data-tooltip);
+            position: absolute; right: 60px;
+            background: rgba(15, 23, 42, 0.9); color: #fff;
+            padding: 6px 12px; border-radius: 8px;
+            font-size: 12px; font-weight: 600; white-space: nowrap;
+            opacity: 0; pointer-events: none;
+            transition: 0.2s ease; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .fab-item:hover::before { opacity: 1; }
+
+
+
         
     </style>    
 </head>
@@ -323,14 +393,6 @@
                 <div class="desktop-nav-item" onclick="navegarSeguro('peliculas.html')"><i class="fas fa-film"></i> Pel&iacute;culas</div>
             </nav>
 
-            <div class="menu-container">
-                <button class="menu-button" id="menuButton" title="Men&uacute; Opciones"><i class="fas fa-bars"></i></button>
-                 <div class="menu-dropdown" id="menuDropdown">
-                    <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SportLive</a>
-                    <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
-                    <a onclick="compartirWeb()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -385,15 +447,21 @@
     // ==========================================
     // FUNCIONES GLOBALES (Compartir)
     // ==========================================
+// 🚨 Función para compartir web (URL Limpia)
     function compartirWeb() {
+        const urlLimpia = "https://oleadatvpremium.com/app"; // 🔥 Aquí definimos la URL bonita
+        
         if (navigator.share) {
             navigator.share({
-                title: 'Sport Live TV',
-                text: '�0�3Mira los mejores eventos y TV en vivo gratis!',
-                url: window.location.origin
+                title: 'SportLive Premium',
+                text: '🔥 ¡Únete a SportLive Premium! La mejor App para ver Fútbol, Cine y TV en vivo. 100% Gratis.',
+                url: urlLimpia
             });
         } else {
-            alert("Copia este enlace para compartir: " + window.location.origin);
+            // Si el navegador no soporta compartir nativo, copia al portapapeles
+            navigator.clipboard.writeText(urlLimpia).then(() => {
+                alert("¡Enlace copiado al portapapeles! " + urlLimpia);
+            });
         }
     }
 
@@ -728,6 +796,41 @@
         });
     }
   </script>
+
+<div class="fab-container" id="fabContainer">
+        <div class="fab-options">
+            <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')" class="fab-item" data-tooltip="Comunidad VIP">
+                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+            </a>
+            <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')" class="fab-item" data-tooltip="Descargar VPN">
+                <i class="fas fa-shield-alt" style="color: #a855f7;"></i>
+            </a>
+            <a onclick="compartirWeb()" class="fab-item" data-tooltip="Compartir App">
+                <i class="fas fa-share-nodes" style="color: #00d4ff;"></i>
+            </a>
+        </div>
+        <button class="fab-main" id="fabMainBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <script>
+        // Lógica para abrir/cerrar el botón flotante
+        const fabContainer = document.getElementById('fabContainer');
+        const fabMainBtn = document.getElementById('fabMainBtn');
+
+        fabMainBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fabContainer.classList.toggle('active');
+        });
+
+        // Cerrar si tocan en cualquier otra parte de la pantalla
+        document.addEventListener('click', (e) => {
+            if (!fabContainer.contains(e.target)) {
+                fabContainer.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 </html>
