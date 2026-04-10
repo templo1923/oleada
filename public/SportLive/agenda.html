@@ -571,12 +571,33 @@
             categoriasArray.unshift("TODOS");
 
             // 💡 Inyectamos el contador en el HTML de los botones
-            filterElement.innerHTML = categoriasArray.map(c => `
+// 🔥 Calcular cuántos eventos hay EN VIVO AHORA
+            const ahoraVivo = new Date();
+            const minActual = ahoraVivo.getHours() * 60 + ahoraVivo.getMinutes();
+            let enVivoCount = 0;
+            todosLosPartidosGlobal.forEach(p => {
+                const hr = p.attributes.diary_hour || p.attributes.diary_time || "00:00";
+                const [h, m] = hr.split(':').map(Number);
+                if (minActual >= (h * 60 + m) && minActual <= (h * 60 + m + 130)) enVivoCount++;
+            });
+
+            // 💡 Inyectamos los botones: Primero el de EN VIVO (con estilo premium rojo), luego los demás
+            let botonesHTML = `
+                <button class="filter-btn ${categoriaActual === 'EN_VIVO' ? 'active' : ''}" 
+                        onclick="cambiarFiltro('EN_VIVO')" style="border-color: rgba(239, 68, 68, 0.4);">
+                    <span class="live-dot-mini" style="margin-right: 5px;"></span> EN VIVO 
+                    <span class="cat-count" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5;">${enVivoCount}</span>
+                </button>
+            `;
+
+            botonesHTML += categoriasArray.map(c => `
                 <button class="filter-btn ${c === categoriaActual ? 'active' : ''}" 
                         onclick="cambiarFiltro('${c}')">
                     ${c} <span class="cat-count">${conteoCategorias[c]}</span>
                 </button>
             `).join('');
+
+            filterElement.innerHTML = botonesHTML;
 
             document.getElementById("count-agenda").innerText = todosLosPartidosGlobal.length;
             renderizarLista();
@@ -584,14 +605,21 @@
         } catch (error) { console.error(error); }
     }
 
-    function cambiarFiltro(cat) {
+function cambiarFiltro(cat) {
         categoriaActual = cat;
         $(".filter-btn").removeClass("active");
+        
+        // Reconocer si tocan el botón especial EN VIVO o uno normal
         $(".filter-btn").each(function() {
-            if ($(this).text().includes(cat)) $(this).addClass("active");
+            if (cat === 'EN_VIVO' && $(this).text().includes('EN VIVO')) {
+                $(this).addClass("active");
+            } else if ($(this).text().trim().startsWith(cat)) {
+                $(this).addClass("active");
+            }
         });
         
-        const btn = $(`.filter-btn:contains('${cat}')`);
+        // Scroll automático del menú de botones
+        const btn = $(".filter-btn.active");
         if(btn.length) {
             const container = $('#filter-container');
             const scrollPos = btn.position().left + container.scrollLeft() - (container.width() / 2) + (btn.width() / 2);
@@ -607,9 +635,36 @@
         const ahora = new Date();
         const horaActualNum = ahora.getHours() * 60 + ahora.getMinutes();
 
-        let filtrados = categoriaActual === "TODOS" 
-            ? todosLosPartidosGlobal 
-            : todosLosPartidosGlobal.filter(p => obtenerDeporte(p) === categoriaActual);
+        // 1. Filtrar según el botón presionado
+        let filtrados = [];
+        if (categoriaActual === "EN_VIVO") {
+            filtrados = todosLosPartidosGlobal.filter(p => {
+                const hr = p.attributes.diary_hour || p.attributes.diary_time || "00:00";
+                const [h, m] = hr.split(':').map(Number);
+                const hNum = h * 60 + m;
+                return horaActualNum >= hNum && horaActualNum <= (hNum + 130);
+            });
+        } else if (categoriaActual === "TODOS") {
+            filtrados = todosLosPartidosGlobal;
+        } else {
+            filtrados = todosLosPartidosGlobal.filter(p => obtenerDeporte(p) === categoriaActual);
+        }
+
+        // 🔥 2. ORDENAMIENTO SUPREMO: LO QUE ESTÁ EN VIVO VA DE PRIMERO (SIEMPRE) 🔥
+        filtrados.sort((a, b) => {
+            const hAStr = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
+            const hBStr = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
+            const [hA, mA] = hAStr.split(':').map(Number);
+            const [hB, mB] = hBStr.split(':').map(Number);
+            const horaA = hA * 60 + mA;
+            const horaB = hB * 60 + mB;
+            
+            const aEnVivo = (horaActualNum >= horaA && horaActualNum <= (horaA + 130)) ? 1 : 0;
+            const bEnVivo = (horaActualNum >= horaB && horaActualNum <= (horaB + 130)) ? 1 : 0;
+            
+            if (aEnVivo !== bEnVivo) return bEnVivo - aEnVivo; // Si uno está en vivo y el otro no, sube el vivo
+            return horaA - horaB; // Si ambos están en vivo (o ninguno), ordenamos por hora normal
+        });
 
         if (textoBusqueda !== "") {
             filtrados = filtrados.filter(p => {
