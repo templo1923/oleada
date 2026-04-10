@@ -2,7 +2,7 @@
   "name": "SportLive Premium",
   "short_name": "SportLive",
   "description": "Disfruta de los mejores canales de TV en vivo y eventos deportivos",
-  "start_url": "./index.html",
+  "start_url": "./index",
   "display": "standalone",
   "background_color": "#080c14",
   "theme_color": "#3b82f6",

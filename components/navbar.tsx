@@ -52,7 +52,7 @@ export function Navbar() {
           {/* Botón CTA Derecho */}
           <div className="hidden lg:flex lg:items-center lg:gap-3">
             <Button className="bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black hover:scale-105 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] rounded-xl" asChild>
-              <Link href="https://oleadatvpremium.com/SportLive/index.html" target="_blank" rel="noopener noreferrer">
+              <Link href="https://oleadatvpremium.com/SportLive/index" target="_blank" rel="noopener noreferrer">
                 <Play className="mr-2 h-4 w-4 fill-current" />
                 Abrir App
               </Link>
@@ -88,7 +88,7 @@ export function Navbar() {
               ))}
               <div className="mt-4">
                 <Button className="w-full bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black rounded-xl py-6" asChild>
-                  <Link href="https://oleadatvpremium.com/SportLive/index.html" target="_blank" rel="noopener noreferrer">
+                  <Link href="https://oleadatvpremium.com/SportLive/index" target="_blank" rel="noopener noreferrer">
                     <Play className="mr-2 h-5 w-5 fill-current" />
                     Abrir App
                   </Link>
