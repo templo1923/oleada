@@ -3,19 +3,25 @@ name: Actualizador de Eventos Deportivos
 on:
   schedule:
     - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
-  workflow_dispatch: # Permite ejecutarlo manualmente
+  workflow_dispatch: # Permite ejecución manual
+
+# Esto asegura que el bot tenga permiso explícito para escribir en el repo
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Fuerza el uso de Node 24 para evitar el aviso
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Actualizado a v4
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # Actualizado a v4
         with:
-          node-version: '18'
+          node-version: '22' # Versión estable recomendada en 2026
 
       - name: Instalar dependencias
         run: npm install axios
@@ -29,6 +35,7 @@ jobs:
         run: |
           git config --global user.name 'SportLive Bot'
           git config --global user.email 'bot@sportlive.com'
-          git add .
+          git add data/eventos-auto.json
+          # El comando || exit 0 evita que falle si no hay cambios nuevos
           git commit -m "Auto-update: Partidos del día" || exit 0
           git push
