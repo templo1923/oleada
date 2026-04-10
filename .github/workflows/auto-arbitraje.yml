@@ -1,0 +1,34 @@
+name: Actualizador de Eventos Deportivos
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
+  workflow_dispatch: # Permite ejecutarlo manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependencias
+        run: npm install axios
+
+      - name: Ejecutar Scraper e IA
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: node scripts/arbitraje.js
+
+      - name: Guardar cambios en el repo
+        run: |
+          git config --global user.name 'SportLive Bot'
+          git config --global user.email 'bot@sportlive.com'
+          git add .
+          git commit -m "Auto-update: Partidos del día" || exit 0
+          git push
