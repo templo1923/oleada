@@ -56,11 +56,15 @@ export async function FeaturedEvents() {
       <div className="flex gap-4 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide snap-x snap-mandatory max-w-7xl mx-auto">
         {destacados.map((evento, idx) => {
           // El nombre ahora vuelve a ser el original de tu M3U
+          // El nombre ahora vuelve a ser el original de tu M3U
           const rawName = evento.Canal; 
-          const cleanId = rawName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
           
-          // 🔥 ENLACE SEO CORRECTO PARA EVENTOS M3U 🔥
-          const linkFinal = `/canal/${cleanId}?n=${encodeURIComponent(rawName)}`; 
+          // 🔥 FIX: Quitamos todos los espacios para que quede "parisfcvsmonaco" 🔥
+          const cleanId = rawName.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus').replace(/[^a-z0-9]/g, '');
+          
+          // 🔥 ENLACE CORREGIDO QUE APUNTA A TU REPRODUCTOR PWA 🔥
+          // (Usamos la URL limpia /ver gracias a tu next.config.js)
+          const linkFinal = `/SportLive/ver?canal=${cleanId}`;
           
           // Lógica visual para generar el Logo si no lo trae el M3U
           let equipoA = rawName;
