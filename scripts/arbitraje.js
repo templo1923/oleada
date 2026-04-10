@@ -2,82 +2,88 @@ const axios = require('axios');
 const fs = require('fs');
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-// URL con fecha dinámica para asegurar que siempre encuentre partidos de "HOY"
 const hoy = new Date().toISOString().split('T')[0].split('-').reverse().join('/'); 
 const SCORES_API = `https://webws.365scores.com/web/games/allscores/?appTypeId=5&langId=14&timezoneName=America/Bogota&userCountryId=18&sports=1&startDate=${hoy}&endDate=${hoy}&showOdds=true&onlyMajorGames=true&withTop=true`;
 
 async function generarPost() {
   try {
-    console.log("📡 Consultando partidos para la fecha:", hoy);
+    console.log(`📡 Consultando API de 365Scores para el día: ${hoy}`);
     const response = await axios.get(SCORES_API);
     
-    // Verificación de seguridad de la respuesta
-    if (!response.data || !Array.isArray(response.data.games)) {
-      console.log("⚠️ La API no devolvió una lista de juegos válida.");
+    // Accedemos a la lista de juegos
+    const games = response.data?.games;
+
+    if (!games || !Array.isArray(games)) {
+      console.log("⚠️ No se encontraron juegos hoy o la API cambió la estructura.");
       return;
     }
 
-    const games = response.data.games;
-    console.log(`✅ Se encontraron ${games.length} partidos potenciales.`);
-
+    console.log(`✅ Se encontraron ${games.length} partidos. Iniciando procesamiento...`);
     let postsNuevos = [];
 
     for (const game of games) {
-      // VALIDACIÓN TOTAL: Verificamos cada campo antes de usarlo
-      const homeTeamName = game.homeTeam?.name;
-      const awayTeamName = game.awayTeam?.name;
-      const competitionName = game.competition?.name || "Torneo destacado";
+      // AJUSTE CLAVE: Usamos homeCompetitor y awayCompetitor según tu JSON
+      const local = game.homeCompetitor?.name;
+      const visitante = game.awayCompetitor?.name;
+      const liga = game.competitionDisplayName || "Fútbol Internacional";
 
-      if (!homeTeamName || !awayTeamName) {
-        console.log("⏭️ Saltando partido: Datos incompletos (Local o Visitante ausente).");
-        continue; 
+      if (!local || !visitante) {
+        console.log("⏭️ Saltando un partido por datos incompletos.");
+        continue;
       }
 
-      const titulo = `${homeTeamName} vs ${awayTeamName}`;
-      console.log(`✍️ Procesando contenido para: ${titulo}...`);
+      const titulo = `${local} vs ${visitante}`;
+      console.log(`✍️ Generando artículo para: ${titulo}...`);
       
       try {
         const aiRes = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
           model: "llama3-70b-8192",
           messages: [{
             role: "user",
-            content: `Eres un periodista deportivo de SportLive. Escribe una previa emocionante de 130 palabras para el partido ${titulo} en la ${competitionName}. Di que la señal HD está en nuestra agenda oficial. Usa un tono de urgencia para atraer clics.`
+            content: `Eres un periodista deportivo de SportLive. Escribe una previa emocionante y profesional de 130 palabras para el partido ${titulo} en la liga ${liga}. Menciona que la mejor señal HD está disponible en nuestra agenda de SportLive. Usa un tono que incite a ver el partido ahora.`
           }]
         }, {
-          headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' }
+          headers: { 
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json' 
+          }
         });
 
         if (aiRes.data?.choices?.[0]?.message?.content) {
           postsNuevos.push({
-            id: game.id || Math.random(),
+            id: game.id,
+            // Generamos slug limpio
             slug: titulo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, '-'),
             title: titulo,
-            competition: competitionName,
+            league: liga,
             content: aiRes.data.choices[0].message.content,
+            startTime: game.startTime,
             date: new Date().toISOString()
           });
-          console.log(`✨ Post listo para: ${titulo}`);
+          console.log(`✨ ¡Post generado con éxito para ${titulo}!`);
         }
       } catch (aiError) {
-        console.error(`❌ Error en Groq para ${titulo}:`, aiError.message);
+        console.error(`❌ Error de Groq en ${titulo}:`, aiError.message);
       }
 
-      // Máximo 8 posts para no saturar tu blog de una sola vez
-      if (postsNuevos.length >= 8) break;
+      // Límite de seguridad: Generamos 10 artículos por corrida
+      if (postsNuevos.length >= 10) break;
     }
 
     if (postsNuevos.length > 0) {
-      // Aseguramos que la carpeta data exista en el runner de GitHub
-      if (!fs.existsSync('./data')) { fs.mkdirSync('./data'); }
+      // Creamos la carpeta data si no existe (importante para GitHub Actions)
+      if (!fs.existsSync('./data')) {
+        fs.mkdirSync('./data');
+      }
       
       fs.writeFileSync('./data/eventos-auto.json', JSON.stringify(postsNuevos, null, 2));
-      console.log("🚀 ÉXITO: Archivo data/eventos-auto.json actualizado con", postsNuevos.length, "partidos.");
+      console.log(`🚀 TERMINADO: ${postsNuevos.length} partidos guardados en data/eventos-auto.json`);
     } else {
-      console.log("ℹ️ No se generaron posts (quizás no había partidos importantes con nombres definidos).");
+      console.log("ℹ️ No se pudo generar ningún post válido.");
     }
 
   } catch (error) {
-    console.error("🚫 ERROR GENERAL:", error.message);
+    console.error("🚫 ERROR GENERAL DEL SCRIPT:", error.message);
   }
 }
 
