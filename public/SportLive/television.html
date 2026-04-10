@@ -526,8 +526,11 @@
         });
 
         // 4. Agregar el resto de categor��as (Saltando las de eventos que ya agregamos)
+// 4. Agregar el resto de categorías (Saltando Eventos y CINE 24/7)
         Object.keys(allData).forEach(cat => {
-            if (!cat.toUpperCase().includes("EVENTO")) {
+            const catUpper = cat.toUpperCase();
+            // 🔥 AQUÍ ESTÁ EL FILTRO: Ignorar "EVENTO" y "CINE 24/7"
+            if (!catUpper.includes("EVENTO") && !catUpper.includes("CINE 24/7")) {
                 const count = getUniqueCount(allData[cat]);
                 if(count > 0) {
                     const isActive = currentCategory === cat ? "active" : "";
