@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SportLive Premium | TV, Cine y Deportes en VIVO Gratis</title>
+  <title>SportLive Premium | TV, Cine y Deportes en VIVO</title>
 
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#030712">
@@ -14,55 +14,30 @@
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
     html, body {
-      width: 100%;
-      height: 100%; 
-      height: 100dvh; 
-      overflow: hidden; 
-      background-color: #030712; /* OLED Black */
-      font-family: 'Outfit', sans-serif;
-      color: #fff;
+      width: 100%; height: 100%; height: 100dvh; overflow: hidden; 
+      background-color: #030712; font-family: 'Outfit', sans-serif; color: #fff;
     }
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
 
     /* 🔥 FONDO AURORA BOREALIS + MICRO-MALLA 🔥 */
     .bg-aurora {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 150vw; height: 150vh;
       background: 
         radial-gradient(circle at 15% 30%, rgba(0, 212, 255, 0.08) 0%, transparent 40%),
         radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
         radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
-      filter: blur(60px);
-      z-index: 1;
-      animation: auroraPulse 15s ease-in-out infinite alternate;
+      filter: blur(60px); z-index: 1; animation: auroraPulse 15s ease-in-out infinite alternate;
     }
 
     .bg-grid {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 30px 30px;
-      z-index: 2;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 30px 30px; z-index: 2;
       mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
       -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
     }
@@ -73,241 +48,143 @@
     }
 
     .container {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 1000px;
-      padding: 0 1rem;
+      position: relative; z-index: 10; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; width: 100%; max-width: 1000px; padding: 0 1rem;
     }
 
-    /* 🔥 LOGO METÁLICO CINETICO 🔥 */
+    /* 🔥 NUEVO LOGO VECTORIAL (SVG) + TEXTO 🔥 */
     .brand-logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 3rem;
-      position: relative;
+      display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; position: relative;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .logo-icon {
+      width: 60px; height: 60px; margin-bottom: 10px;
+      filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.6));
     }
 
     .brand-logo h1 {
-      font-size: clamp(3.5rem, 8vw, 6.5rem);
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 0.9;
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; letter-spacing: -1.5px; line-height: 0.9;
       background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
     }
 
     .premium-badge {
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      color: #00d4ff;
-      background: rgba(0, 212, 255, 0.1);
-      padding: 4px 15px;
-      border-radius: 50px;
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-      margin-top: -5px;
-      margin-left: 10px;
-      backdrop-filter: blur(10px);
+      font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 6px; color: #00d4ff;
+      background: rgba(0, 212, 255, 0.1); padding: 3px 12px; border-radius: 50px;
+      border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      margin-top: 5px; backdrop-filter: blur(10px);
     }
 
-    .subtitle {
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      font-weight: 300;
-      color: #94a3b8;
-      letter-spacing: 1px;
-      margin-bottom: 2rem;
-      text-align: center;
-      opacity: 0;
-      animation: fadeInUp 1s ease-out 0.3s forwards;
+    /* 🔥 BANNER SPOTLIGHT (EL MUNDIAL / EVENTO DESTACADO) 🔥 */
+    .spotlight-banner {
+      width: 100%; max-width: 650px; height: 120px; border-radius: 20px;
+      margin-bottom: 2rem; position: relative; overflow: hidden; text-decoration: none;
+      display: flex; align-items: flex-end; padding: 15px 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      animation: fadeInUp 1s ease-out 0.2s forwards; opacity: 0;
+      transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
-    /* 🔥 TARJETAS DE CRISTAL 3D (FORMATO PÓSTER) 🔥 */
+    .spotlight-banner:hover {
+      transform: translateY(-5px); border-color: rgba(0, 212, 255, 0.5);
+    }
+
+    /* Imagen de fondo del banner (AQUÍ PONES TU IMAGEN DEL MUNDIAL) */
+    .spotlight-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://i.postimg.cc/85zK7Qy3/world-cup-bg.jpg') center/cover no-repeat; /* Imagen de ejemplo */
+      transition: transform 0.5s ease; z-index: 1; opacity: 0.7;
+    }
+    .spotlight-banner:hover .spotlight-bg { transform: scale(1.05); }
+
+    /* Degradado para que el texto se lea perfecto */
+    .spotlight-gradient {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to top, rgba(3, 7, 18, 1) 0%, rgba(3, 7, 18, 0.2) 100%); z-index: 2;
+    }
+
+    .spotlight-content { position: relative; z-index: 3; width: 100%; }
+    
+    .spotlight-tag {
+      display: inline-block; background: #e11d48; color: #fff; font-size: 0.65rem; font-weight: 800;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-bottom: 5px;
+      letter-spacing: 1px; box-shadow: 0 0 10px rgba(225, 29, 72, 0.5); animation: pulseTag 2s infinite;
+    }
+
+    .spotlight-title { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 2px; }
+    .spotlight-desc { font-size: 0.8rem; color: #cbd5e1; font-weight: 300; }
+
+    @keyframes pulseTag { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    /* 🔥 TARJETAS DE NAVEGACIÓN (Se mantienen iguales, pero ajustadas al espacio) 🔥 */
     .nav-grid {
-      display: flex;
-      gap: 25px;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeInUp 1s ease-out 0.6s forwards;
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: fadeInUp 1s ease-out 0.4s forwards;
     }
 
     .nav-card {
-      position: relative;
-      width: 150px;
-      height: 220px; /* Formato cinemático alto */
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      overflow: hidden;
-      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-      
-      /* Efecto Cristal */
+      position: relative; width: 140px; height: 180px; border-radius: 20px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-decoration: none; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
       background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      
-      /* Borde 3D (Brillo arriba, sombra abajo) */
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* Barrido de luz interno (Shine) */
     .nav-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%; width: 50%; height: 100%;
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-      transform: skewX(-20deg);
-      transition: 0.5s;
+      transform: skewX(-20deg); transition: 0.5s;
     }
 
-    .nav-card i {
-      font-size: 3.5rem;
-      color: #64748b;
-      margin-bottom: 15px;
-      transition: all 0.4s ease;
-      z-index: 2;
-    }
+    .nav-card i { font-size: 2.8rem; color: #64748b; margin-bottom: 12px; transition: all 0.4s ease; z-index: 2; }
+    .nav-card .card-title { font-size: 1rem; font-weight: 800; color: #f1f5f9; text-transform: uppercase; z-index: 2; }
+    .nav-card .card-sub { font-size: 0.6rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; z-index: 2; transition: 0.4s; }
 
-    .nav-card .card-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #f1f5f9;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      z-index: 2;
-    }
+    .nav-card:hover { transform: translateY(-10px); }
+    .nav-card:hover::before { left: 200%; transition: 0.7s; }
 
-    .nav-card .card-sub {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: 5px;
-      z-index: 2;
-      transition: all 0.4s ease;
-    }
-
-    /* 🔥 HOVER EFFECTS EXTREMOS 🔥 */
-    .nav-card:hover {
-      transform: translateY(-12px);
-    }
-    .nav-card:hover::before {
-      left: 200%;
-      transition: 0.7s;
-    }
-
-    /* Hover Deportes */
-    .nav-card.sports:hover {
-      border-color: rgba(16, 185, 129, 0.4);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 20px rgba(16, 185, 129, 0.05);
-    }
-    .nav-card.sports:hover i { color: #10b981; filter: drop-shadow(0 0 12px #10b981); transform: scale(1.1); }
+    .nav-card.sports:hover { border-color: rgba(16, 185, 129, 0.4); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 20px rgba(16, 185, 129, 0.15); }
+    .nav-card.sports:hover i { color: #10b981; filter: drop-shadow(0 0 10px #10b981); transform: scale(1.1); }
     .nav-card.sports:hover .card-sub { color: #10b981; }
 
-    /* Hover Cine */
-    .nav-card.movies:hover {
-      border-color: rgba(0, 212, 255, 0.4);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.05);
-    }
-    .nav-card.movies:hover i { color: #00d4ff; filter: drop-shadow(0 0 12px #00d4ff); transform: scale(1.1); }
+    .nav-card.movies:hover { border-color: rgba(0, 212, 255, 0.4); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 20px rgba(0, 212, 255, 0.15); }
+    .nav-card.movies:hover i { color: #00d4ff; filter: drop-shadow(0 0 10px #00d4ff); transform: scale(1.1); }
     .nav-card.movies:hover .card-sub { color: #00d4ff; }
 
-    /* Hover TV */
-    .nav-card.tv:hover {
-      border-color: rgba(168, 85, 247, 0.4);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
-    }
-    .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 12px #a855f7); transform: scale(1.1); }
+    .nav-card.tv:hover { border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.15); }
+    .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 10px #a855f7); transform: scale(1.1); }
     .nav-card.tv:hover .card-sub { color: #a855f7; }
 
-    /* Tarjeta Instalación Especial */
-    .nav-card.install {
-      background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.01) 100%);
-      border-top: 1px solid rgba(0, 212, 255, 0.3);
-      display: none; /* Oculta por defecto */
-    }
-    .nav-card.install i { color: #00d4ff; animation: pulseIcon 2s infinite; }
+    .nav-card.install { background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.01) 100%); border-top: 1px solid rgba(0, 212, 255, 0.3); display: none; }
+    .nav-card.install i { color: #00d4ff; animation: pulseInstall 2s infinite; }
     .nav-card.install .card-sub { color: #00d4ff; }
-    .nav-card.install:hover {
-      border-color: rgba(0, 212, 255, 0.6);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0, 212, 255, 0.2);
-    }
+    .nav-card.install:hover { border-color: rgba(0, 212, 255, 0.6); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 30px rgba(0, 212, 255, 0.2); }
 
-    @keyframes pulseIcon {
-      0%, 100% { filter: drop-shadow(0 0 5px rgba(0,212,255,0.5)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 15px rgba(0,212,255,0.9)); transform: scale(1.05); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes pulseInstall { 0%, 100% { filter: drop-shadow(0 0 5px rgba(0,212,255,0.5)); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px rgba(0,212,255,0.9)); transform: scale(1.05); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* 🔥 FOOTER INVISIBLE 🔥 */
-    footer {
-      position: absolute;
-      bottom: 2rem;
-      width: 100%;
-      text-align: center;
-      z-index: 10;
-      opacity: 0;
-      animation: fadeInUp 1s ease-out 0.9s forwards;
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .social-icons a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      color: #64748b;
-      font-size: 1.2rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .social-icons a:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-3px);
-    }
+    footer { position: absolute; bottom: 1.5rem; width: 100%; text-align: center; z-index: 10; opacity: 0; animation: fadeInUp 1s ease-out 0.6s forwards; }
+    .social-icons { display: flex; justify-content: center; gap: 15px; }
+    .social-icons a { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; color: #64748b; font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .social-icons a:hover { color: #fff; background: rgba(255, 255, 255, 0.1); transform: translateY(-3px); }
 
     /* 🔥 RESPONSIVE PERFECTO 🔥 */
     @media (max-width: 768px) {
-      .nav-grid { gap: 15px; }
-      /* En celular las hacemos un poco más compactas pero mantienen el formato póster */
-      .nav-card { width: 110px; height: 160px; border-radius: 16px; }
-      .nav-card i { font-size: 2.2rem; margin-bottom: 10px; }
-      .nav-card .card-title { font-size: 0.85rem; }
+      .brand-logo { margin-bottom: 1rem; }
+      .logo-icon { width: 45px; height: 45px; }
+      .spotlight-banner { height: 100px; margin-bottom: 1.5rem; }
+      .spotlight-title { font-size: 1.1rem; }
+      .spotlight-desc { font-size: 0.7rem; }
+      .nav-grid { gap: 12px; }
+      .nav-card { width: 105px; height: 135px; border-radius: 16px; }
+      .nav-card i { font-size: 2rem; margin-bottom: 8px; }
+      .nav-card .card-title { font-size: 0.8rem; }
       .nav-card .card-sub { font-size: 0.5rem; }
-      .brand-logo { margin-bottom: 2rem; }
-      .premium-badge { letter-spacing: 5px; padding: 3px 10px; font-size: 0.7rem; }
-      .subtitle { margin-bottom: 2rem; }
     }
   </style>
 </head>
@@ -319,11 +196,29 @@
   <div class="container">
     
     <div class="brand-logo">
+      <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="none" stroke="url(#grad1)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M40 35 L70 50 L40 65 Z" fill="url(#grad1)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="1" opacity="0.2"/>
+      </svg>
       <h1>SportLive</h1>
       <span class="premium-badge">Premium</span>
     </div>
     
-    <p class="subtitle">Selecciona tu experiencia de entretenimiento.</p>
+    <a href="agenda.html" class="spotlight-banner">
+      <div class="spotlight-bg"></div> <div class="spotlight-gradient"></div>
+      <div class="spotlight-content">
+        <span class="spotlight-tag"><i class="fas fa-trophy"></i> Rumbo al Mundial 2026</span>
+        <h3 class="spotlight-title">Clasificatorias Conmebol</h3>
+        <p class="spotlight-desc">Vive toda la pasión del fútbol en VIVO y en HD.</p>
+      </div>
+    </a>
     
     <div class="nav-grid">
         <a href="agenda.html" class="nav-card sports">
@@ -353,30 +248,22 @@
 
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://tiktok.com/@" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/@" target="_blank"><i class="fab fa-tiktok"></i></a>
     </div>
   </footer>
 
   <script>
-    // 1. Registrar Service Worker PWA
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('PWA Lista y Armada');
-            }).catch(err => console.log('Error SW:', err));
-        });
+        window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW:', err)); });
     }
 
-    // 2. Lógica de Tarjeta de Instalación VIP
     let deferredPrompt;
     const installCard = document.getElementById('btn-instalar-integrated');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installCard.style.display = 'flex'; // Aparece la 4ta tarjeta como VIP
+        e.preventDefault(); deferredPrompt = e; installCard.style.display = 'flex';
     });
 
     installCard.addEventListener('click', async (e) => {
@@ -384,26 +271,18 @@
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installCard.style.display = 'none';
-            }
+            if (outcome === 'accepted') { installCard.style.display = 'none'; }
             deferredPrompt = null;
         }
     });
 
-    // Detectar iOS para guía
-    const isIos = () => {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipad|ipod/.test( userAgent );
-    }
+    const isIos = () => /iphone|ipad|ipod/.test( window.navigator.userAgent.toLowerCase() );
     const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
     if (isIos() && !isInStandaloneMode()) {
-        installCard.style.display = 'flex';
-        installCard.querySelector('.card-sub').innerHTML = 'Ver Guía';
+        installCard.style.display = 'flex'; installCard.querySelector('.card-sub').innerHTML = 'Ver Guía';
         installCard.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadrado con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
+            e.preventDefault(); alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir'.\n2. Selecciona 'Agregar a Inicio'.");
         });
     }
   </script>
