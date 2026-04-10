@@ -13,13 +13,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
-  <meta name="description" content="Accede a la mejor plataforma de streaming. SportLive Premium te ofrece canales de TV online en vivo, eventos deportivos exclusivos y estrenos de cine gratis por internet.">
-  <meta name="keywords" content="Fútbol Libre, canales de TV online, eventos deportivos, streaming gratis, cine online, tv en vivo">
-  <meta name="author" content="SportLive">
-  <meta property="og:site_name" content="SPORTLIVE PREMIUM | STREAMING ONLINE">
-  <meta property="og:url" content="https://oleadatvpremium.com">
-  <meta property="og:image" content="https://i.postimg.cc/fyL6vn3H/unnamed-1.png">
-
   <style>
     * {
       margin: 0;
@@ -27,13 +20,12 @@
       box-sizing: border-box;
     }
 
-    /* 🔥 AJUSTE PARA EVITAR SCROLL Y ADAPTARSE A LA PANTALLA PERFECTAMENTE 🔥 */
     html, body {
       width: 100%;
       height: 100%; 
       height: 100dvh; 
       overflow: hidden; 
-      background-color: #0a0e17; /* Tono profundo ultra oscuro premium (como BENEFT) */
+      background-color: #0a0e17; 
     }
 
     body {
@@ -42,7 +34,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; /* Centrado vertical estricto */
+      justify-content: center; 
     }
 
     /* 🔥 Fondo de deportes unificado y sutil 🔥 */
@@ -64,11 +56,10 @@
       height: 100%;
       background: url('https://i.postimg.cc/76HtY8hg/deportes15.jpg') no-repeat center center;
       background-size: cover;
-      filter: blur(100px); /* 🔥 Desenfoque máximo para textura, no imagen */
-      opacity: 0.1; /* 🔥 Opacidad mínima, casi invisible */
+      filter: blur(100px); 
+      opacity: 0.1; 
     }
 
-    /* 🔥 Superposición radial para modo app premium */
     .background-overlay {
       position: absolute;
       top: 0;
@@ -79,7 +70,6 @@
       z-index: 2;
     }
 
-    /* 🔥 AJUSTE DEL CONTENEDOR CENTRAL 🔥 */
     .container {
       text-align: center;
       z-index: 10;
@@ -92,9 +82,9 @@
       justify-content: center;
     }
 
-    /* 🔥 LOGO ESTILIZADO PRO (ESTILO BENEFT) */
+    /* 🔥 LOGO ESTILIZADO PRO */
     .app-logo {
-        font-size: clamp(3rem, 10vw, 6rem); /* Grande y confidente */
+        font-size: clamp(3rem, 10vw, 6rem); 
         font-weight: 900;
         letter-spacing: -2px;
         line-height: 1;
@@ -108,7 +98,6 @@
         align-items: center;
     }
 
-    /* 🔥 El acento neón de color cian al estilo BENEFT */
     .app-logo span {
         font-size: 1rem;
         font-weight: 600;
@@ -124,86 +113,106 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    p {
-      font-size: clamp(1rem, 2vw, 1.4rem); /* Tamaño fluido */
+    p.subtitle {
+      font-size: clamp(1rem, 2vw, 1.4rem); 
       font-weight: 300;
-      line-height: 1.5;
-      margin-bottom: 3rem; /* Espacio antes del botón */
+      margin-bottom: 2.5rem; 
       animation: fadeIn 2s ease-in-out 0.3s both;
       color: #94a3b8;
       max-width: 600px;
       padding: 0 1rem;
     }
 
-    /* 🔥 BOTÓN ULTRA PRO CON GLOW LED (ESTILO APP CONTROL) */
-    .btn-ingresar {
-      display: inline-flex;
+    /* 🔥 TARJETAS DE NAVEGACIÓN PRO (SMART TV STYLE) 🔥 */
+    .nav-grid {
+      display: flex;
+      gap: 20px;
+      z-index: 10;
+      animation: fadeIn 2s ease-in-out 0.5s both;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav-card {
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 15px;
-      padding: 1.2rem 4rem; /* Ligeramente más compacto */
-      font-size: clamp(1.5rem, 3.5vw, 2.5rem); /* Tamaño fluido */
-      font-weight: 800;
-      color: #fff;
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Fondo oscuro */
-      border-radius: 12px; /* Más cuadrado moderno */
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.8) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
       text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); /* Glow Cyan neón inicial */
-      animation: pulseBtn 2.5s infinite ease-in-out;
+      color: #94a3b8;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto de rebote premium */
+      backdrop-filter: blur(10px);
       position: relative;
       overflow: hidden;
-      margin-bottom: 3rem; /* Espacio antes del mini-catálogo */
     }
 
-    .btn-ingresar:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 0 50px rgba(0, 212, 255, 0.8); /* Glow Cyan en hover */
-      border: 1px solid rgba(0, 212, 255, 0.5);
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    .btn-ingresar i {
-        color: #00d4ff; /* Icono neón */
-        filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7));
+    .nav-card i {
+      font-size: 3.5rem;
+      color: #cbd5e1;
+      transition: all 0.3s ease;
+      z-index: 2;
     }
 
-    @keyframes pulseBtn {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); }
-      50% { transform: scale(1.03); box-shadow: 0 0 50px rgba(0, 212, 255, 0.7); }
+    .nav-card span {
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 2;
+      transition: all 0.3s ease;
     }
+
+    /* HOVER: DEPORTES (Verde Neón) */
+    .nav-card.sports:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(16, 185, 129, 0.6);
+      box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2), inset 0 0 20px rgba(16, 185, 129, 0.1);
+    }
+    .nav-card.sports:hover i { color: #10b981; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.8)); }
+    .nav-card.sports:hover span { color: #fff; }
+    .nav-card.sports:hover::before { opacity: 1; }
+
+    /* HOVER: CINE (Cian Neón) */
+    .nav-card.movies:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(0, 212, 255, 0.6);
+      box-shadow: 0 15px 35px rgba(0, 212, 255, 0.2), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+    .nav-card.movies:hover i { color: #00d4ff; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8)); }
+    .nav-card.movies:hover span { color: #fff; }
+    .nav-card.movies:hover::before { opacity: 1; }
+
+    /* HOVER: TV (Morado Neón) */
+    .nav-card.tv:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(168, 85, 247, 0.6);
+      box-shadow: 0 15px 35px rgba(168, 85, 247, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.1);
+    }
+    .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8)); }
+    .nav-card.tv:hover span { color: #fff; }
+    .nav-card.tv:hover::before { opacity: 1; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .mini-catalog {
-      display: flex;
-      gap: 30px; 
-      z-index: 10;
-      animation: fadeIn 3s ease-in-out 0.6s both;
-      justify-content: center;
-    }
-
-    .catalog-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: #94a3b8;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-
-    .catalog-item i {
-      font-size: 2rem;
-      color: #fff;
-      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
-    }
-
-    /* 🔥 AJUSTE DEL FOOTER PRO (ESTILO CRISTAL LIMPIO) 🔥 */
     footer {
       position: fixed;
       bottom: 2rem;
@@ -239,7 +248,16 @@
       transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
       border: 1px solid rgba(0, 212, 255, 0.5);
-      color: #00d4ff; /* Texto lima en hover */
+      color: #00d4ff; 
+    }
+
+    /* 🔥 RESPONSIVE (MÓVIL) 🔥 */
+    @media (max-width: 768px) {
+      .nav-grid { gap: 12px; margin-top: 1rem; }
+      .nav-card { width: 105px; height: 120px; gap: 10px; border-radius: 20px; }
+      .nav-card i { font-size: 2.5rem; }
+      .nav-card span { font-size: 0.75rem; letter-spacing: 0.5px; }
+      p.subtitle { margin-bottom: 1.5rem; }
     }
   </style>
 </head>
@@ -256,33 +274,29 @@
         <span>PREMIUM</span>
     </div>
     
-    <p>Tu portal definitivo a TV Premium, Deportes en Vivo y Cine.</p>
+    <p class="subtitle">¿Qué te gustaría ver hoy?</p>
     
-    <a href="home.html" class="btn-ingresar">
-       <i class="fas fa-play"></i> INGRESAR
-    </a>
-
-    <div class="mini-catalog">
-        <div className="catalog-item">
+    <div class="nav-grid">
+        <a href="agenda.html" class="nav-card sports">
             <i class="fas fa-futbol"></i>
-            Deportes
-        </div>
-        <div className="catalog-item">
+            <span>Deportes</span>
+        </a>
+        <a href="peliculas.html" class="nav-card movies">
             <i class="fas fa-film"></i>
-            Cine
-        </div>
-        <div className="catalog-item">
+            <span>Cine VOD</span>
+        </a>
+        <a href="television.html" class="nav-card tv">
             <i class="fas fa-tv"></i>
-            TV
-        </div>
+            <span>TV en Vivo</span>
+        </a>
     </div>
   </div>
 
   <footer>
     <div class="social-icons">
-      <a href="https://www.facebook.com/" target="_blank" class="facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/" target="_blank" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://tiktok.com/@" target="_blank" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com/@" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
     </div>
   </footer>
 
@@ -291,7 +305,7 @@
         <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 10px;" alt="Icon">
         <div>
             <h4 style="margin: 0; color: #fff; font-size: 14px; font-weight: 800;">SportLive Premium</h4>
-            <p style="margin: 0; color: #94a3b8; font-size: 11px; margin-top: 2px;">Instala para acceso rápido y sin publicidad</p>
+            <p style="margin: 0; color: #94a3b8; font-size: 11px; margin-top: 2px;">Instala para acceso rápido</p>
         </div>
     </div>
     <div style="display: flex; gap: 8px;">
