@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Play, ShieldCheck, Trophy, ArrowLeft, CheckCircle2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import eventosData from "@/data/eventos-auto.json";
 
 export const dynamic = 'force-dynamic';
 
