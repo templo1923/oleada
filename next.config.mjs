@@ -25,6 +25,14 @@ const nextConfig = {
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
       },
+
+      { 
+        source: '/SportLive/', 
+        destination: '/SportLive/index.html' 
+      },
+
+
+
       { 
         source: '/SportLive/agenda', 
         destination: '/SportLive/agenda.html' 
