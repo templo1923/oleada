@@ -35,8 +35,8 @@ export default function EventoPage({ params }: { params: { slug: string } }) {
             size="lg" 
             className="px-10 py-8 text-xl font-bold rounded-full animate-pulse bg-primary"
             onClick={() => {
-              // 1. Dispara el anuncio (Direct Link)
-              window.open('TU_LINK_DE_MONETAG', '_blank');
+              // 1. Dispara el anuncio (Direct Link) - Reemplaza con tu enlace de Monetag
+              window.open('https://your-monetag-link.com', '_blank');
               // 2. Manda al usuario a tu agenda real de SportLive
               window.location.href = '/SportLive/agenda.html';
             }}

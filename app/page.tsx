@@ -5,6 +5,7 @@ import { SportsSection } from "@/components/home/sports-section"
 import { ChannelsSection } from "@/components/home/channels-section"
 import { MoviesSection } from "@/components/home/movies-section"
 import { CTASection } from "@/components/home/cta-section"
+import { NewsSection } from "@/components/home/news-section"
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       <main className="pt-16">
         <HeroSection />
         {/* Ya no llamamos a FeaturedEvents aquí */}
+          <NewsSection />
         <SportsSection />
         <ChannelsSection />
         <MoviesSection />

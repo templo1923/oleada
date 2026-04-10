@@ -53,8 +53,18 @@ async function generarPost() {
         const aiRes = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
           model: "llama3-70b-8192",
           messages: [{
+            role: "system",
+            content: "Eres un periodista deportivo experto en SEO. Tu objetivo es atraer tráfico de redes sociales con previas emocionantes y profesionales."
+          }, {
             role: "user",
-            content: `Eres un periodista deportivo. Escribe una previa SEO de 120 palabras para el partido ${titulo} en ${liga}. Indica que la transmisión HD se puede ver en nuestra agenda SportLive. No pongas links.`
+            content: `Escribe una previa deportiva de aproximadamente 150 palabras para el partido ${titulo} que se juega hoy en la ${liga}. 
+            
+            Estructura:
+            1. Un titular gancho (sin repetirlo en el cuerpo).
+            2. Un análisis rápido de ambos equipos.
+            3. Una invitación final clara: 'Puedes seguir este partido en vivo y en alta definición a través de nuestra Agenda SportLive, el mejor lugar para ver deportes gratis'.
+            
+            Importante: Usa un tono emocionante, profesional y optimizado para SEO. No incluyas enlaces externos ni el nombre del periodista.`
           }]
         }, {
           headers: { 'Authorization': `Bearer ${GROQ_API_KEY}` }
