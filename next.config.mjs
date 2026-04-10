@@ -7,7 +7,7 @@ const nextConfig = {
     unoptimized: true,
   },
   
-  // 🔥 REDIRECCIONES (Cambio visible para el usuario) 🔥
+  // 🔥 REDIRECCIONES VIEJAS (Cambio visible para el usuario) 🔥
   async redirects() {
     return [
       {
@@ -15,6 +15,32 @@ const nextConfig = {
         destination: '/SportLive/ver.html', 
         permanent: true, 
       },
+    ]
+  },
+
+  // 🔥 NUEVO: REESCRITURAS (URLs limpias sin .html) 🔥
+  async rewrites() {
+    return [
+      { 
+        source: '/SportLive/inicio', 
+        destination: '/SportLive/index.html' 
+      },
+      { 
+        source: '/SportLive/agenda', 
+        destination: '/SportLive/agenda.html' 
+      },
+      { 
+        source: '/SportLive/peliculas', 
+        destination: '/SportLive/peliculas.html' 
+      },
+      { 
+        source: '/SportLive/television', 
+        destination: '/SportLive/television.html' 
+      },
+      { 
+        source: '/SportLive/ver', 
+        destination: '/SportLive/ver.html' 
+      }
     ]
   },
 }

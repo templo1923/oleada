@@ -89,7 +89,7 @@ export default async function PeliculaPage(props: any) {
   const cast = movie.credits?.cast?.slice(0, 8) || [];
   const trailer = movie.videos?.results?.find((v: any) => v.type === "Trailer" && v.site === "YouTube");
 
-  const linkReproductor = `https://oleadatvpremium.com/SportLive/peliculas.html?q=${encodeURIComponent(movie.title)}`;
+  const linkReproductor = `https://oleadatvpremium.com/SportLive/peliculas?q=${encodeURIComponent(movie.title)}`;
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit'] overflow-x-hidden">

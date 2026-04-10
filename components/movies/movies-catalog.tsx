@@ -263,7 +263,7 @@ export function MoviesCatalog() {
           <Button 
             variant="outline" 
             className="border-border/50 bg-secondary/50 hover:bg-secondary hover:border-primary/50"
-            onClick={() => window.open("https://oleadatvpremium.com/SportLive/peliculas.html", "_blank")}
+            onClick={() => window.open("https://oleadatvpremium.com/SportLive/peliculas", "_blank")}
           >
             Explorar Catálogo Completo
             <ChevronRight className="ml-2 h-4 w-4" />
