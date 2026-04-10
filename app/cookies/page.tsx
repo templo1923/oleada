@@ -33,7 +33,7 @@ export default function CookiesPage() {
 
             <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-8">
               <p className="text-lg">
-                Esta es la política de cookies para SportLive (OleadaTV Premium). Aquí te explicamos qué son las cookies, cómo las utilizamos y por qué a veces necesitamos almacenar estos pequeños archivos en tu dispositivo.
+                Esta es la política de cookies para SportLive (SportLive Tv Premium). Aquí te explicamos qué son las cookies, cómo las utilizamos y por qué a veces necesitamos almacenar estos pequeños archivos en tu dispositivo.
               </p>
 
               <section>

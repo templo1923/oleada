@@ -5,7 +5,7 @@ import { BlogHero } from "@/components/blog/blog-hero"
 import { BlogGrid } from "@/components/blog/blog-grid"
 
 export const metadata: Metadata = {
-  title: "Blog | Guias y Comparativas de Streaming | OleadaTV Premium",
+  title: "Blog | Guias y Comparativas de Streaming | SportLive Tv Premium",
   description: "Guias, comparativas y articulos sobre streaming, deportes en vivo y peliculas. Alternativas a Pelota Libre, Roja Directa y mas.",
   keywords: "alternativas pelota libre, alternativas roja directa, ver futbol gratis, mejores paginas streaming, guias streaming",
   openGraph: {

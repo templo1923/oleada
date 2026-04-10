@@ -16,21 +16,21 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'OleadaTV Premium | Deportes en Vivo, Canales TV y Cine',
+  title: 'SportLive Tv Premium | Deportes en Vivo, Canales TV y Cine',
   description: 'Tu hub de entretenimiento premium. Agenda deportiva en vivo, canales de TV premium, estrenos de cine y mucho mas. ESPN, Win Sports, HBO y mas.',
   keywords: 'ver partidos en vivo, futbol gratis, canales deportivos online, win sports en vivo, espn en vivo, peliculas estrenos, streaming deportes',
-  generator: 'OleadaTV Premium',
+  generator: 'SportLive Tv Premium',
   authors: [{ name: 'OleadaTV' }],
   openGraph: {
-    title: 'OleadaTV Premium | Deportes en Vivo, Canales TV y Cine',
+    title: 'SportLive Tv Premium | Deportes en Vivo, Canales TV y Cine',
     description: 'Tu hub de entretenimiento premium. Agenda deportiva en vivo, canales de TV premium, estrenos de cine.',
     type: 'website',
     locale: 'es_ES',
-    siteName: 'OleadaTV Premium',
+    siteName: 'SportLive Tv Premium',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'OleadaTV Premium',
+    title: 'SportLive Tv Premium',
     description: 'Tu hub de entretenimiento premium',
   },
   robots: {
@@ -81,7 +81,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "OleadaTV Premium",
+              "name": "SportLive Tv Premium",
               "description": "Hub de entretenimiento premium con deportes en vivo, canales de TV y cine",
               "url": "https://oleadatv.com",
               "potentialAction": {

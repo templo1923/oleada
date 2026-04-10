@@ -32,7 +32,7 @@ export default function TermsPage() {
 
             <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-8">
               <p className="text-lg">
-                Bienvenido a SportLive (OleadaTV Premium). Si continúa navegando y utilizando este sitio web, acepta cumplir y estar sujeto a los siguientes términos y condiciones de uso.
+                Bienvenido a SportLive (SportLive Tv Premium). Si continúa navegando y utilizando este sitio web, acepta cumplir y estar sujeto a los siguientes términos y condiciones de uso.
               </p>
 
               <section>

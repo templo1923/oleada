@@ -41,7 +41,7 @@ export default function DmcaPage() {
                   <span className="text-red-500">1.</span> Limitación de Responsabilidad
                 </h2>
                 <p>
-                  SportLive (OleadaTV Premium) es un proveedor de servicios de Internet que ofrece una plataforma que solo muestra enlaces a contenidos audiovisuales ubicados en servidores de terceros y proveídos y / o transmitidos por terceros. Nadie puede responsabilizar a nuestra plataforma de alojar contenido con derechos de autor ya que no alojamos ningún material con derechos de autor ni transmitimos ningún contenido audiovisual.
+                  SportLive (SportLive Tv Premium) es un proveedor de servicios de Internet que ofrece una plataforma que solo muestra enlaces a contenidos audiovisuales ubicados en servidores de terceros y proveídos y / o transmitidos por terceros. Nadie puede responsabilizar a nuestra plataforma de alojar contenido con derechos de autor ya que no alojamos ningún material con derechos de autor ni transmitimos ningún contenido audiovisual.
                 </p>
               </section>
 

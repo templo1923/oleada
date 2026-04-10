@@ -32,7 +32,7 @@ export default function PrivacyPage() {
 
             <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-8">
               <p className="text-lg">
-                En SportLive (OleadaTV Premium), accesible desde nuestro portal web, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene los tipos de información que recopila y registra nuestra plataforma y cómo la utilizamos.
+                En SportLive (SportLive Tv Premium), accesible desde nuestro portal web, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene los tipos de información que recopila y registra nuestra plataforma y cómo la utilizamos.
               </p>
 
               <section>

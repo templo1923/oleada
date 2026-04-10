@@ -5,7 +5,7 @@ import { MoviesHero } from "@/components/movies/movies-hero"
 import { MoviesCatalog } from "@/components/movies/movies-catalog"
 
 export const metadata: Metadata = {
-  title: "Peliculas y Estrenos HD | Cine Online Gratis | OleadaTV Premium",
+  title: "Peliculas y Estrenos HD | Cine Online Gratis | SportLive Tv Premium",
   description: "Ver peliculas online gratis en HD. Estrenos de cine, accion, terror, comedia, drama y mas generos. Catalogo actualizado diariamente.",
   keywords: "ver peliculas online gratis, estrenos de cine, peliculas hd, peliculas accion, peliculas terror, peliculas comedia",
   openGraph: {

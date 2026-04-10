@@ -107,7 +107,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 border-t border-border pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} OleadaTV Premium. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} SportLive Tv Premium. Todos los derechos reservados.
           </p>
           <p className="text-xs text-muted-foreground">
             Hub informativo de entretenimiento. No alojamos contenido.
