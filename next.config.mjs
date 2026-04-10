@@ -15,6 +15,18 @@ const nextConfig = {
         destination: '/SportLive/ver.html', 
         permanent: true, 
       },
+   // Si entran a la carpeta base, los manda a /inicio
+      {
+        source: '/SportLive',
+        destination: '/SportLive/inicio',
+        permanent: true,
+      },
+      // Si alguien escribe index.html a mano, lo forzamos a la URL limpia
+      {
+        source: '/SportLive/index.html',
+        destination: '/SportLive/inicio',
+        permanent: true,
+      }
     ]
   },
 
@@ -25,13 +37,6 @@ const nextConfig = {
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
       },
-
-      { 
-        source: '/SportLive/', 
-        destination: '/SportLive/index.html' 
-      },
-
-
 
       { 
         source: '/SportLive/agenda', 
