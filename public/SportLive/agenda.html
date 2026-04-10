@@ -1046,11 +1046,19 @@ function cambiarFiltro(cat) {
 // ==========================================
     // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO (Optimizado) 🔥
     // ==========================================
+// ==========================================
+    // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO (Optimizado) 🔥
+    // ==========================================
     $(document).on("click", ".share-match", function(e) {
-        e.stopPropagation(); // Evita que la tarjeta se abra al tocar el botón de compartir
+        e.stopPropagation(); 
         
         const nombreBuscado = decodeURIComponent($(this).data("name"));
-        const urlLimpia = window.location.origin + "/SportLive/agenda?e=" + encodeURIComponent(nombreBuscado);
+        
+        // 🔥 MAGIA: En lugar de compartir la ruta /agenda?e=..., compartimos la ruta del puente
+        // Reemplazamos los espacios por guiones para que la URL se vea limpia en WhatsApp
+        const nombreParaURL = nombreBuscado.replace(/\s+/g, '-');
+        const urlLimpia = window.location.origin + "/compartir/" + encodeURIComponent(nombreParaURL);
+        
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         if (navigator.share && isMobile) {
@@ -1060,9 +1068,8 @@ function cambiarFiltro(cat) {
                 url: urlLimpia
             }).catch(err => console.log('Share cancelado', err));
         } else {
-            // En PC copia directo al portapapeles
             navigator.clipboard.writeText(urlLimpia).then(() => {
-                alert("¡Enlace del evento copiado al portapapeles! ");
+                alert("¡Enlace del evento copiado al portapapeles! Pégalo en WhatsApp Web.");
             }).catch(() => { prompt("Copia el enlace manualmente:", urlLimpia); });
         }
     });
