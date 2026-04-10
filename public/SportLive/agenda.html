@@ -491,6 +491,37 @@
         return "VARIOS";
     }
 
+    // 🔥 CEREBRO INTELIGENTE DE TIEMPOS POR DEPORTE 🔥
+    function estaEnVivo(horaString, deporte) {
+        if (!horaString) return false;
+        
+        const ahora = new Date();
+        const minActual = ahora.getHours() * 60 + ahora.getMinutes();
+        const [h, m] = horaString.split(':').map(Number);
+        let minInicio = h * 60 + m;
+
+        // 1. Asignar duración según el deporte
+        let duracionMinutos = 130; // Por defecto (Fútbol)
+        if (deporte === "TENIS" || deporte === "COMBATE") duracionMinutos = 240; // 4 horas
+        else if (deporte === "BÉISBOL" || deporte === "FUTBOL AMER./AUS.") duracionMinutos = 210; // 3.5 horas
+        else if (deporte === "BALONCESTO" || deporte === "MOTOR") duracionMinutos = 160; // ~2.5 horas
+
+        // 2. Fix del Bug de Medianoche (Partidos que empiezan tipo 23:00 y terminan al día siguiente)
+        if (minInicio >= 1200 && minActual <= 300) { 
+            // Si el partido empezó después de las 8PM y ahora es de madrugada, el partido es de "ayer"
+            minInicio -= 1440; // Restamos los minutos de un día
+        }
+        
+        // 3. ¿Está en la ventana de tiempo?
+        return minActual >= minInicio && minActual <= (minInicio + duracionMinutos);
+    }
+
+
+
+
+
+
+
     async function obtenerAgenda() {
         const menuElement = document.getElementById("menu");
         const titleElement = document.getElementById("title-agenda");
@@ -572,13 +603,12 @@
 
             // 💡 Inyectamos el contador en el HTML de los botones
 // 🔥 Calcular cuántos eventos hay EN VIVO AHORA
-            const ahoraVivo = new Date();
-            const minActual = ahoraVivo.getHours() * 60 + ahoraVivo.getMinutes();
+// 🔥 Calcular cuántos eventos hay EN VIVO AHORA (Usando el cerebro dinámico)
             let enVivoCount = 0;
             todosLosPartidosGlobal.forEach(p => {
-                const hr = p.attributes.diary_hour || p.attributes.diary_time || "00:00";
-                const [h, m] = hr.split(':').map(Number);
-                if (minActual >= (h * 60 + m) && minActual <= (h * 60 + m + 130)) enVivoCount++;
+                const hr = p.attributes.diary_hour || p.attributes.diary_time;
+                const deporte = obtenerDeporte(p);
+                if (estaEnVivo(hr, deporte)) enVivoCount++;
             });
 
             // 💡 Inyectamos los botones: Primero el de EN VIVO (con estilo premium rojo), luego los demás
@@ -636,14 +666,10 @@ function cambiarFiltro(cat) {
         const horaActualNum = ahora.getHours() * 60 + ahora.getMinutes();
 
         // 1. Filtrar según el botón presionado
+// 1. Filtrar según el botón presionado
         let filtrados = [];
         if (categoriaActual === "EN_VIVO") {
-            filtrados = todosLosPartidosGlobal.filter(p => {
-                const hr = p.attributes.diary_hour || p.attributes.diary_time || "00:00";
-                const [h, m] = hr.split(':').map(Number);
-                const hNum = h * 60 + m;
-                return horaActualNum >= hNum && horaActualNum <= (hNum + 130);
-            });
+            filtrados = todosLosPartidosGlobal.filter(p => estaEnVivo(p.attributes.diary_hour || p.attributes.diary_time, obtenerDeporte(p)));
         } else if (categoriaActual === "TODOS") {
             filtrados = todosLosPartidosGlobal;
         } else {
@@ -651,17 +677,18 @@ function cambiarFiltro(cat) {
         }
 
         // 🔥 2. ORDENAMIENTO SUPREMO: LO QUE ESTÁ EN VIVO VA DE PRIMERO (SIEMPRE) 🔥
+        // 🔥 2. ORDENAMIENTO SUPREMO: LO QUE ESTÁ EN VIVO VA DE PRIMERO (SIEMPRE) 🔥
         filtrados.sort((a, b) => {
             const hAStr = a.attributes.diary_hour || a.attributes.diary_time || "00:00";
             const hBStr = b.attributes.diary_hour || b.attributes.diary_time || "00:00";
+            const aEnVivo = estaEnVivo(hAStr, obtenerDeporte(a)) ? 1 : 0;
+            const bEnVivo = estaEnVivo(hBStr, obtenerDeporte(b)) ? 1 : 0;
+            
             const [hA, mA] = hAStr.split(':').map(Number);
             const [hB, mB] = hBStr.split(':').map(Number);
             const horaA = hA * 60 + mA;
             const horaB = hB * 60 + mB;
-            
-            const aEnVivo = (horaActualNum >= horaA && horaActualNum <= (horaA + 130)) ? 1 : 0;
-            const bEnVivo = (horaActualNum >= horaB && horaActualNum <= (horaB + 130)) ? 1 : 0;
-            
+                
             if (aEnVivo !== bEnVivo) return bEnVivo - aEnVivo; // Si uno está en vivo y el otro no, sube el vivo
             return horaA - horaB; // Si ambos están en vivo (o ninguno), ordenamos por hora normal
         });
@@ -682,10 +709,7 @@ function cambiarFiltro(cat) {
             const attr = evento.attributes;
             const embeds = attr.embeds?.data || [];
             const horaEvento = attr.diary_hour || attr.diary_time || "00:00";
-            const [h, m] = horaEvento.split(':').map(Number);
-            const horaPartNum = h * 60 + m;
-            const esAhora = (horaActualNum >= horaPartNum && horaActualNum <= (horaPartNum + 130)) 
-                ? '<span class="live-dot-mini"></span>' : '';
+           const esAhora = estaEnVivo(horaEvento, obtenerDeporte(evento)) ? '<span class="live-dot-mini"></span>' : '';
 
             let imageUrl = attr.country?.data?.attributes?.image?.data?.attributes?.url || 
                            attr.fotoAsignada || 
