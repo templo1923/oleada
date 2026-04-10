@@ -1062,7 +1062,7 @@ function cambiarFiltro(cat) {
         } else {
             // En PC copia directo al portapapeles
             navigator.clipboard.writeText(urlLimpia).then(() => {
-                alert("¡Enlace del evento copiado al portapapeles! Pégalo en WhatsApp Web.");
+                alert("¡Enlace del evento copiado al portapapeles! ");
             }).catch(() => { prompt("Copia el enlace manualmente:", urlLimpia); });
         }
     });
