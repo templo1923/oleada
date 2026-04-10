@@ -16,7 +16,7 @@
 
   <meta property="og:title" content="TV en Vivo 24/7 | SportLive Premium 📺">
   <meta property="og:description" content="Todos tus canales favoritos de televisión premium en directo. Entretenimiento, noticias, documentales y más, totalmente gratis.">
-  <meta property="og:image" content="https://oleadatvpremium.com/SportLive/icons/iicon-dark-32x32.png">
+  <meta property="og:image" content="https://oleadatvpremium.com/SportLive/icons/icon-512x512.png">
   <meta property="og:url" content="https://oleadatvpremium.com/SportLive/television">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SportLive Premium">
@@ -607,13 +607,7 @@
             const linkFinal = `ver.html?canal=${cleanId}`;
             
             const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
-            
-            // 🔥 MAGIA DE SEGURIDAD: Enrutamos el logo por tu proxy 🔥
-            let logoUrl = fallbackLogo;
-            if (c.Logo) {
-                // Usamos encodeURIComponent para que las URLs raras no rompan el enlace
-                logoUrl = `https://api.telelatinomax.shop/img-proxy?url=${encodeURIComponent(c.Logo)}`;
-            }
+            const logoUrl = c.Logo || fallbackLogo;
 
             // Inyectar el CSS especial y la etiqueta si es un evento
             li.innerHTML = `
