@@ -6,10 +6,10 @@
   <title>SportLive Premium | TV, Cine y Deportes en VIVO Gratis</title>
 
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#0a0e17">
+  <meta name="theme-color" content="#030712">
   <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
 
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
@@ -18,323 +18,337 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* 🔥 AJUSTE TOTAL PARA NO-SCROLL ADAPTATIVO (clamp/dvh) 🔥 */
     html, body {
       width: 100%;
       height: 100%; 
       height: 100dvh; 
       overflow: hidden; 
-      background-color: #0a0e17; /* Fondo Charcoal Profundo ultra oscuro */
+      background-color: #030712; /* OLED Black */
+      font-family: 'Outfit', sans-serif;
+      color: #fff;
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
-      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; /* Centrado vertical estricto */
+      justify-content: center;
+      position: relative;
     }
 
-    /* 🔥 FONDO "VACANO" SUPREMO (MESH GRADIENT ANIMADO + TEXTURA ORIGINAL) 🔥 */
-    .background-wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    /* Textura original ultra desenfocada */
-    .background-image {
+    /* 🔥 FONDO AURORA BOREALIS + MICRO-MALLA 🔥 */
+    .bg-aurora {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.postimg.cc/76HtY8hg/deportes15.jpg') no-repeat center center;
-      background-size: cover;
-      filter: blur(150px); 
-      opacity: 0.05; 
-      z-index: 2;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150vw; height: 150vh;
+      background: 
+        radial-gradient(circle at 15% 30%, rgba(0, 212, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+      filter: blur(60px);
+      z-index: 1;
+      animation: auroraPulse 15s ease-in-out infinite alternate;
     }
 
-    /* 🔥 Mesh Gradient Animado puro CSS 🔥 */
-    .mesh-gradient {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: #0a0e17;
-      z-index: 1;
-    }
-    
-    .mesh-gradient::after {
-      content: "";
+    .bg-grid {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       background-image: 
-        radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-        radial-gradient(at 90% 10%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
-        radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
-      filter: blur(80px);
-      animation: meshAnim 20s infinite alternate;
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 30px 30px;
+      z-index: 2;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
     }
 
-    @keyframes meshAnim {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(10px, -10px) scale(1.1); }
+    @keyframes auroraPulse {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) scale(1.1) rotate(3deg); }
     }
 
     .container {
-      text-align: center;
+      position: relative;
       z-index: 10;
-      padding: 1rem;
-      width: 100%;
-      max-width: 900px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
-
-    /* 🔥 LOGO ESTILIZADO PRO (ESTILO BENEFT - BOLD & CONFIDENT) */
-    .app-logo {
-        font-size: clamp(3rem, 10vw, 6rem); 
-        font-weight: 900;
-        letter-spacing: -3px; /* Más bold, más junto */
-        line-height: 1;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(to right, #fff 0%, #d1d5db 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: fadeInLogo 1.5s ease-out;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .app-logo span {
-        font-size: 1rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        color: #00d4ff; /* Cian Neón */
-        filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7));
-        margin-top: -10px;
-    }
-
-    @keyframes fadeInLogo {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    p.subtitle {
-      font-size: clamp(1rem, 2vw, 1.4rem); 
-      font-weight: 300;
-      margin-bottom: 3.5rem; /* Más espacio para las tarjetas */
-      animation: fadeIn 2s ease-in-out 0.3s both;
-      color: #94a3b8;
-      max-width: 600px;
+      width: 100%;
+      max-width: 1000px;
       padding: 0 1rem;
     }
 
-    /* 🔥 TARJETAS DE NAVEGACIÓN PRO (SMART TV STYLE + GLASSMORPHISM) 🔥 */
+    /* 🔥 LOGO METÁLICO CINETICO 🔥 */
+    .brand-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .brand-logo h1 {
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 0.9;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    }
+
+    .premium-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      color: #00d4ff;
+      background: rgba(0, 212, 255, 0.1);
+      padding: 4px 15px;
+      border-radius: 50px;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      margin-top: -5px;
+      margin-left: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      color: #94a3b8;
+      letter-spacing: 1px;
+      margin-bottom: 2rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.3s forwards;
+    }
+
+    /* 🔥 TARJETAS DE CRISTAL 3D (FORMATO PÓSTER) 🔥 */
     .nav-grid {
       display: flex;
-      gap: 20px;
-      z-index: 10;
-      animation: fadeIn 2s ease-in-out 0.5s both;
+      gap: 25px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.6s forwards;
     }
 
     .nav-card {
+      position: relative;
+      width: 150px;
+      height: 220px; /* Formato cinemático alto */
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      width: 160px;
-      height: 160px;
-      background: rgba(255, 255, 255, 0.01); /* Fondo ultra suave */
-      border: 1px solid rgba(255, 255, 255, 0.05); /* Borde ultra fino */
-      border-radius: 24px;
       text-decoration: none;
-      color: #cbd5e1;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-      backdrop-filter: blur(10px); /* Efecto Glassmorphism */
-      position: relative;
       overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      
+      /* Efecto Cristal */
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      
+      /* Borde 3D (Brillo arriba, sombra abajo) */
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     }
 
+    /* Barrido de luz interno (Shine) */
     .nav-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s;
+      top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: skewX(-20deg);
+      transition: 0.5s;
     }
 
     .nav-card i {
       font-size: 3.5rem;
-      color: #cbd5e1;
-      transition: all 0.3s ease;
+      color: #64748b;
+      margin-bottom: 15px;
+      transition: all 0.4s ease;
       z-index: 2;
     }
 
-    .nav-card span {
-      font-size: 1rem;
+    .nav-card .card-title {
+      font-size: 1.1rem;
       font-weight: 800;
+      color: #f1f5f9;
       text-transform: uppercase;
       letter-spacing: 1px;
       z-index: 2;
-      transition: all 0.3s ease;
     }
 
-    /* HOVER: DEPORTES (Verde Neón LED) */
+    .nav-card .card-sub {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 5px;
+      z-index: 2;
+      transition: all 0.4s ease;
+    }
+
+    /* 🔥 HOVER EFFECTS EXTREMOS 🔥 */
+    .nav-card:hover {
+      transform: translateY(-12px);
+    }
+    .nav-card:hover::before {
+      left: 200%;
+      transition: 0.7s;
+    }
+
+    /* Hover Deportes */
     .nav-card.sports:hover {
-      transform: translateY(-10px) scale(1.05);
-      border-color: rgba(16, 185, 129, 0.6);
-      box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2), inset 0 0 20px rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 20px rgba(16, 185, 129, 0.05);
     }
-    .nav-card.sports:hover i { color: #10b981; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.8)); }
-    .nav-card.sports:hover span { color: #fff; }
-    .nav-card.sports:hover::before { opacity: 1; }
+    .nav-card.sports:hover i { color: #10b981; filter: drop-shadow(0 0 12px #10b981); transform: scale(1.1); }
+    .nav-card.sports:hover .card-sub { color: #10b981; }
 
-    /* HOVER: CINE (Cian Neón LED) */
+    /* Hover Cine */
     .nav-card.movies:hover {
-      transform: translateY(-10px) scale(1.05);
-      border-color: rgba(0, 212, 255, 0.6);
-      box-shadow: 0 15px 35px rgba(0, 212, 255, 0.2), inset 0 0 20px rgba(0, 212, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.05);
     }
-    .nav-card.movies:hover i { color: #00d4ff; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.8)); }
-    .nav-card.movies:hover span { color: #fff; }
-    .nav-card.movies:hover::before { opacity: 1; }
+    .nav-card.movies:hover i { color: #00d4ff; filter: drop-shadow(0 0 12px #00d4ff); transform: scale(1.1); }
+    .nav-card.movies:hover .card-sub { color: #00d4ff; }
 
-    /* HOVER: TV (Morado Neón LED) */
+    /* Hover TV */
     .nav-card.tv:hover {
-      transform: translateY(-10px) scale(1.05);
-      border-color: rgba(168, 85, 247, 0.6);
-      box-shadow: 0 15px 35px rgba(168, 85, 247, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.1);
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
     }
-    .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8)); }
-    .nav-card.tv:hover span { color: #fff; }
-    .nav-card.tv:hover::before { opacity: 1; }
+    .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 12px #a855f7); transform: scale(1.1); }
+    .nav-card.tv:hover .card-sub { color: #a855f7; }
 
-    /* 🔥 SOLUCIÓN AL BANNER ATRAVESADO: TARJETA DE INSTALACIÓN INTEGRADA 🔥 */
+    /* Tarjeta Instalación Especial */
     .nav-card.install {
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Fondo más oscuro */
-      border: 1px solid rgba(0, 212, 255, 0.1);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.15); /* Brillo cian neón inicial */
-      display: none; /* Oculto por defecto */
+      background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.01) 100%);
+      border-top: 1px solid rgba(0, 212, 255, 0.3);
+      display: none; /* Oculta por defecto */
     }
-    
-    .nav-card.install i { color: #00d4ff; filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7)); }
-    .nav-card.install span { color: #fff; }
-    
+    .nav-card.install i { color: #00d4ff; animation: pulseIcon 2s infinite; }
+    .nav-card.install .card-sub { color: #00d4ff; }
     .nav-card.install:hover {
-      transform: translateY(-10px) scale(1.05);
       border-color: rgba(0, 212, 255, 0.6);
-      box-shadow: 0 15px 35px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0, 212, 255, 0.2);
     }
-    
-    /* Pequeña animación de pulso para llamar la atención en la tarjeta de instalación */
-    .nav-card.install i { animation: pulseIcon 3s infinite; }
-    @keyframes pulseIcon { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes pulseIcon {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(0,212,255,0.5)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 15px rgba(0,212,255,0.9)); transform: scale(1.05); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* 🔥 FOOTER INVISIBLE 🔥 */
     footer {
-      position: fixed;
+      position: absolute;
       bottom: 2rem;
       width: 100%;
       text-align: center;
       z-index: 10;
-      animation: fadeIn 2s ease-out 1s both;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.9s forwards;
     }
 
     .social-icons {
       display: flex;
       justify-content: center;
+      gap: 15px;
     }
 
     .social-icons a {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 45px;
-      height: 45px;
-      margin: 0 0.5rem;
-      border-radius: 12px;
-      color: #94a3b8;
-      font-size: 1.5rem;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      color: #64748b;
+      font-size: 1.2rem;
       text-decoration: none;
       transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .social-icons a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
       transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
-      border: 1px solid rgba(0, 212, 255, 0.5);
-      color: #00d4ff; 
     }
 
-    /* 🔥 RESPONSIVE (MÓVIL) 🔥 */
+    /* 🔥 RESPONSIVE PERFECTO 🔥 */
     @media (max-width: 768px) {
-      .nav-grid { gap: 12px; margin-top: 1rem; }
-      .nav-card { width: 105px; height: 120px; gap: 10px; border-radius: 20px; }
-      .nav-card i { font-size: 2.5rem; }
-      .nav-card span { font-size: 0.75rem; letter-spacing: 0.5px; }
-      p.subtitle { margin-bottom: 2rem; }
+      .nav-grid { gap: 15px; }
+      /* En celular las hacemos un poco más compactas pero mantienen el formato póster */
+      .nav-card { width: 110px; height: 160px; border-radius: 16px; }
+      .nav-card i { font-size: 2.2rem; margin-bottom: 10px; }
+      .nav-card .card-title { font-size: 0.85rem; }
+      .nav-card .card-sub { font-size: 0.5rem; }
+      .brand-logo { margin-bottom: 2rem; }
+      .premium-badge { letter-spacing: 5px; padding: 3px 10px; font-size: 0.7rem; }
+      .subtitle { margin-bottom: 2rem; }
     }
   </style>
 </head>
 <body ondragstart="return false;">
 
-  <div class="background-wrapper">
-    <div class="mesh-gradient"></div>
-    <div class="background-image"></div>
-    <div class="background-overlay"></div>
-  </div>
+  <div class="bg-aurora"></div>
+  <div class="bg-grid"></div>
 
   <div class="container">
-    <div class="app-logo">
-        SportLive
-        <span>PREMIUM</span>
+    
+    <div class="brand-logo">
+      <h1>SportLive</h1>
+      <span class="premium-badge">Premium</span>
     </div>
     
-    <p class="subtitle">¿Qué te gustaría ver hoy?</p>
+    <p class="subtitle">Selecciona tu experiencia de entretenimiento.</p>
     
     <div class="nav-grid">
         <a href="agenda.html" class="nav-card sports">
             <i class="fas fa-futbol"></i>
-            <span>Deportes</span>
+            <span class="card-title">Deportes</span>
+            <span class="card-sub">En Vivo</span>
         </a>
         <a href="peliculas.html" class="nav-card movies">
             <i class="fas fa-film"></i>
-            <span>Cine VOD</span>
+            <span class="card-title">Cine</span>
+            <span class="card-sub">4K VOD</span>
         </a>
         <a href="television.html" class="nav-card tv">
             <i class="fas fa-tv"></i>
-            <span>TV en Vivo</span>
+            <span class="card-title">Televisión</span>
+            <span class="card-sub">24/7 HD</span>
         </a>
         
         <a href="#" id="btn-instalar-integrated" class="nav-card install">
-            <i class="fas fa-download"></i>
-            <span>Instalar</span>
+            <i class="fas fa-cloud-download-alt"></i>
+            <span class="card-title">App</span>
+            <span class="card-sub">Instalar Gratis</span>
         </a>
     </div>
+
   </div>
 
   <footer>
@@ -346,34 +360,30 @@
   </footer>
 
   <script>
-    // 1. Registrar el Service Worker Básico
+    // 1. Registrar Service Worker PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('PWA Service Worker Activado');
+                console.log('PWA Lista y Armada');
             }).catch(err => console.log('Error SW:', err));
         });
     }
 
-    // 2. 🔥 LÓGICA DE INSTALACIÓN PWA INTEGRADA (SOLUCIÓN A TU PROBLEMA) 🔥
+    // 2. Lógica de Tarjeta de Instalación VIP
     let deferredPrompt;
-    // Capturamos la nueva tarjeta integrada
     const installCard = document.getElementById('btn-instalar-integrated');
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        // SiChrome/Android detectan que es instalable, mostramos la tarjeta integrated en el menú
-        installCard.style.display = 'flex';
+        installCard.style.display = 'flex'; // Aparece la 4ta tarjeta como VIP
     });
 
     installCard.addEventListener('click', async (e) => {
-        e.preventDefault(); // Evitamos que el enlace vacio recargue la página
+        e.preventDefault();
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Instalación: ${outcome}`);
-            // Si el usuario acepta o cancela, ocultamos la tarjeta para no saturar
             if (outcome === 'accepted') {
                 installCard.style.display = 'none';
             }
@@ -381,7 +391,7 @@
         }
     });
 
-    // Detectar iOS (Apple no deja instalar automático, hay que enseñarles)
+    // Detectar iOS para guía
     const isIos = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod/.test( userAgent );
@@ -389,12 +399,8 @@
     const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
     if (isIos() && !isInStandaloneMode()) {
-        // En iOS también mostramos la tarjeta integrada
         installCard.style.display = 'flex';
-        // Cambiamos el texto y el ícono para que sea un instructivo
-        installCard.querySelector('span').innerHTML = 'Ver Guía';
-        installCard.querySelector('i').className = 'fas fa-info-circle';
-        
+        installCard.querySelector('.card-sub').innerHTML = 'Ver Guía';
         installCard.addEventListener('click', (e) => {
             e.preventDefault();
             alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadrado con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
