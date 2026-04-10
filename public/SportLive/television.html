@@ -604,21 +604,11 @@
 
             const li = document.createElement('li');
             li.className = 'card-wrapper';
-const li = document.createElement('li');
-            li.className = 'card-wrapper';
             const linkFinal = `ver.html?canal=${cleanId}`;
             
             const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
-            
-            // 🔥 MAGIA DE SEGURIDAD: Enrutamos el logo por tu proxy 🔥
-            let logoUrl = fallbackLogo;
-            if (c.Logo) {
-                // Usamos encodeURIComponent para que las URLs raras no rompan el enlace
-                logoUrl = `https://api.telelatinomax.shop/img-proxy?url=${encodeURIComponent(c.Logo)}`;
-            }
+            const logoUrl = c.Logo || fallbackLogo;
 
-            // Inyectar el CSS especial y la etiqueta si es un evento
-            
             // Inyectar el CSS especial y la etiqueta si es un evento
             li.innerHTML = `
                 <button class="fav-btn ${favClass}" onclick="toggleFavorite(event, '${cleanId}')" title="A�0�9adir a Favoritos">
