@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SportLive Premium | Eventos Deportivos, TV y Cine en VIVO Gratis</title>
+  <title>SportLive Premium | TV, Cine y Deportes en VIVO Gratis</title>
 
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#0a0e17">
   <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=192">
 
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="icon" href="https://i.postimg.cc/fyL6vn3H/unnamed-1.png" type="image/x-icon">
 
@@ -20,12 +20,13 @@
       box-sizing: border-box;
     }
 
+    /* 🔥 AJUSTE TOTAL PARA NO-SCROLL ADAPTATIVO (clamp/dvh) 🔥 */
     html, body {
       width: 100%;
       height: 100%; 
       height: 100dvh; 
       overflow: hidden; 
-      background-color: #0a0e17; 
+      background-color: #0a0e17; /* Fondo Charcoal Profundo ultra oscuro */
     }
 
     body {
@@ -34,10 +35,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; 
+      justify-content: center; /* Centrado vertical estricto */
     }
 
-    /* 🔥 Fondo de deportes unificado y sutil 🔥 */
+    /* 🔥 FONDO "VACANO" SUPREMO (MESH GRADIENT ANIMADO + TEXTURA ORIGINAL) 🔥 */
     .background-wrapper {
       position: fixed;
       top: 0;
@@ -48,6 +49,7 @@
       overflow: hidden;
     }
 
+    /* Textura original ultra desenfocada */
     .background-image {
       position: absolute;
       top: 0;
@@ -56,18 +58,34 @@
       height: 100%;
       background: url('https://i.postimg.cc/76HtY8hg/deportes15.jpg') no-repeat center center;
       background-size: cover;
-      filter: blur(100px); 
-      opacity: 0.1; 
+      filter: blur(150px); 
+      opacity: 0.05; 
+      z-index: 2;
     }
 
-    .background-overlay {
+    /* 🔥 Mesh Gradient Animado puro CSS 🔥 */
+    .mesh-gradient {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, rgba(10, 14, 23, 0.7) 0%, rgba(8, 12, 20, 1) 100%);
-      z-index: 2;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #0a0e17;
+      z-index: 1;
+    }
+    
+    .mesh-gradient::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+      filter: blur(80px);
+      animation: meshAnim 20s infinite alternate;
+    }
+
+    @keyframes meshAnim {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(10px, -10px) scale(1.1); }
     }
 
     .container {
@@ -82,11 +100,11 @@
       justify-content: center;
     }
 
-    /* 🔥 LOGO ESTILIZADO PRO */
+    /* 🔥 LOGO ESTILIZADO PRO (ESTILO BENEFT - BOLD & CONFIDENT) */
     .app-logo {
         font-size: clamp(3rem, 10vw, 6rem); 
         font-weight: 900;
-        letter-spacing: -2px;
+        letter-spacing: -3px; /* Más bold, más junto */
         line-height: 1;
         margin-bottom: 0.5rem;
         background: linear-gradient(to right, #fff 0%, #d1d5db 100%);
@@ -103,7 +121,7 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 5px;
-        color: #00d4ff;
+        color: #00d4ff; /* Cian Neón */
         filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7));
         margin-top: -10px;
     }
@@ -116,14 +134,14 @@
     p.subtitle {
       font-size: clamp(1rem, 2vw, 1.4rem); 
       font-weight: 300;
-      margin-bottom: 2.5rem; 
+      margin-bottom: 3.5rem; /* Más espacio para las tarjetas */
       animation: fadeIn 2s ease-in-out 0.3s both;
       color: #94a3b8;
       max-width: 600px;
       padding: 0 1rem;
     }
 
-    /* 🔥 TARJETAS DE NAVEGACIÓN PRO (SMART TV STYLE) 🔥 */
+    /* 🔥 TARJETAS DE NAVEGACIÓN PRO (SMART TV STYLE + GLASSMORPHISM) 🔥 */
     .nav-grid {
       display: flex;
       gap: 20px;
@@ -142,13 +160,13 @@
       gap: 15px;
       width: 160px;
       height: 160px;
-      background: linear-gradient(135deg, rgba(31, 41, 55, 0.4) 0%, rgba(17, 24, 39, 0.8) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.01); /* Fondo ultra suave */
+      border: 1px solid rgba(255, 255, 255, 0.05); /* Borde ultra fino */
       border-radius: 24px;
       text-decoration: none;
-      color: #94a3b8;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto de rebote premium */
-      backdrop-filter: blur(10px);
+      color: #cbd5e1;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      backdrop-filter: blur(10px); /* Efecto Glassmorphism */
       position: relative;
       overflow: hidden;
     }
@@ -157,7 +175,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 70%);
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 70%);
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -178,7 +196,7 @@
       transition: all 0.3s ease;
     }
 
-    /* HOVER: DEPORTES (Verde Neón) */
+    /* HOVER: DEPORTES (Verde Neón LED) */
     .nav-card.sports:hover {
       transform: translateY(-10px) scale(1.05);
       border-color: rgba(16, 185, 129, 0.6);
@@ -188,7 +206,7 @@
     .nav-card.sports:hover span { color: #fff; }
     .nav-card.sports:hover::before { opacity: 1; }
 
-    /* HOVER: CINE (Cian Neón) */
+    /* HOVER: CINE (Cian Neón LED) */
     .nav-card.movies:hover {
       transform: translateY(-10px) scale(1.05);
       border-color: rgba(0, 212, 255, 0.6);
@@ -198,7 +216,7 @@
     .nav-card.movies:hover span { color: #fff; }
     .nav-card.movies:hover::before { opacity: 1; }
 
-    /* HOVER: TV (Morado Neón) */
+    /* HOVER: TV (Morado Neón LED) */
     .nav-card.tv:hover {
       transform: translateY(-10px) scale(1.05);
       border-color: rgba(168, 85, 247, 0.6);
@@ -207,6 +225,27 @@
     .nav-card.tv:hover i { color: #a855f7; filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8)); }
     .nav-card.tv:hover span { color: #fff; }
     .nav-card.tv:hover::before { opacity: 1; }
+
+    /* 🔥 SOLUCIÓN AL BANNER ATRAVESADO: TARJETA DE INSTALACIÓN INTEGRADA 🔥 */
+    .nav-card.install {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%); /* Fondo más oscuro */
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.15); /* Brillo cian neón inicial */
+      display: none; /* Oculto por defecto */
+    }
+    
+    .nav-card.install i { color: #00d4ff; filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7)); }
+    .nav-card.install span { color: #fff; }
+    
+    .nav-card.install:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(0, 212, 255, 0.6);
+      box-shadow: 0 15px 35px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+    
+    /* Pequeña animación de pulso para llamar la atención en la tarjeta de instalación */
+    .nav-card.install i { animation: pulseIcon 3s infinite; }
+    @keyframes pulseIcon { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
@@ -235,7 +274,7 @@
       height: 45px;
       margin: 0 0.5rem;
       border-radius: 12px;
-      color: #fff;
+      color: #94a3b8;
       font-size: 1.5rem;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -257,13 +296,14 @@
       .nav-card { width: 105px; height: 120px; gap: 10px; border-radius: 20px; }
       .nav-card i { font-size: 2.5rem; }
       .nav-card span { font-size: 0.75rem; letter-spacing: 0.5px; }
-      p.subtitle { margin-bottom: 1.5rem; }
+      p.subtitle { margin-bottom: 2rem; }
     }
   </style>
 </head>
 <body ondragstart="return false;">
 
   <div class="background-wrapper">
+    <div class="mesh-gradient"></div>
     <div class="background-image"></div>
     <div class="background-overlay"></div>
   </div>
@@ -289,6 +329,11 @@
             <i class="fas fa-tv"></i>
             <span>TV en Vivo</span>
         </a>
+        
+        <a href="#" id="btn-instalar-integrated" class="nav-card install">
+            <i class="fas fa-download"></i>
+            <span>Instalar</span>
+        </a>
     </div>
   </div>
 
@@ -300,20 +345,6 @@
     </div>
   </footer>
 
-  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 16px; padding: 15px; z-index: 99999; box-shadow: 0 20px 40px rgba(0,0,0,0.9); align-items: center; justify-content: space-between; gap: 15px; font-family: 'Outfit', sans-serif;">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="https://ui-avatars.com/api/?name=SL&background=3b82f6&color=fff&size=64" style="width: 45px; height: 45px; border-radius: 10px;" alt="Icon">
-        <div>
-            <h4 style="margin: 0; color: #fff; font-size: 14px; font-weight: 800;">SportLive Premium</h4>
-            <p style="margin: 0; color: #94a3b8; font-size: 11px; margin-top: 2px;">Instala para acceso rápido</p>
-        </div>
-    </div>
-    <div style="display: flex; gap: 8px;">
-        <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background: transparent; border: none; color: #64748b; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px;"><i class="fas fa-times"></i></button>
-        <button id="btn-instalar-app" style="background: #111827; border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);">INSTALAR</button>
-    </div>
-  </div>
-
   <script>
     // 1. Registrar el Service Worker Básico
     if ('serviceWorker' in navigator) {
@@ -324,28 +355,33 @@
         });
     }
 
-    // 2. Lógica de Instalación PWA
+    // 2. 🔥 LÓGICA DE INSTALACIÓN PWA INTEGRADA (SOLUCIÓN A TU PROBLEMA) 🔥
     let deferredPrompt;
-    const installBanner = document.getElementById('pwa-install-banner');
-    const btnInstalar = document.getElementById('btn-instalar-app');
+    // Capturamos la nueva tarjeta integrada
+    const installCard = document.getElementById('btn-instalar-integrated');
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBanner.style.display = 'flex';
+        // SiChrome/Android detectan que es instalable, mostramos la tarjeta integrated en el menú
+        installCard.style.display = 'flex';
     });
 
-    btnInstalar.addEventListener('click', async () => {
-        installBanner.style.display = 'none';
+    installCard.addEventListener('click', async (e) => {
+        e.preventDefault(); // Evitamos que el enlace vacio recargue la página
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`Instalación: ${outcome}`);
+            // Si el usuario acepta o cancela, ocultamos la tarjeta para no saturar
+            if (outcome === 'accepted') {
+                installCard.style.display = 'none';
+            }
             deferredPrompt = null;
         }
     });
 
-    // Detectar iOS
+    // Detectar iOS (Apple no deja instalar automático, hay que enseñarles)
     const isIos = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod/.test( userAgent );
@@ -353,9 +389,14 @@
     const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
     if (isIos() && !isInStandaloneMode()) {
-        installBanner.style.display = 'flex';
-        btnInstalar.innerHTML = 'VER CÓMO';
-        btnInstalar.addEventListener('click', () => {
+        // En iOS también mostramos la tarjeta integrada
+        installCard.style.display = 'flex';
+        // Cambiamos el texto y el ícono para que sea un instructivo
+        installCard.querySelector('span').innerHTML = 'Ver Guía';
+        installCard.querySelector('i').className = 'fas fa-info-circle';
+        
+        installCard.addEventListener('click', (e) => {
+            e.preventDefault();
             alert("Para instalar en iPhone/iPad:\n1. Toca el ícono de 'Compartir' (el cuadrado con la flecha hacia arriba).\n2. Selecciona 'Agregar a Inicio'.");
         });
     }
