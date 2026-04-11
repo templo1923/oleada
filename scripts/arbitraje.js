@@ -2,60 +2,66 @@ const axios = require('axios');
 const fs = require('fs');
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-// Usamos la misma URL que te funcionó en el PHP
+// Fecha fija para asegurar datos (puedes volver a poner la dinámica después)
 const url = "https://webws.365scores.com/web/games/allscores/?appTypeId=5&langId=14&timezoneName=America/Bogota&userCountryId=18&sports=1&startDate=10/04/2026&endDate=10/04/2026&showOdds=true&onlyMajorGames=true&withTop=true";
 
-async function generar() {
+async function iniciarRobot() {
   try {
-    console.log("Conectando con la API...");
+    console.log("Conectando con la central de datos...");
     const res = await axios.get(url);
     const juegos = res.data?.games || [];
     
-    let resultados = [];
+    let noticiasGeneradas = [];
 
-    // Procesamos los primeros 10 partidos que salieron en tu tabla
-    for (const juego of juegos.slice(0, 10)) {
+    // Procesamos los 6 partidos más importantes
+    for (const juego of juegos.slice(0, 6)) {
       
-      // Sacamos los nombres tal cual salieron en tu PHP
-      const local = juego.homeCompetitor?.name;
-      const visitante = juego.awayCompetitor?.name;
+      // Extracción segura basada en tu PHP exitoso
+      const local = juego.homeCompetitor?.name || "Equipo Local";
+      const visitante = juego.awayCompetitor?.name || "Equipo Visitante";
       const liga = juego.competitionDisplayName || "Fútbol Internacional";
 
-      if (!local || !visitante) continue;
+      if (local === "Equipo Local") continue; // Saltamos datos basura
 
-      const titulo = `${local} vs ${visitante}`;
-      console.log(`Escribiendo noticia para: ${titulo}`);
+      console.log(`Redactando noticia premium para: ${local} vs ${visitante}`);
 
       try {
-        const ai = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-          model: "llama3-8b-8192",
+        const aiRes = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+          model: "llama3-70b-8192", // Usamos el modelo potente para mejor redacción
           messages: [{
             role: "user",
-            content: `Eres un periodista deportivo. Escribe una previa SEO de 120 palabras para el partido ${titulo} de la ${liga}. Menciona que pueden verlo en HD en nuestra agenda de SportLive. Tono emocionante.`
+            content: `Eres un periodista deportivo de élite. Escribe una noticia de 150 palabras sobre el partido ${local} vs ${visitante} de la liga ${liga}. 
+            REGLAS:
+            1. Usa un titular explosivo con emojis.
+            2. Analiza el choque (puntos, rivalidad o importancia).
+            3. DI CLARAMENTE: 'La transmisión oficial sin cortes y en calidad 4K está disponible en nuestra exclusiva Agenda SportLive. No te pierdas ni un segundo del juego aquí'.
+            4. Tono de urgencia máxima.`
           }]
         }, {
           headers: { 'Authorization': `Bearer ${GROQ_API_KEY}` }
         });
 
-        resultados.push({
+        noticiasGeneradas.push({
           id: juego.id,
-          slug: titulo.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-          title: titulo,
-          content: ai.data.choices[0].message.content,
+          slug: `${local}-vs-${visitante}`.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          title: `Ocasión de Oro: ${local} vs ${visitante} en VIVO`,
+          content: aiRes.data.choices[0].message.content,
           date: new Date().toISOString()
         });
       } catch (e) {
-        console.log("Fallo Groq en este partido");
+        console.log("Fallo en redacción de un partido.");
       }
     }
 
-    if (resultados.length > 0) {
+    if (noticiasGeneradas.length > 0) {
       if (!fs.existsSync('./data')) fs.mkdirSync('./data');
-      fs.writeFileSync('./data/eventos-auto.json', JSON.stringify(resultados, null, 2));
-      console.log("✅ TODO LISTO: Archivo generado con " + resultados.length + " noticias.");
+      fs.writeFileSync('./data/eventos-auto.json', JSON.stringify(noticiasGeneradas, null, 2));
+      console.log(`🚀 ÉXITO: Se han publicado ${noticiasGeneradas.length} noticias de alta calidad.`);
     }
-  } catch (err) {
-    console.log("Error de conexión");
+
+  } catch (error) {
+    console.log("Error de conexión con la API.");
   }
 }
-generar();
+
+iniciarRobot();
