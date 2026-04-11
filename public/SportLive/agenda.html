@@ -943,8 +943,9 @@ function cambiarFiltro(cat) {
                     const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.Canal)}&background=1e3a8a&color=fff&bold=true&font-size=0.35&rounded=true`;
                     const logoUrl = evento.Logo || fallbackLogo;
 
+                    // 🔥 HACK DE SEGURIDAD: Usamos un DIV con onclick en lugar de un enlace 'a' para ocultar la URL al pasar el mouse 🔥
                     sliderHTML += `
-                        <a href="${linkFinal}" class="banner-destacado">
+                        <div onclick="navegarSeguro('${linkFinal}')" class="banner-destacado" style="cursor: pointer;">
                             <div class="destacado-badge">🔥 ESTELAR EN VIVO 🔥</div>
                             <img src="${logoUrl}" class="destacado-img" onerror="this.onerror=null; this.src='${fallbackLogo}';">
                             <div class="destacado-info">
@@ -952,7 +953,7 @@ function cambiarFiltro(cat) {
                                 <p><i class="fas fa-satellite-dish"></i> Toca para ver la transmisión Premium</p>
                             </div>
                             <div class="destacado-play"><i class="fas fa-play"></i></div>
-                        </a>
+                        </div>
                     `;
                 });
 
