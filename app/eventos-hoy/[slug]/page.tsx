@@ -1,4 +1,4 @@
-// app/eventos-hoy/[slug]/page.tsx
+import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { notFound } from "next/navigation";
@@ -11,15 +11,50 @@ async function getEventos() {
   return res.ok ? res.json() : [];
 }
 
-export default async function EventoEstiloBlog({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
+// 🔥 1. MAGIA SEO DINÁMICA (Para Google, WhatsApp, Facebook, X) 🔥
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const resolvedParams = await params;
   const eventos = await getEventos();
-  const partido = eventos.find((e: any) => e.slug === slug);
+  
+  // Buscamos el partido exacto
+  const partido = eventos.find((e: any) => e.slug === resolvedParams.slug);
+
+  if (!partido) return { title: 'Evento no encontrado' };
+
+  const descCorta = partido.excerpt || "Transmisión HD gratis en SportLive Premium.";
+  const imagenPost = partido.image || "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png";
+  const tagsSeo = partido.tags && Array.isArray(partido.tags) ? partido.tags.join(", ") : "futbol en vivo, deportes hd, sportlive";
+
+  return {
+    title: `${partido.title}`, 
+    description: descCorta,
+    keywords: tagsSeo,
+    openGraph: {
+      title: `🔴 EN VIVO: ${partido.title}`,
+      description: descCorta,
+      url: `https://oleadatvpremium.com/eventos-hoy/${resolvedParams.slug}`,
+      type: "article", // 👈 Vital para que Google sepa que es una noticia fresca
+      images: [{ url: imagenPost, width: 1200, height: 630 }]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `🔴 EN VIVO: ${partido.title}`,
+      description: descCorta,
+      images: [imagenPost],
+    }
+  }
+}
+
+// 📺 2. TU DISEÑO VISUAL ÉPICO
+export default async function EventoEstiloBlog({ params }: { params: { slug: string } }) {
+  const resolvedParams = await params;
+  const eventos = await getEventos();
+  const partido = eventos.find((e: any) => e.slug === resolvedParams.slug);
 
   if (!partido) return notFound();
 
   // Fecha por defecto si no existe en el JSON
-  const fechaHoy = partido.date ? new Date(partido.date).toLocaleDateString() : new Date().toLocaleDateString();
+  const fechaHoy = partido.date ? new Date(partido.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date().toLocaleDateString();
 
   return (
     <div className="min-h-screen bg-[#080c14] text-white">
@@ -28,7 +63,7 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
         
         <header className="mb-10 text-center">
           <span className="bg-red-600 text-white font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block animate-pulse">
-             🔴 {partido.liga || "Evento en Vivo"}
+              🔴 {partido.liga || "Evento en Vivo"}
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-6 leading-tight italic uppercase tracking-tighter">
             {partido.title}
@@ -67,6 +102,17 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
           <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-relaxed whitespace-pre-line font-normal">
             {partido.content}
           </div>
+          
+          {/* Etiquetas (Tags) de tu nuevo JSON */}
+          {partido.tags && Array.isArray(partido.tags) && (
+            <div className="mt-10 flex flex-wrap gap-2 justify-center">
+              {partido.tags.map((tag: string) => (
+                <span key={tag} className="text-xs font-bold text-slate-400 bg-black/50 border border-white/10 px-3 py-1 rounded-full uppercase">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* BOTÓN FLOTANTE */}
