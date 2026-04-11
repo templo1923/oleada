@@ -6,7 +6,7 @@ import { PlayCircle } from "lucide-react";
 
 async function getEventos() {
   // Forzamos que no use caché para que siempre veas los partidos nuevos
-  const res = await fetch('https://api.telelatinomax.shop/api/eventos-auto.json', { 
+  const res = await fetch('https://tucentral.store/Sportlive/eventos-auto.json', { 
     cache: 'no-store' 
   });
   return res.ok ? res.json() : [];
