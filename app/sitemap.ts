@@ -4,7 +4,7 @@ import blogData from '@/data/blog-posts.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 🔥 ESTRATEGIA MULTI-DOMINIO
-  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlivetvpremium.vercel.app';
+  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
 
   // 1. Añadimos tus páginas estáticas principales y legales
   const rutas: MetadataRoute.Sitemap = [
@@ -13,6 +13,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${DOMINIO}/canales-premium`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${DOMINIO}/cine-estrenos`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${DOMINIO}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    // 🚨 AÑADIDO: La portada principal de eventos-hoy
+    { url: `${DOMINIO}/eventos-hoy`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
     { url: `${DOMINIO}/privacidad`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${DOMINIO}/cookies`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${DOMINIO}/terminos`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
