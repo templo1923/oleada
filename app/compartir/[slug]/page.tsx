@@ -1,11 +1,16 @@
 import { Metadata } from 'next'
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: any): Promise<Metadata> {
   const resolvedParams = await params;
-  const slug = resolvedParams.slug || "";
+  const resolvedSearch = await searchParams; // Leemos las variables extra de la URL
   
-  // Decodificamos y convertimos guiones en espacios para el título de WhatsApp
+  const slug = resolvedParams.slug || "";
   const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' ');
+  
+  // 🔥 MAGIA: Atrapamos la imagen que nos mandó la agenda, o usamos tu logo por defecto
+  const imagenPortada = resolvedSearch?.i 
+    ? decodeURIComponent(resolvedSearch.i) 
+    : "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png";
   
   return {
     title: `🔴 EN VIVO: ${nombreEvento}`,
@@ -13,7 +18,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     openGraph: {
       title: `🔴 EN VIVO: ${nombreEvento}`,
       description: `Míralo AHORA en SportLive Premium. HD y sin cortes.`,
-      images: [{ url: "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png" }],
+      images: [{ url: imagenPortada }], // 👈 AQUÍ INYECTAMOS LA IMAGEN DEL EVENTO
       type: "website",
     }
   }
@@ -23,7 +28,6 @@ export default async function CompartirPuente({ params }: any) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "";
   
-  // IMPORTANTE: Quitamos los guiones para que la Agenda reciba el nombre real
   const nombreLimpio = decodeURIComponent(slug).replace(/-/g, ' ');
   const urlPwa = `/SportLive/agenda?e=${encodeURIComponent(nombreLimpio)}`;
 
@@ -33,7 +37,7 @@ export default async function CompartirPuente({ params }: any) {
       <body style={{ backgroundColor: '#080c14', color: '#3b82f6', textAlign: 'center', marginTop: '20%', fontFamily: 'sans-serif' }}>
         <div style={{ padding: '20px' }}>
           <div style={{ width: '40px', height: '40px', border: '4px solid #3b82f6', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
-          <h2>Abriendo SportLive Premium...</h2>
+          <h2>Abriendo SportLive...</h2>
           <p>Localizando: <strong style={{color: '#fff'}}>{nombreLimpio}</strong></p>
         </div>
         <style dangerouslySetInnerHTML={{ __html: `@keyframes spin { to { transform: rotate(360deg); } }` }} />
