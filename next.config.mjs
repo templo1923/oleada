@@ -7,15 +7,29 @@ const nextConfig = {
     unoptimized: true,
   },
   
-  // 🔥 REDIRECCIONES VIEJAS (Cambio visible para el usuario) 🔥
+  // 🔥 REDIRECCIONES (Nuevas y Viejas) 🔥
   async redirects() {
     return [
+      // 🚨 1. NUEVO: EMBUDO MULTI-DOMINIO (Redirige Vercel al oficial) 🚨
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'sportlivetvpremium.vercel.app', // El dominio que usamos de trampa
+          },
+        ],
+        destination: 'https://oleadatvpremium.com/:path*', // Tu dominio real
+        permanent: true,
+      },
+
+      // 🔥 2. TUS REDIRECCIONES VIEJAS INTACTAS 🔥
       {
         source: '/ver.html',
         destination: '/SportLive/ver.html', 
         permanent: true, 
       },
-   // Si entran a la carpeta base, los manda a /inicio
+      // Si entran a la carpeta base, los manda a /inicio
       {
         source: '/SportLive',
         destination: '/SportLive/inicio',
@@ -30,14 +44,13 @@ const nextConfig = {
     ]
   },
 
-  // 🔥 NUEVO: REESCRITURAS (URLs limpias sin .html) 🔥
+  // 🔥 NUEVO: REESCRITURAS INTACTAS (URLs limpias sin .html) 🔥
   async rewrites() {
     return [
       { 
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
       },
-
       { 
         source: '/SportLive/agenda', 
         destination: '/SportLive/agenda.html' 
