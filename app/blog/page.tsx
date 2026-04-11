@@ -34,7 +34,7 @@ export default function BlogPage() {
             "@type": "Blog",
             "name": "OleadaTV Blog",
             "description": "Guias y comparativas de streaming",
-            "url": "https://oleadatv.com/blog",
+            "url": "https://oleadatvpremium.com/blog",
             "blogPost": [
               {
                 "@type": "BlogPosting",

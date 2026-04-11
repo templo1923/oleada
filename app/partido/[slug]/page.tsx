@@ -69,14 +69,44 @@ function procesarPartido(rawName: string) {
 }
 
 export async function generateMetadata(props: any): Promise<Metadata> {
+  // En Next.js moderno es mejor desenvolver los params por si la URL trae la info ahí
+  const resolvedParams = await props.params;
   const searchParams = await props.searchParams;
-  const rawN = searchParams?.n ? String(searchParams.n) : "Evento Deportivo";
+  
+  // Leemos de ?n= o del slug de la URL
+  const slugLimpio = resolvedParams?.slug ? decodeURIComponent(resolvedParams.slug).replace(/-/g, ' ') : "";
+  const rawN = searchParams?.n ? String(searchParams.n) : slugLimpio || "Evento Deportivo";
+  
+  // Pasamos el texto por tu cerebro limpiador
   const { tituloSeo, descSeo, keywordsSeo } = procesarPartido(rawN);
   
   return {
-    title: tituloSeo,
-    description: descSeo,
+    title: tituloSeo, // Esto lo lee Google
+    description: descSeo, // Esto lo lee Google
     keywords: keywordsSeo,
+    
+    // 🔥 ESTO LO LEE WHATSAPP, FACEBOOK Y TELEGRAM 🔥
+    openGraph: {
+      title: tituloSeo,
+      description: descSeo,
+      type: "website",
+      images: [
+        {
+          url: "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png", // Tu logo premium siempre seguro
+          width: 512,
+          height: 512,
+          alt: tituloSeo,
+        }
+      ]
+    },
+    
+    // 🔥 ESTO LO LEE TWITTER / X 🔥
+    twitter: {
+      card: "summary_large_image",
+      title: tituloSeo,
+      description: descSeo,
+      images: ["https://oleadatvpremium.com/SportLive/icons/icon-512x512.png"],
+    }
   }
 }
 
@@ -136,12 +166,18 @@ export default async function PartidoPage(props: any) {
                 {torneo} • <span className="text-white">Calidad 1080p</span>
               </h1>
 
+              {/* 🔥 HACK DE SEGURIDAD: Formulario invisible para ocultar la URL al pasar el mouse 🔥 */}
               <div className="w-full max-w-sm mt-4">
-                <Button size="lg" className="w-full py-8 rounded-2xl font-black text-lg uppercase tracking-widest bg-gradient-to-r from-primary to-[#00d4ff] hover:scale-[1.03] transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)]" asChild>
-                  <Link href={linkReproductor} target="_blank">
+                <form action="https://oleadatvpremium.com/SportLive/ver.html" method="GET" target="_blank">
+                  {/* Pasamos los parámetros de forma oculta */}
+                  <input type="hidden" name="r" value={r} />
+                  <input type="hidden" name="n" value={n} />
+                  
+                  {/* Le quitamos el 'asChild' al Button y le ponemos type="submit" */}
+                  <Button type="submit" size="lg" className="w-full py-8 rounded-2xl font-black text-lg uppercase tracking-widest bg-gradient-to-r from-primary to-[#00d4ff] hover:scale-[1.03] transition-all shadow-[0_0_30px_rgba(59,130,246,0.4)]">
                     <Play className="w-6 h-6 mr-3 fill-current" /> Iniciar Transmisión
-                  </Link>
-                </Button>
+                  </Button>
+                </form>
               </div>
             </div>
           </div>
