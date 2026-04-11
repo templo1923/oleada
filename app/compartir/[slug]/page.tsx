@@ -1,51 +1,42 @@
 import { Metadata } from 'next'
 
-// 1. EL ROBOT DE WHATSAPP LEE ESTO Y CREA LA TARJETA HERMOSA
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  // 🔥 FORMA CORRECTA DE EXTRAER EL SLUG EN NEXT.JS 🔥
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "";
   
-  const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' '); // Convertimos los guiones a espacios
+  // Decodificamos y convertimos guiones en espacios para el título de WhatsApp
+  const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' ');
   
   return {
     title: `🔴 EN VIVO: ${nombreEvento}`,
-    description: `🔥 Toca aquí para ver ${nombreEvento} en directo por SportLive Premium. Transmisión HD, sin cortes y totalmente gratis.`,
+    description: `🔥 Toca aquí para ver ${nombreEvento} en directo por SportLive Premium. Transmisión HD y gratis.`,
     openGraph: {
       title: `🔴 EN VIVO: ${nombreEvento}`,
       description: `Míralo AHORA en SportLive Premium. HD y sin cortes.`,
-      images: [
-        {
-          url: "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png", // Tu logo premium
-          width: 512,
-          height: 512,
-        }
-      ],
+      images: [{ url: "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png" }],
       type: "website",
     }
   }
 }
 
-// 2. EL USUARIO HUMANO LEE ESTO Y ES EXPULSADO HACIA LA PWA
 export default async function CompartirPuente({ params }: any) {
-  // 🔥 FORMA CORRECTA DE EXTRAER EL SLUG EN NEXT.JS 🔥
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "";
   
-  const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' ');
-  
-  // La URL real de tu PWA a donde queremos enviarlo
-  const urlPwa = `/SportLive/agenda?e=${encodeURIComponent(nombreEvento)}`;
+  // IMPORTANTE: Quitamos los guiones para que la Agenda reciba el nombre real
+  const nombreLimpio = decodeURIComponent(slug).replace(/-/g, ' ');
+  const urlPwa = `/SportLive/agenda?e=${encodeURIComponent(nombreLimpio)}`;
 
   return (
     <html>
-      <head>
-        {/* Redirección automática instantánea */}
-        <meta httpEquiv="refresh" content={`0; url=${urlPwa}`} />
-      </head>
+      <head><meta httpEquiv="refresh" content={`0; url=${urlPwa}`} /></head>
       <body style={{ backgroundColor: '#080c14', color: '#3b82f6', textAlign: 'center', marginTop: '20%', fontFamily: 'sans-serif' }}>
-        <h2>Abriendo SportLive Premium...</h2>
-        <p>Cargando el evento: <strong style={{color: '#fff'}}>{nombreEvento}</strong></p>
+        <div style={{ padding: '20px' }}>
+          <div style={{ width: '40px', height: '40px', border: '4px solid #3b82f6', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
+          <h2>Abriendo SportLive Premium...</h2>
+          <p>Localizando: <strong style={{color: '#fff'}}>{nombreLimpio}</strong></p>
+        </div>
+        <style dangerouslySetInnerHTML={{ __html: `@keyframes spin { to { transform: rotate(360deg); } }` }} />
         <script dangerouslySetInnerHTML={{ __html: `window.location.replace('${urlPwa}');` }} />
       </body>
     </html>
