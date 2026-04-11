@@ -2,40 +2,42 @@ name: Actualizador de Eventos Deportivos
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
-  workflow_dispatch: # Permite ejecución manual
+    - cron: '0 */6 * * *' 
+  workflow_dispatch: 
 
-# Esto asegura que el bot tenga permiso explícito para escribir en el repo
 permissions:
   contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Fuerza el uso de Node 24 para evitar el aviso
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v4 # Actualizado a v4
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Esto obliga a traer TODO el historial nuevo
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4 # Actualizado a v4
+        uses: actions/setup-node@v4
         with:
-          node-version: '22' # Versión estable recomendada en 2026
+          node-version: '22'
+          cache: 'npm' # Esto ayuda a limpiar versiones viejas
 
       - name: Instalar dependencias
         run: npm install axios
 
-      - name: Ejecutar Scraper e IA
+      - name: Ejecutar Robot de Arbitraje
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: node scripts/arbitraje.js
+        run: |
+          # Comando para asegurar que estamos usando el archivo real
+          cat scripts/arbitraje.js 
+          node scripts/arbitraje.js
 
-      - name: Guardar cambios en el repo
+      - name: Guardar cambios
         run: |
           git config --global user.name 'SportLive Bot'
           git config --global user.email 'bot@sportlive.com'
           git add data/eventos-auto.json
-          # El comando || exit 0 evita que falle si no hay cambios nuevos
-          git commit -m "Auto-update: Partidos del día" || exit 0
+          git commit -m "Noticias generadas exitosamente" || exit 0
           git push
