@@ -1,11 +1,10 @@
 import { Metadata } from 'next'
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  // Leemos correctamente la URL para evitar el error 'undefined'
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "";
   
-  // Limpiamos los guiones
+  // Limpiamos los guiones para que se lea perfecto
   const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' ');
   
   return {
@@ -16,7 +15,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
       description: `Míralo AHORA en SportLive Premium. HD y sin cortes.`,
       images: [
         {
-          url: "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png", // 🔥 TU ÍCONO PREMIUM SEGURO 🔥
+          url: "https://oleadatvpremium.com/SportLive/icons/icon2-32x32.png", // 🔥 SIEMPRE TU LOGO PREMIUM, NUNCA FALLA
           width: 512,
           height: 512,
         }
