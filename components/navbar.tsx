@@ -2,16 +2,17 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X, Tv, Calendar, Film, FileText, Zap, Search, Play } from "lucide-react"
+import { Menu, X, Tv, Calendar, Film, FileText, Zap, Search, Play, Radio } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-// 🚨 ENLACES REALES CONECTADOS AL ECOSISTEMA 🚨
+// 🚨 ENLACES ACTUALIZADOS CON "PARTIDOS DE HOY" 🚨
 const navLinks = [
-  { href: "https://sportlive-one.vercel.app/", label: "Inicio", icon: Zap },
-  { href: "https://sportlive-one.vercel.app/agenda-deportiva", label: "Agenda Deportiva", icon: Calendar },
-  { href: "https://sportlive-one.vercel.app/canales-premium", label: "Canales TV", icon: Tv },
-  { href: "https://sportlive-one.vercel.app/cine-estrenos", label: "Cine", icon: Film },
-  { href: "https://sportlive-one.vercel.app/blog", label: "Blog", icon: FileText },
+  { href: "/", label: "Inicio", icon: Zap },
+  { href: "/eventos-hoy", label: "Partidos de Hoy", icon: Radio }, // <--- NUEVA RUTA SEO
+  { href: "/agenda-deportiva", label: "Agenda", icon: Calendar },
+  { href: "/canales-premium", label: "Canales TV", icon: Tv },
+  { href: "/cine-estrenos", label: "Cine", icon: Film },
+  { href: "/blog", label: "Blog", icon: FileText },
 ]
 
 export function Navbar() {
@@ -39,12 +40,13 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="group flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
               >
-                <link.icon className="h-4 w-4 transition-colors text-slate-400 group-hover:text-primary" />
-                {link.label}
+                {/* Efecto especial para el botón de Partidos de Hoy */}
+                <link.icon className={`h-4 w-4 transition-colors ${link.href === '/eventos-hoy' ? 'text-red-500 animate-pulse' : 'text-slate-400 group-hover:text-primary'}`} />
+                <span className={link.href === '/eventos-hoy' ? 'text-white font-bold' : ''}>
+                    {link.label}
+                </span>
               </Link>
             ))}
           </div>
@@ -52,7 +54,7 @@ export function Navbar() {
           {/* Botón CTA Derecho */}
           <div className="hidden lg:flex lg:items-center lg:gap-3">
             <Button className="bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black hover:scale-105 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] rounded-xl" asChild>
-              <Link href="./SportLive/inicio" target="_blank" rel="noopener noreferrer">
+              <Link href="/SportLive/inicio" target="_blank" rel="noopener noreferrer">
                 <Play className="mr-2 h-4 w-4 fill-current" />
                 Abrir App
               </Link>
@@ -77,18 +79,16 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-300 transition-all hover:bg-white/5 hover:text-white"
                 >
-                  <link.icon className="h-5 w-5 text-primary" />
+                  <link.icon className={`h-5 w-5 ${link.href === '/eventos-hoy' ? 'text-red-500 animate-pulse' : 'text-primary'}`} />
                   {link.label}
                 </Link>
               ))}
               <div className="mt-4">
                 <Button className="w-full bg-gradient-to-r from-primary to-[#00d4ff] text-white font-black rounded-xl py-6" asChild>
-                  <Link href="./SportLive/inicio" target="_blank" rel="noopener noreferrer">
+                  <Link href="/SportLive/inicio" target="_blank" rel="noopener noreferrer">
                     <Play className="mr-2 h-5 w-5 fill-current" />
                     Abrir App
                   </Link>
