@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next'
+// 🔥 1. IMPORTANTE: Faltaba importar tu JSON del blog
+import blogData from '@/data/blog-posts.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // 🔥 ESTRATEGIA MULTI-DOMINIO: Si tienes configurada la variable en Vercel la usa, si no, usa el .vercel.app por defecto
+  // 🔥 ESTRATEGIA MULTI-DOMINIO
   const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
 
   // 1. Añadimos tus páginas estáticas principales y legales
@@ -10,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${DOMINIO}/agenda-deportiva`, lastModified: new Date(), changeFrequency: 'always', priority: 0.9 },
     { url: `${DOMINIO}/canales-premium`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${DOMINIO}/cine-estrenos`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${DOMINIO}/blog`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: `${DOMINIO}/privacidad`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${DOMINIO}/cookies`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${DOMINIO}/terminos`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
@@ -28,7 +31,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   };
 
   // ==========================================
-  // 🚨 2. SITEMAP DE CANALES (M3U) 🚨
+  // 🚨 2. SITEMAP DEL BLOG (Desde tu JSON local)
+  // ==========================================
+  if (blogData && blogData.posts) {
+    blogData.posts.forEach((post: any) => {
+      rutas.push({
+        url: `${DOMINIO}/blog/${post.slug}`,
+        lastModified: new Date(post.publishedAt || new Date()),
+        changeFrequency: 'weekly',
+        priority: 0.7,
+      });
+    });
+  }
+
+  // ==========================================
+  // 🚨 3. SITEMAP DE EVENTOS HOY (Noticias IA)
+  // ==========================================
+  try {
+    const resEventosHoy = await fetch('https://tucentral.store/Sportlive/eventos-auto.json', { cache: 'no-store' });
+    if (resEventosHoy.ok) {
+      const eventosHoyData = await resEventosHoy.json();
+      eventosHoyData.forEach((evento: any) => {
+        if (evento.slug) {
+          rutas.push({
+            url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
+            lastModified: new Date(),
+            changeFrequency: 'hourly',
+            priority: 0.8,
+          });
+        }
+      });
+    }
+  } catch (e) { console.error("Error en sitemap Eventos Hoy:", e); }
+
+  // ==========================================
+  // 🚨 4. SITEMAP DE CANALES (M3U) 🚨
   // ==========================================
   try {
     const resCanales = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
@@ -36,13 +73,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const cat in dataCanales) {
       if (Array.isArray(dataCanales[cat])) {
-        // En el sitemap metemos TODOS los canales (Eventos Estelares y Canales 24/7) que estén activos
         const activos = dataCanales[cat].filter((c: any) => c.Estado !== "Inactivo");
-        
         activos.forEach((c: any) => {
-          // Usamos la misma limpieza que en tus componentes (cleanId)
           const cleanId = c.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus');
-          
           rutas.push({
             url: `${DOMINIO}/canal/${cleanId}`,
             lastModified: new Date(),
@@ -57,11 +90,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 🚨 3. SITEMAP DE AGENDA (Partidos) 🚨
+  // 🚨 5. SITEMAP DE AGENDA (Partidos) 🚨
   // ==========================================
   try {
     const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
-    
     const results = await Promise.all(
         PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] })))
     );
@@ -70,7 +102,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const urlsAgregadas = new Set();
 
     todosLosEventos.forEach((evento: any) => {
-      // Función pura de limpieza de nombres (Igual a tus componentes)
       let rawName = evento.attributes?.diary_description || "";
       let limpio = rawName.replace(/<[^>]*>?/gm, '').trim();
       limpio = limpio.replace(/\[.*?\]/g, '').replace(/(INGLÉS|ESPAÑOL|VARIOS|PORTUGUÉS|LATINO|CASTELLANO|FRENCH|GERMAN|TURCO|HÚNGARO|ALEMÁN|GRIEGO|ITALIANO|SUECO)/gi, '').trim();
@@ -97,12 +128,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ==========================================
-  // 🚨 4. SITEMAP DE PELÍCULAS (TMDB) 🚨
+  // 🚨 6. SITEMAP DE PELÍCULAS (TMDB) 🚨
   // ==========================================
   try {
     const TMDB_KEY = process.env.TMDB_API_KEY;
     if (TMDB_KEY) {
-      // Pedimos las 2 primeras páginas de películas populares (40 películas para indexar hoy)
       const fetchPages = [1, 2];
       const resultsPelis = await Promise.all(
         fetchPages.map(page => 
