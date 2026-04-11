@@ -2,7 +2,10 @@ import { Metadata } from 'next'
 
 // 1. EL ROBOT DE WHATSAPP LEE ESTO Y CREA LA TARJETA HERMOSA
 export async function generateMetadata({ params }: any): Promise<Metadata> {
-  const slug = await params.slug;
+  // 🔥 FORMA CORRECTA DE EXTRAER EL SLUG EN NEXT.JS 🔥
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug || "";
+  
   const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' '); // Convertimos los guiones a espacios
   
   return {
@@ -25,7 +28,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 // 2. EL USUARIO HUMANO LEE ESTO Y ES EXPULSADO HACIA LA PWA
 export default async function CompartirPuente({ params }: any) {
-  const slug = await params.slug;
+  // 🔥 FORMA CORRECTA DE EXTRAER EL SLUG EN NEXT.JS 🔥
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug || "";
+  
   const nombreEvento = decodeURIComponent(slug).replace(/-/g, ' ');
   
   // La URL real de tu PWA a donde queremos enviarlo
@@ -37,9 +43,9 @@ export default async function CompartirPuente({ params }: any) {
         {/* Redirección automática instantánea */}
         <meta httpEquiv="refresh" content={`0; url=${urlPwa}`} />
       </head>
-      <body style={{ backgroundColor: '#080c14', color: '#3b82f6', textAlign: 'center', marginTop: '20%' }}>
+      <body style={{ backgroundColor: '#080c14', color: '#3b82f6', textAlign: 'center', marginTop: '20%', fontFamily: 'sans-serif' }}>
         <h2>Abriendo SportLive Premium...</h2>
-        <p>Cargando el evento: {nombreEvento}</p>
+        <p>Cargando el evento: <strong style={{color: '#fff'}}>{nombreEvento}</strong></p>
         <script dangerouslySetInnerHTML={{ __html: `window.location.replace('${urlPwa}');` }} />
       </body>
     </html>
