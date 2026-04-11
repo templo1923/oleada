@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   // 🔥 ESTRATEGIA MULTI-DOMINIO: Detecta el dominio automáticamente
-  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlivetvpremium.vercel.app';
+  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
 
   return {
     rules: {
