@@ -1,34 +1,55 @@
 // app/eventos-hoy/[slug]/page.tsx
-import { notFound } from "next/navigation"
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { notFound } from "next/navigation";
+import { PlayCircle } from "lucide-react";
+
+// 1. Cambiamos la importación para leer de tu API externa en lugar del archivo local
+async function getEventos() {
+  const res = await fetch('https://api.telelatinomax.shop/api/eventos-auto.json', { 
+    cache: 'no-store' 
+  });
+  return res.ok ? res.json() : [];
+}
 
 export default async function EventoPage({ params }: { params: { slug: string } }) {
-  // 1. Buscamos los datos en tu API de PHP
-  const res = await fetch('https://api.telelatinomax.shop/api/eventos-auto.json', { cache: 'no-store' });
-  const eventos = await res.json();
+  const eventosData = await getEventos();
+  const partido = eventosData.find((e: any) => e.slug === params.slug);
 
-  // 2. Buscamos el partido que coincida con el slug de la URL
-  const evento = eventos.find((e: any) => 
-    e.titulo.toLowerCase().replace(/ /g, '-').includes(params.slug.split('-vs-')[0])
-  );
-
-  if (!evento) {
-    return notFound(); // Si no existe el partido en el JSON, da 404
+  if (!partido) {
+    notFound();
   }
 
   return (
-    <main className="container mx-auto py-20 px-4">
-      <h1 className="text-3xl font-bold mb-6">{evento.titulo}</h1>
-      <div className="bg-card p-6 rounded-lg border">
-        <p className="whitespace-pre-line text-lg mb-8">
-          {evento.contenido}
-        </p>
-        <a 
-          href="/agenda-deportiva" 
-          className="bg-primary text-white px-6 py-3 rounded-full font-bold animate-pulse"
-        >
-          VER EN VIVO HD
-        </a>
-      </div>
-    </main>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="container mx-auto pt-24 pb-12 px-4 max-w-3xl">
+        <h1 className="text-3xl sm:text-4xl font-black text-center mb-8 uppercase text-primary">
+          {partido.title}
+        </h1>
+        
+        <div className="prose prose-invert max-w-none mb-10 text-slate-300 leading-relaxed whitespace-pre-line">
+          {/* Usamos whitespace-pre-line para que los saltos de línea del bot se vean bien */}
+          {partido.content}
+        </div>
+
+        <div className="flex flex-col items-center justify-center border-t border-white/10 pt-10">
+          {/* IMPORTANTE: Cambiamos el Button por un <a> (Enlace)
+              Esto evita el error de servidor y funciona perfecto para arbitraje.
+          */}
+          <a 
+            href="/SportLive/agenda.html"
+            className="group relative flex items-center gap-3 px-12 py-5 bg-red-600 hover:bg-red-700 text-white text-xl font-black rounded-full transition-all hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)] animate-pulse"
+          >
+            <PlayCircle className="w-8 h-8" />
+            VER TRANSMISIÓN EN VIVO
+          </a>
+          <p className="mt-4 text-xs text-slate-500 font-bold uppercase tracking-widest">
+            Señal HD • Sin Cortes • Agenda SportLive
+          </p>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
