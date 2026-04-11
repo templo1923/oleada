@@ -91,7 +91,7 @@ export function CTASection() {
                   className="border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold text-base px-8 py-6 rounded-2xl transition-all"
                   asChild
                 >
-                  <Link href="https://sportlive-one.vercel.app/blog" target="_blank" rel="noopener noreferrer">
+                  <Link href="https://sportlivetvpremium.vercel.app/blog" target="_blank" rel="noopener noreferrer">
                     Saber Más
                     <ChevronRight className="ml-2 h-5 w-5" />
                   </Link>

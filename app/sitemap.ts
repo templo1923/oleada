@@ -4,7 +4,7 @@ import blogData from '@/data/blog-posts.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 🔥 ESTRATEGIA MULTI-DOMINIO
-  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
+  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlivetvpremium.vercel.app';
 
   // 1. Añadimos tus páginas estáticas principales y legales
   const rutas: MetadataRoute.Sitemap = [
