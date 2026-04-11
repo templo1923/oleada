@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { notFound } from "next/navigation";
-import { Clock, Calendar, PlayCircle, Activity, ShieldCheck, Zap } from "lucide-react";
+import { Clock, Calendar, PlayCircle, Activity, ShieldCheck, ArrowLeft } from "lucide-react"; // 👈 Añadimos ArrowLeft
 
 async function getEventos() {
   const res = await fetch('https://tucentral.store/Sportlive/eventos-auto.json', { 
@@ -16,7 +16,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const resolvedParams = await params;
   const eventos = await getEventos();
   
-  // Buscamos el partido exacto
   const partido = eventos.find((e: any) => e.slug === resolvedParams.slug);
 
   if (!partido) return { title: 'Evento no encontrado' };
@@ -33,7 +32,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: `🔴 EN VIVO: ${partido.title}`,
       description: descCorta,
       url: `https://oleadatvpremium.com/eventos-hoy/${resolvedParams.slug}`,
-      type: "article", // 👈 Vital para que Google sepa que es una noticia fresca
+      type: "article",
       images: [{ url: imagenPost, width: 1200, height: 630 }]
     },
     twitter: {
@@ -45,7 +44,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-// 📺 2. TU DISEÑO VISUAL ÉPICO
+// 📺 2. TU DISEÑO VISUAL ESTILO BLOG + EVENTO
 export default async function EventoEstiloBlog({ params }: { params: { slug: string } }) {
   const resolvedParams = await params;
   const eventos = await getEventos();
@@ -53,7 +52,6 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
 
   if (!partido) return notFound();
 
-  // Fecha por defecto si no existe en el JSON
   const fechaHoy = partido.date ? new Date(partido.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date().toLocaleDateString();
 
   return (
@@ -61,6 +59,15 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
       <Navbar />
       <main className="container mx-auto pt-24 pb-12 px-4 max-w-4xl">
         
+        {/* 🔙 BOTÓN VOLVER AL ESTILO BLOG */}
+        <div className="mb-8">
+          <form action="/SportLive/agenda.html" method="GET" className="m-0 p-0 inline-block">
+            <button type="submit" className="flex items-center text-slate-400 hover:text-white transition-colors text-sm font-bold uppercase bg-white/5 px-4 py-2 rounded-full border border-white/10 cursor-pointer">
+              <ArrowLeft className="w-4 h-4 mr-2" /> Volver a la Agenda
+            </button>
+          </form>
+        </div>
+
         <header className="mb-10 text-center">
           <span className="bg-red-600 text-white font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block animate-pulse">
               🔴 {partido.liga || "Evento en Vivo"}
@@ -69,22 +76,35 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
             {partido.title}
           </h1>
           
-          <div className="flex flex-wrap justify-center items-center gap-6 text-slate-400 text-[10px] font-bold border-y border-white/10 py-4 mb-8 uppercase tracking-widest">
-            <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-red-600" />
-              <span>Transmisión Oficial</span>
-            </div>
+          {/* 👤 METADATOS COMBINADOS: Autor, Lectura, Fecha y Calidad */}
+          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-slate-400 text-xs sm:text-sm font-bold border-y border-white/10 py-4 mb-8 uppercase tracking-widest">
+            {/* Si el JSON tiene autor, lo mostramos con su foto */}
+            {partido.author && (
+              <div className="flex items-center gap-2">
+                <img src={partido.author.avatar} alt={partido.author.name} className="w-6 h-6 rounded-full border border-white/20" />
+                <span className="text-white">{partido.author.name}</span>
+              </div>
+            )}
+            
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-red-600" />
               <time>{fechaHoy}</time>
             </div>
+
+            {/* Si el JSON tiene tiempo de lectura, lo mostramos */}
+            {partido.readTime && (
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-red-600" />
+                <span>{partido.readTime}</span>
+              </div>
+            )}
+
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-red-600" />
-              <span>Calidad Ultra HD</span>
+              <span>Ultra HD</span>
             </div>
           </div>
 
-          {/* Fallback si no hay imagen en el JSON */}
           <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-[2.5rem] border border-white/5 shadow-2xl">
             <img 
               src={partido.image || "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200"} 
@@ -96,14 +116,15 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
         </header>
 
         <div className="bg-zinc-900/40 p-6 sm:p-10 rounded-[3rem] border border-white/5 mb-12 backdrop-blur-sm shadow-2xl">
-          <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-relaxed whitespace-pre-line font-medium italic mb-6">
+          {/* Extracto resaltado igual que en el blog */}
+          <p className="text-xl text-white font-medium italic mb-8 border-l-4 border-red-600 pl-4">
             {partido.excerpt}
-          </div>
+          </p>
+          
           <div className="prose prose-invert prose-lg max-w-none text-slate-300 leading-relaxed whitespace-pre-line font-normal">
             {partido.content}
           </div>
           
-          {/* Etiquetas (Tags) de tu nuevo JSON */}
           {partido.tags && Array.isArray(partido.tags) && (
             <div className="mt-10 flex flex-wrap gap-2 justify-center">
               {partido.tags.map((tag: string) => (
