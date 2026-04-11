@@ -106,6 +106,54 @@ export default function RootLayout({
             })
           }}
         />
+
+        {/* 🚀 INTEGRACIÓN ONESIGNAL (Campanita y Solicitud de Permisos) 🚀 */}
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.OneSignalDeferred = window.OneSignalDeferred || [];
+              OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.init({
+                  appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
+                  safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
+                  notifyButton: {
+                    enable: true,
+                    colors: {
+                      'circle.background': '#ef4444',
+                      'circle.foreground': 'white',
+                      'badge.background': '#3b82f6',
+                      'badge.foreground': 'white',
+                      'badge.bordercolor': 'white',
+                      'pulse.color': '#ef4444',
+                      'dialog.button.background.hovering': '#dc2626',
+                      'dialog.button.background.active': '#dc2626',
+                      'dialog.button.background': '#ef4444',
+                      'dialog.button.foreground': 'white',
+                    }
+                  },
+                  promptOptions: {
+                    slidedown: {
+                      prompts: [{
+                        type: "push",
+                        autoPrompt: true,
+                        text: {
+                          actionMessage: "Recibe alertas de los mejores partidos en vivo y eventos estelares.",
+                          acceptButton: "¡Claro que sí!",
+                          cancelButton: "No, gracias"
+                        },
+                        delay: {
+                          pageViews: 1,
+                          timeDelay: 3
+                        }
+                      }]
+                    }
+                  }
+                });
+              });
+            `
+          }}
+        />
       </head>
       {/* 🚨 AQUÍ ESTÁ EL AJUSTE: Agregado overflow-x-hidden para matar el espacio negro 🚨 */}
       <body className={`${outfit.variable} ${geistMono.variable} font-sans antialiased overflow-x-hidden w-full`} suppressHydrationWarning>
