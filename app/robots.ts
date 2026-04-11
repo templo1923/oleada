@@ -8,8 +8,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // Evitamos que Google pierda tiempo rastreando código interno o APIs
-      disallow: ['/api/', '/_next/', '/public/'], 
+      // 🔥 CORRECCIÓN: NUNCA bloquees /_next/ o Google no leerá tu CSS y pensará que tu web está rota. Solo bloqueamos la API.
+      disallow: ['/api/'], 
     },
     sitemap: `${DOMINIO}/sitemap.xml`,
   }
