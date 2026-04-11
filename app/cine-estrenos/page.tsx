@@ -5,13 +5,33 @@ import { MoviesHero } from "@/components/movies/movies-hero"
 import { MoviesCatalog } from "@/components/movies/movies-catalog"
 
 export const metadata: Metadata = {
-  title: "Peliculas y Estrenos HD | Cine Online Gratis | SportLive Tv Premium",
-  description: "Ver peliculas online gratis en HD. Estrenos de cine, accion, terror, comedia, drama y mas generos. Catalogo actualizado diariamente.",
+  // Solo el nombre de la sección, el layout pondrá " | SportLive Tv Premium"
+  title: "Cine y Estrenos 24/7", 
+  description: "Ver películas online gratis en HD. Estrenos de cine, acción, terror, comedia, drama y más géneros. Catálogo actualizado diariamente.",
   keywords: "ver peliculas online gratis, estrenos de cine, peliculas hd, peliculas accion, peliculas terror, peliculas comedia",
+  
+  // 🔥 CONFIGURACIÓN PARA COMPARTIR (WhatsApp, Facebook, etc.)
   openGraph: {
-    title: "Peliculas y Estrenos HD | Cine Online Gratis",
-    description: "Ver peliculas online gratis en HD. Estrenos de cine actualizados diariamente.",
+    title: "Cine y Estrenos HD 🍿 | SportLive Tv Premium",
+    description: "Disfruta de los mejores estrenos de cine y tus películas favoritas totalmente gratis y en calidad HD.",
+    url: "https://oleadatvpremium.com/cine-estrenos",
     type: "website",
+    images: [
+      {
+        url: "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png", // Tu logo premium
+        width: 512,
+        height: 512,
+        alt: "SportLive Premium Cine",
+      },
+    ],
+  },
+  
+  // 🔥 CONFIGURACIÓN PARA TWITTER / X
+  twitter: {
+    card: "summary_large_image",
+    title: "Cine y Estrenos HD 🍿 | SportLive Tv Premium",
+    description: "Ver películas online gratis. Catálogo actualizado diariamente.",
+    images: ["https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png"],
   },
 }
 

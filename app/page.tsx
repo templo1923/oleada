@@ -11,11 +11,12 @@ import { Metadata } from 'next'
 // 🔥 2. SEO ESPECÍFICO PARA LA LANDING PAGE 🔥
 // Al exportar esto, Next.js sobrescribe los datos del layout.tsx solo para esta página
 export const metadata: Metadata = {
-  title: 'Inicio', // Como usamos template en el layout, el resultado será "Inicio | SportLive Premium"
+  title: 'Inicio',
   description: 'Descubre SportLive Premium. La plataforma definitiva para ver deportes y televisión en vivo desde cualquier dispositivo.',
   openGraph: {
     title: 'Descarga SportLive Premium 🚀',
     description: 'La mejor App de entretenimiento ha llegado. Instálala ahora y no te pierdas ningún partido.',
+    url: 'https://oleadatvpremium.com', // 👈 Añadimos la URL exacta
     images: [
       {
         url: 'https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png', 
@@ -24,6 +25,13 @@ export const metadata: Metadata = {
       },
     ],
   },
+  // 👈 Añadimos Twitter para que no se quede con el genérico del layout
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Descarga SportLive Premium 🚀',
+    description: 'La mejor App de entretenimiento ha llegado. Instálala ahora.',
+    images: ['https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png'],
+  }
 }
 
 export default function HomePage() {

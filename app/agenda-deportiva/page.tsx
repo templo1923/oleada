@@ -7,8 +7,27 @@ import { Globe } from "lucide-react"
 import { FeaturedEvents } from "@/components/featured-events"
 
 export const metadata: Metadata = {
-  title: 'Agenda Deportiva Hoy | Partidos en Vivo Gratis | SportLive',
-  description: 'Mira la agenda deportiva de hoy. Fútbol, Baloncesto, Tenis, UFC, Motor y más.',
+  // Solo ponemos el título central. El layout le agregará " | SportLive Tv Premium" al final automáticamente.
+  title: 'Agenda Deportiva de Hoy', 
+  description: 'Revisa la cartelera completa de partidos hoy. Fútbol, Baloncesto, UFC, Tenis y Motor con enlaces de transmisión HD gratuitos.',
+  openGraph: {
+    title: 'Agenda Deportiva de Hoy ⚽ | SportLive',
+    description: 'No te pierdas ningún partido hoy. Mira la cartelera completa y accede a las transmisiones en vivo gratis.',
+    url: 'https://oleadatvpremium.com/agenda-deportiva', // 👈 URL exacta de esta página
+    images: [
+      {
+        url: 'https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png',
+        width: 512,
+        height: 512,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Agenda Deportiva de Hoy ⚽ | SportLive',
+    description: 'Mira la programación completa y accede a las transmisiones en vivo.',
+    images: ['https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png'],
+  }
 }
 
 function textoPuro(html: string) {
