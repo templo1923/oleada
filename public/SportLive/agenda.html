@@ -1052,21 +1052,18 @@ function cambiarFiltro(cat) {
 // ==========================================
     // 🔥 1. EVENTO: COMPARTIR PARTIDO ESPECÍFICO (Con Logo Dinámico) 🔥
     // ==========================================
+// ==========================================
+    // 🔥 1. EVENTO: COMPARTIR PARTIDO (URL 100% LIMPIA) 🔥
+    // ==========================================
     $(document).on("click", ".share-match", function(e) {
         e.stopPropagation(); 
         
         const nombreBuscado = decodeURIComponent($(this).data("name"));
-        
-        // 💡 NUEVO: Capturamos la URL de la imagen que está justo en esta misma tarjeta
-        let logoTarjeta = $(this).siblings(".match-flag").attr("src");
-        if (!logoTarjeta) {
-            logoTarjeta = "https://oleadatvpremium.com/SportLive/icons/icon-512x512.png";
-        }
-        
+        // Reemplazamos espacios por guiones para que se vea estético
         const nombreParaURL = nombreBuscado.replace(/\s+/g, '-');
         
-        // 💡 NUEVO: Le inyectamos "?i=URL_DE_LA_IMAGEN" al final del enlace
-        const urlLimpia = window.location.origin + "/compartir/" + encodeURIComponent(nombreParaURL) + "?i=" + encodeURIComponent(logoTarjeta);
+        // 🚀 URL INMACULADA: Solo el dominio y el nombre. NADA MÁS.
+        const urlLimpia = window.location.origin + "/compartir/" + encodeURIComponent(nombreParaURL);
         
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -1078,7 +1075,7 @@ function cambiarFiltro(cat) {
             }).catch(err => console.log('Share cancelado', err));
         } else {
             navigator.clipboard.writeText(urlLimpia).then(() => {
-                alert("¡Enlace del evento copiado al portapapeles! Pégalo en WhatsApp Web.");
+                alert("¡Enlace copiado! Ya puedes pegarlo en WhatsApp.");
             }).catch(() => { prompt("Copia el enlace manualmente:", urlLimpia); });
         }
     });
