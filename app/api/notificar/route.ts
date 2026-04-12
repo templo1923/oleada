@@ -23,6 +23,7 @@ export async function GET(request: Request) {
         
         let nombresEventosVIP: string[] = [];
 
+        // Buscamos en todas las categorías que contengan "EVENTO"
         for (const categoria in canalesData) {
             if (categoria.toUpperCase().includes("EVENTO")) {
                 const canalesActivos = canalesData[categoria].filter((c: any) => c.Estado !== "Inactivo");
@@ -36,16 +37,18 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No hay eventos VIP en el M3U.' });
         }
 
-        // 2. CONSTRUIR EL MENSAJE MÚLTIPLE (Solución al problema de los 3 eventos)
-        let nombreEventoPrincipal = nombresEventosVIP[0];
+        // 2. CONSTRUIR EL MENSAJE AGRUPADO (Para que salgan todos)
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
-        let mensaje = `${nombreEventoPrincipal} ya está disponible. ¡Toca para ver en HD!`;
+        let mensaje = "";
 
-        if (nombresEventosVIP.length > 1) {
-            mensaje = `${nombreEventoPrincipal} y ${nombresEventosVIP.length - 1} eventos más ya están disponibles. ¡Míralos ahora!`;
+        if (nombresEventosVIP.length === 1) {
+            mensaje = `${nombresEventosVIP[0]} ya está disponible. ¡Toca para ver en HD!`;
+        } else {
+            // Si hay 3 eventos, dirá: "Evento 1, Evento 2 y Evento 3 ya están disponibles."
+            const ultimo = nombresEventosVIP.pop();
+            mensaje = `${nombresEventosVIP.join(', ')} y ${ultimo} ya están disponibles. ¡Míralos ahora!`;
         }
 
-        // 3. PREPARAR EL DISPARO
         const onesignalPayload = {
             app_id: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
             included_segments: ["Subscribed Users"],
@@ -54,15 +57,15 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // 🚨 AQUÍ ESTÁ EL TRUCO: Pon la palabra "Basic ", un espacio, y tu NUEVA llave pegada.
-        const NUEVA_API_KEY = "Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnsntj35bcluuaamlsymgww4qtkeoez3vset5fyt5luqnnpyo7vrvhizyx3szueyogpvr3fdvvkyhcii";
+        // 🚨 CAMBIO CRÍTICO: Para llaves os_v2_... se usa "Key" en lugar de "Basic"
+        const API_KEY_FORMATTED = `Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnsntj35bcluuaamlsymgww4qtkeoez3vset5fyt5luqnnpyo7vrvhizyx3szueyogpvr3fdvvkyhcii`;
 
-        // 4. DISPARAR A ONESIGNAL
-        const responseOS = await fetch('https://onesignal.com/api/v1/notifications', {
+        // 3. DISPARAR A ONESIGNAL (Usando el dominio api.onesignal.com preferido)
+        const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': NUEVA_API_KEY
+                'Authorization': API_KEY_FORMATTED
             },
             body: JSON.stringify(onesignalPayload)
         });
@@ -71,8 +74,8 @@ export async function GET(request: Request) {
 
         return NextResponse.json({ 
             success: true, 
-            cantidad_eventos: nombresEventosVIP.length,
-            mensaje_enviado: mensaje,
+            cantidad_eventos: nombresEventosVIP.length + 1,
+            notificado: mensaje,
             onesignal_status: osResult 
         });
 
