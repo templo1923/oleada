@@ -1,15 +1,24 @@
 import { NextResponse } from 'next/server';
 
-// 🚀 Forzamos a Vercel a ejecutar esto SIEMPRE en vivo (sin caché)
+// 🚀 Obligamos a Vercel a ejecutar esto SIEMPRE en vivo (sin caché)
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: Request) {
     try {
         const url = new URL(request.url);
         const token = url.searchParams.get('token');
 
+        // Seguridad de acceso
         if (token !== 'kiamber_master_2026') {
             return NextResponse.json({ error: '🚫 Acceso denegado.' }, { status: 401 });
+        }
+
+        // 🛡️ LLAMAMOS A LA LLAVE DESDE LAS VARIABLES DE VERCEL
+        const REST_API_KEY = process.env.ONESIGNAL_KEY;
+
+        if (!REST_API_KEY) {
+            return NextResponse.json({ error: '❌ Error: No se encontró la variable ONESIGNAL_KEY en Vercel.' }, { status: 500 });
         }
 
         const fetchOptions = {
@@ -20,7 +29,7 @@ export async function GET(request: Request) {
             cache: 'no-store' as RequestCache
         };
 
-        // 1. LEER TUS EVENTOS VIP
+        // 1. LEER EVENTOS VIP
         const resCanales = await fetch("https://api.telelatinomax.shop/canales.php", fetchOptions);
         const canalesData = await resCanales.json();
         
@@ -40,9 +49,14 @@ export async function GET(request: Request) {
 
         // 2. CONSTRUIR EL MENSAJE
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
-        let mensaje = nombresEventosVIP.length === 1 
-            ? `${nombresEventosVIP[0]} ya está disponible. ¡Toca para ver en HD!`
-            : `${nombresEventosVIP.slice(0, -1).join(', ')} y ${nombresEventosVIP.slice(-1)} ya están disponibles. ¡Míralos ahora!`;
+        let mensaje = "";
+        if (nombresEventosVIP.length === 1) {
+            mensaje = `${nombresEventosVIP[0]} ya está disponible. ¡Toca para ver en HD!`;
+        } else {
+            const copia = [...nombresEventosVIP];
+            const ultimo = copia.pop();
+            mensaje = `${copia.join(', ')} y ${ultimo} ya están disponibles. ¡Míralos ahora!`;
+        }
 
         const onesignalPayload = {
             app_id: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
@@ -52,15 +66,12 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // 🚨 CONFIGURACIÓN SEGÚN MANUAL DE NOVIEMBRE 2024 🚨
-        const REST_API_KEY = "os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrx34pq7ivxu4g5coadalyf63i4dqvgichr37hwrwgxiu2kruvtfmcpyj4ds47suewkhsdazw4uy2ty";
-
-        // Usamos la NUEVA URL: api.onesignal.com
+        // 3. DISPARAR A ONESIGNAL USANDO LA VARIABLE
         const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `key ${REST_API_KEY}` // 👈 "key" en minúscula es el secreto
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `key ${REST_API_KEY}` // Usamos la variable de Vercel
             },
             cache: 'no-store',
             body: JSON.stringify(onesignalPayload)
