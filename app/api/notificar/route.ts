@@ -37,14 +37,13 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No hay eventos VIP en el M3U.' });
         }
 
-        // 2. CONSTRUIR EL MENSAJE AGRUPADO (Para que salgan todos)
+        // 2. CONSTRUIR EL MENSAJE AGRUPADO
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
         let mensaje = "";
 
         if (nombresEventosVIP.length === 1) {
             mensaje = `${nombresEventosVIP[0]} ya está disponible. ¡Toca para ver en HD!`;
         } else {
-            // Si hay 3 eventos, dirá: "Evento 1, Evento 2 y Evento 3 ya están disponibles."
             const ultimo = nombresEventosVIP.pop();
             mensaje = `${nombresEventosVIP.join(', ')} y ${ultimo} ya están disponibles. ¡Míralos ahora!`;
         }
@@ -57,10 +56,10 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // 🚨 CAMBIO CRÍTICO: Para llaves os_v2_... se usa "Key" en lugar de "Basic"
+        // 🚨 LA LLAVE MAESTRA CORRECTAMENTE FORMATEADA 🚨
         const API_KEY_FORMATTED = `Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
 
-        // 3. DISPARAR A ONESIGNAL (Usando el dominio api.onesignal.com preferido)
+        // 3. DISPARAR A ONESIGNAL
         const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
