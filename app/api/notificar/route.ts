@@ -17,13 +17,11 @@ export async function GET(request: Request) {
             cache: 'no-store' as RequestCache
         };
 
-        // 1. LEER TUS EVENTOS VIP DEL M3U (canales.php)
         const resCanales = await fetch("https://api.telelatinomax.shop/canales.php", fetchOptions);
         const canalesData = await resCanales.json();
         
         let nombresEventosVIP: string[] = [];
 
-        // Buscamos en todas las categorías que contengan "EVENTO"
         for (const categoria in canalesData) {
             if (categoria.toUpperCase().includes("EVENTO")) {
                 const canalesActivos = canalesData[categoria].filter((c: any) => c.Estado !== "Inactivo");
@@ -37,7 +35,6 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No hay eventos VIP en el M3U.' });
         }
 
-        // 2. CONSTRUIR EL MENSAJE AGRUPADO
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
         let mensaje = "";
 
@@ -56,17 +53,17 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // 🚨 LA LLAVE MAESTRA CORRECTAMENTE FORMATEADA 🚨
- const API_KEY_FORMATTED = `Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
+        // LA MAGIA: El prefijo Basic es obligatorio
+        const API_KEY_FORMATTED = `Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
 
-const responseOS = await fetch('https://onesignal.com/api/v1/notifications', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': API_KEY_FORMATTED // Sin el espacio extra después de Basic
-    },
-    body: JSON.stringify(onesignalPayload)
-});
+        const responseOS = await fetch('https://onesignal.com/api/v1/notifications', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': API_KEY_FORMATTED
+            },
+            body: JSON.stringify(onesignalPayload)
+        });
 
         const osResult = await responseOS.json();
 
