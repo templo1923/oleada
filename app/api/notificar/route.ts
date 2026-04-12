@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// 🚨 ESTA LÍNEA ES LA SALVACIÓN: Obliga a Vercel a no usar el caché viejo
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
     try {
         const url = new URL(request.url);
@@ -17,6 +20,7 @@ export async function GET(request: Request) {
             cache: 'no-store' as RequestCache
         };
 
+        // 1. LEER TUS EVENTOS VIP DEL M3U
         const resCanales = await fetch("https://api.telelatinomax.shop/canales.php", fetchOptions);
         const canalesData = await resCanales.json();
         
@@ -35,6 +39,7 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No hay eventos VIP en el M3U.' });
         }
 
+        // 2. CONSTRUIR EL MENSAJE
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
         let mensaje = "";
 
@@ -53,15 +58,17 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // LA MAGIA: El prefijo Basic es obligatorio
-        const API_KEY_FORMATTED = `Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
+        // 🚨 AQUÍ ESTÁ TU NUEVA CLAVE EXACTA, CON EL PREFIJO BASIC Y SIN ESPACIOS RAROS
+        const API_KEY_FORMATTED = `Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrx34pq7ivxu4g5coadalyf63i4dqvgichr37hwrwgxiu2kruvtfmcpyj4ds47suewkhsdazw4uy2ty`;
 
+        // 3. DISPARAR A ONESIGNAL (Le decimos que tampoco use caché aquí)
         const responseOS = await fetch('https://onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': API_KEY_FORMATTED
             },
+            cache: 'no-store',
             body: JSON.stringify(onesignalPayload)
         });
 
