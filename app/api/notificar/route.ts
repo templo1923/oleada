@@ -57,17 +57,16 @@ export async function GET(request: Request) {
         };
 
         // 🚨 LA LLAVE MAESTRA CORRECTAMENTE FORMATEADA 🚨
-        const API_KEY_FORMATTED = `Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
+ const API_KEY_FORMATTED = `Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
 
-        // 3. DISPARAR A ONESIGNAL
-        const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': API_KEY_FORMATTED
-            },
-            body: JSON.stringify(onesignalPayload)
-        });
+const responseOS = await fetch('https://onesignal.com/api/v1/notifications', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': API_KEY_FORMATTED // Sin el espacio extra después de Basic
+    },
+    body: JSON.stringify(onesignalPayload)
+});
 
         const osResult = await responseOS.json();
 
