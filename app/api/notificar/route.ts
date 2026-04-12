@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+// 🚀 Forzamos a Vercel a ejecutar esto SIEMPRE en vivo (sin caché)
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
@@ -34,10 +35,10 @@ export async function GET(request: Request) {
         }
 
         if (nombresEventosVIP.length === 0) {
-            return NextResponse.json({ message: 'No hay eventos VIP en el M3U.' });
+            return NextResponse.json({ message: 'No hay eventos VIP activos.' });
         }
 
-        // 2. CONSTRUIR MENSAJE
+        // 2. CONSTRUIR EL MENSAJE
         let titulo = `🔴 ¡ESTELAR EN VIVO!`;
         let mensaje = nombresEventosVIP.length === 1 
             ? `${nombresEventosVIP[0]} ya está disponible. ¡Toca para ver en HD!`
@@ -51,15 +52,15 @@ export async function GET(request: Request) {
             url: "https://oleadatvpremium.com/SportLive/television.html"
         };
 
-        // 🚨 SEGÚN TU DOCUMENTO: El prefijo debe ser "key " (en minúscula)
-        // Y la URL debe ser "api.onesignal.com"
+        // 🚨 CONFIGURACIÓN SEGÚN MANUAL DE NOVIEMBRE 2024 🚨
         const REST_API_KEY = "os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrx34pq7ivxu4g5coadalyf63i4dqvgichr37hwrwgxiu2kruvtfmcpyj4ds47suewkhsdazw4uy2ty";
 
+        // Usamos la NUEVA URL: api.onesignal.com
         const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `key ${REST_API_KEY}` 
+                'Authorization': `key ${REST_API_KEY}` // 👈 "key" en minúscula es el secreto
             },
             cache: 'no-store',
             body: JSON.stringify(onesignalPayload)
