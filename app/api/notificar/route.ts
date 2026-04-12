@@ -58,7 +58,7 @@ export async function GET(request: Request) {
         };
 
         // 🚨 CAMBIO CRÍTICO: Para llaves os_v2_... se usa "Key" en lugar de "Basic"
-        const API_KEY_FORMATTED = `Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnqi5whqhhmoego4xgt34dc6cjjj6qhzosd75jx5uxbvtmcmfdd4olrt4d2xxytrkti5tixfsmk2mi5a`;
+        const API_KEY_FORMATTED = `Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnrpb7hhcyrbudpmdqavrxw4iz2qaqwh7ixrw7ky6hnket4ko3d3jhnez2gx5f5zxc5qrxlawszfwvkq`;
 
         // 3. DISPARAR A ONESIGNAL (Usando el dominio api.onesignal.com preferido)
         const responseOS = await fetch('https://api.onesignal.com/api/v1/notifications', {
