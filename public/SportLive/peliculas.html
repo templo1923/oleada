@@ -235,8 +235,62 @@
             .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
             .slide-item { flex: 0 0 350px; } /* Banner más grande en PC */
         }
-        @media (max-width: 767px) { .desktop-nav { display: none; } }
+        @media (max-width: 767px) { .desktop-nav { display: none; } 
+
+                    #onesignal-bell-container, 
+            .onesignal-bell-launcher {
+                bottom: 85px !important;
+                z-index: 1000 !important;
+            }
+ }
+
+
+
 </style>
+
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
+          safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
+          notifyButton: {
+            enable: true,
+            colors: {
+              'circle.background': '#ef4444',
+              'circle.foreground': 'white',
+              'badge.background': '#3b82f6',
+              'badge.foreground': 'white',
+              'badge.bordercolor': 'white',
+              'pulse.color': '#ef4444',
+              'dialog.button.background.hovering': '#dc2626',
+              'dialog.button.background.active': '#dc2626',
+              'dialog.button.background': '#ef4444',
+              'dialog.button.foreground': 'white',
+            }
+          },
+          promptOptions: {
+            slidedown: {
+              prompts: [{
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "Recibe alertas de los mejores eventos en vivo y eventos estelares.",
+                  acceptButton: "¡Claro que sí!",
+                  cancelButton: "No, gracias"
+                },
+                delay: {
+                  pageViews: 1,
+                  timeDelay: 3
+                }
+              }]
+            }
+          }
+        });
+      });
+    </script>
+
 </head>
 <body>
 
