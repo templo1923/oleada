@@ -53,7 +53,7 @@ export async function GET(request: Request) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnqcv42br6btedne4jw2icuexskvzv2hpwesjflxhcwo47bdh4asktpwsvaoeicmiamztfffrrqclwxy'
+                'Authorization': 'Key os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnqcv42br6btedne4jw2icuexskvzv2hpwesjflxhcwo47bdh4asktpwsvaoeicmiamztfffrrqclwxy'
             },
             body: JSON.stringify(onesignalPayload)
         });
