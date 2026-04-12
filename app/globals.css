@@ -308,3 +308,12 @@
   opacity: 1;
   filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
+
+/* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
+@media (max-width: 767px) {
+  #onesignal-bell-container, 
+  .onesignal-bell-launcher {
+      bottom: 85px !important;
+      z-index: 1000 !important;
+  }
+}
