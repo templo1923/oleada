@@ -273,7 +273,16 @@
         /* 📱 OCULTAMOS EL MENÚ SUPERIOR EN CELULARES 📱 */
         @media (max-width: 767px) {
             .desktop-nav { display: none; }
+        
+
+/* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
+            #onesignal-bell-container, 
+            .onesignal-bell-launcher {
+                bottom: 85px !important;
+                z-index: 1000 !important;
+            }
         }
+
     </style>
 
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>

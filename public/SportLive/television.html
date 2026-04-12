@@ -311,6 +311,14 @@
         /* �9�5 OCULTAMOS EL MEN�0�3 SUPERIOR EN CELULARES �9�5 */
         @media (max-width: 767px) {
             .desktop-nav { display: none; }
+        
+
+        /* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
+            #onesignal-bell-container, 
+            .onesignal-bell-launcher {
+                bottom: 85px !important;
+                z-index: 1000 !important;
+            }
         }
         
     </style>   

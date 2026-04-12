@@ -417,10 +417,17 @@
         display: flex; align-items: center; gap: 12px; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         width: max-content; max-width: 90vw; text-align: left; line-height: 1.4;
     }
-    #custom-toast.show { bottom: 80px; }
+    #custom-toast.show { bottom: 80px; 
+    
+    /* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
+            #onesignal-bell-container, 
+            .onesignal-bell-launcher {
+                bottom: 85px !important;
+                z-index: 1000 !important;
+            }
+    }
 
-       
-</style>
+   </style>
 
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>

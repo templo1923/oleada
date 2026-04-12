@@ -193,7 +193,15 @@
       .nav-card i { font-size: 2.2rem; margin-bottom: 10px; }
       .nav-card .card-title { font-size: 0.85rem; }
       .nav-card .card-sub { font-size: 0.55rem; }
-    }
+    
+
+    /* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
+            #onesignal-bell-container, 
+            .onesignal-bell-launcher {
+                bottom: 85px !important;
+                z-index: 1000 !important;
+            }
+        }
   </style>
 
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
