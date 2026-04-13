@@ -387,7 +387,7 @@
         .ads-bottom { display: flex !important; flex-direction: column; align-items: center; gap: 15px; width: 100%; margin-top: 15px; }
         .bottom-ad { width: 100%; display: flex; justify-content: center; align-items: center; min-height: 60px; }
     }
-    
+
    </style>
 
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -535,32 +535,34 @@
             </div>
         </div>
 
-        <div class="ads-bottom">
-            <div class="ad-slot bottom-ad">
+<div class="ads-bottom">
+            <div class="ad-slot bottom-ad" style="min-height: 250px; min-width: 300px; border: none; background: transparent; box-shadow: none;">
                 <script type="text/javascript">
                     atOptions = {
-                        'key' : '18c5a84b3204e04d518aa3377467dfd5',
+                        'key' : '0d1f7726b341e7d353a33f1478fd2702',
                         'format' : 'iframe',
-                        'height' : 60,
-                        'width' : 468,
+                        'height' : 250,
+                        'width' : 300,
                         'params' : {}
                     };
                 </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
             </div>
-            <div class="ad-slot bottom-ad">
+            
+            <div class="ad-slot bottom-ad" style="min-height: 250px; min-width: 300px; border: none; background: transparent; box-shadow: none;">
                 <script type="text/javascript">
                     atOptions = {
-                        'key' : 'a743195e3a35eef7dd05698efb5ee34e',
+                        'key' : '0d1f7726b341e7d353a33f1478fd2702',
                         'format' : 'iframe',
-                        'height' : 50,
-                        'width' : 320,
+                        'height' : 250,
+                        'width' : 300,
                         'params' : {}
                     };
                 </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
             </div>
         </div>
+    
     </main>
 
     
@@ -1168,7 +1170,7 @@
             }
         } catch(e) {}
 
-        document.getElementById('main-motor').src = `https://player.telelatinomax.shop/embed/eventos.html?r=${finalR}&n=${encodeURIComponent(name)}&padre=${dominioPadre}`;
+        document.getElementById('main-motor').src = `https://player.telelatinomax.shop/repro/player/repro.html?r=${finalR}&n=${encodeURIComponent(name)}&padre=${dominioPadre}`;
     }
     
     async function cambiarSenal(elemento, url, nombre, yaEsB64) {
