@@ -2,63 +2,63 @@
   "posts": [
     {
       "id": "1",
-      "slug": "final-champions-league-2026",
-      "title": "Final de la Champions League 2026: Todo lo que necesitas saber",
-      "excerpt": "La final más esperada del año está a la vuelta de la esquina. Descubre dónde verla, horarios y análisis previo de los equipos finalistas.",
-      "content": "La Champions League 2026 llega a su clímax con una final que promete ser histórica...",
+      "slug": "final-champions-league-budapest-2026",
+      "title": "Final Champions League 2026: El Puskás Aréna listo para la gloria",
+      "excerpt": "La final de la UEFA Champions League 2026 se jugará en Budapest. Analizamos los favoritos tras los cuartos de final y cómo ver el partido en 4K.",
+      "content": "Budapest se convierte en el epicentro del fútbol mundial. El Puskás Aréna acogerá la gran final el 30 de mayo de 2026. Con el nuevo formato de liga consolidado, los gigantes europeos buscan destronar al vigente campeón. En SportLive te traemos la previa táctica, los horarios para Colombia y México, y los canales premium para seguir la transmisión sin retraso.",
       "image": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
       "category": "Fútbol",
       "author": {
-        "name": "Carlos Martínez",
+        "name": "Carlos Martinez",
         "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
       },
-      "publishedAt": "2026-04-02T10:00:00Z",
+      "publishedAt": "2026-04-10T10:00:00Z",
       "readTime": 5,
       "featured": true,
-      "tags": ["Champions League", "UEFA", "Final", "Fútbol Europeo"]
+      "tags": ["Champions League", "UEFA", "Budapest 2026", "Fútbol en vivo"]
     },
     {
       "id": "2",
-      "slug": "mejores-peliculas-abril-2026",
-      "title": "Los estrenos más esperados de Abril 2026",
-      "excerpt": "Este mes llega cargado de blockbusters y películas independientes que no te puedes perder. Aquí nuestra selección.",
-      "content": "Abril 2026 viene con una cartelera espectacular que satisfará todos los gustos...",
+      "slug": "estrenos-cine-abril-2026-blockbusters",
+      "title": "Cartelera Abril 2026: El regreso de las grandes sagas",
+      "excerpt": "Desde el nuevo capítulo del Universo Extendido de DC hasta thrillers psicológicos premiados. Estos son los estrenos que debes ver este mes.",
+      "content": "Abril 2026 se perfila como uno de los meses más rentables para la taquilla global. Destaca el estreno de 'The Batman: Part III' y la nueva entrega de ciencia ficción dirigida por Christopher Nolan. En este artículo detallamos las fechas exactas de estreno en Latinoamérica y qué plataformas de streaming las incluirán en su catálogo premium próximamente.",
       "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&q=80",
       "category": "Cine",
       "author": {
         "name": "Ana García",
         "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80"
       },
-      "publishedAt": "2026-04-01T14:30:00Z",
+      "publishedAt": "2026-04-05T14:30:00Z",
       "readTime": 7,
       "featured": true,
-      "tags": ["Estrenos", "Cine", "Películas", "Abril 2026"]
+      "tags": ["Cine 2026", "Batman", "Estrenos", "Blockbusters"]
     },
     {
       "id": "3",
-      "slug": "guia-ligas-europeas-2026",
-      "title": "Guía definitiva: Cómo ver todas las ligas europeas en 2026",
-      "excerpt": "La Liga, Premier League, Serie A, Bundesliga y Ligue 1. Te explicamos cómo seguir todo el fútbol europeo desde Latinoamérica.",
-      "content": "El fútbol europeo nunca ha sido más accesible. Con SportLive Tv Premium tienes acceso a...",
+      "slug": "guia-mundial-2026-sedes-clasificados",
+      "title": "Guía Mundial 2026: Sedes en Colombia y avance de eliminatorias",
+      "excerpt": "El Mundial de Norteamérica está cerca. Revisamos cómo va la Selección Colombia en las eliminatorias y las novedades de los 48 equipos.",
+      "content": "Falta poco para el inicio del Mundial 2026 en EE.UU., México y Canadá. La Selección Colombia, bajo el mando de Néstor Lorenzo, busca asegurar su puesto directo. Te explicamos el nuevo formato de 48 selecciones, cómo se dividirán los grupos y cómo SportLive transmitirá todos los partidos de las eliminatorias CONMEBOL en exclusiva.",
       "image": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80",
-      "category": "Guías",
+      "category": "Fútbol",
       "author": {
         "name": "Roberto Sánchez",
         "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
       },
-      "publishedAt": "2026-03-28T09:00:00Z",
+      "publishedAt": "2026-04-01T09:00:00Z",
       "readTime": 10,
       "featured": false,
-      "tags": ["Guía", "Ligas Europeas", "Fútbol", "Streaming"]
+      "tags": ["Mundial 2026", "Eliminatorias", "CONMEBOL", "Selección Colombia"]
     },
     {
       "id": "4",
-      "slug": "copa-america-2026-calendario",
-      "title": "Copa América 2026: Calendario completo y dónde ver cada partido",
-      "excerpt": "La Copa América se acerca y aquí te traemos el calendario completo con horarios para tu zona y canales de transmisión.",
-      "content": "La Copa América 2026 promete ser una de las más emocionantes de la historia...",
-      "image": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=80",
-      "category": "Fútbol",
+      "slug": "calendario-f1-2026-nuevos-reglamentos",
+      "title": "F1 2026: Calendario y la revolución de los motores",
+      "excerpt": "Inicia la nueva era de la Fórmula 1 con motores sostenibles. Conoce el calendario completo y el debut de Audi en la parrilla.",
+      "content": "La temporada 2026 de Fórmula 1 es la más esperada en décadas debido al cambio reglamentario. Con la llegada de Audi y la alianza Ford-Red Bull, la parrilla se aprieta. SportLive te ofrece la cobertura total de los Grandes Premios, incluyendo el GP de Madrid que debuta este año en el circuito semiurbano.",
+      "image": "https://images.unsplash.com/photo-1531324155629-1a6deb1dec8d?w=800&q=80",
+      "category": "Deportes",
       "author": {
         "name": "María López",
         "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80"
@@ -66,14 +66,14 @@
       "publishedAt": "2026-03-25T16:00:00Z",
       "readTime": 8,
       "featured": false,
-      "tags": ["Copa América", "Selecciones", "Calendario", "2026"]
+      "tags": ["F1", "Automovilismo", "Audi F1", "GP Madrid"]
     },
     {
       "id": "5",
-      "slug": "series-hbo-max-abril",
-      "title": "Las mejores series de HBO Max para maratonear este fin de semana",
-      "excerpt": "Descubre las series más adictivas de HBO Max que te mantendrán pegado a la pantalla todo el fin de semana.",
-      "content": "HBO Max continúa siendo el hogar de algunas de las mejores series de la televisión...",
+      "slug": "series-imperdibles-max-2026",
+      "title": "MAX 2026: La nueva temporada de House of the Dragon y más",
+      "excerpt": "Analizamos el estreno de la nueva temporada de la Danza de Dragones y las series originales que llegan a la plataforma este mes.",
+      "content": "La plataforma MAX (antes HBO Max) refuerza su liderato en drama fantástico. Este mes llega el esperado spin-off de 'A Knight of the Seven Kingdoms'. Además, exploramos el regreso de 'The Last of Us Part II' a la pantalla. Guía de episodios y mejores horarios para evitar spoilers en redes sociales.",
       "image": "https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=800&q=80",
       "category": "Series",
       "author": {
@@ -83,14 +83,14 @@
       "publishedAt": "2026-03-22T11:00:00Z",
       "readTime": 6,
       "featured": false,
-      "tags": ["HBO Max", "Series", "Streaming", "Recomendaciones"]
+      "tags": ["MAX", "House of the Dragon", "Series 2026", "Streaming"]
     },
     {
       "id": "6",
-      "slug": "nba-playoffs-2026-preview",
-      "title": "NBA Playoffs 2026: Preview y favoritos al título",
-      "excerpt": "Los playoffs de la NBA están aquí. Analizamos los favoritos, las sorpresas potenciales y las llaves más emocionantes.",
-      "content": "La temporada regular de la NBA 2025-26 ha llegado a su fin y ahora comienza lo bueno...",
+      "slug": "nba-playoffs-2026-favoritos-finales",
+      "title": "NBA Playoffs 2026: ¿Quién frenará a los nuevos Thunder?",
+      "excerpt": "Comienzan las eliminatorias de la NBA. Analizamos el ascenso de OKC y si los veteranos como LeBron y Curry tienen una última oportunidad.",
+      "content": "La NBA ha cambiado de guardia. Con unos Oklahoma City Thunder dominantes en el Oeste y los Celtics defendiendo su trono en el Este, los Playoffs 2026 prometen emociones fuertes. Te traemos el cuadro de competencia completo, las llaves de Play-In y cómo ver cada juego en directo por los canales deportivos de SportLive.",
       "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80",
       "category": "NBA",
       "author": {
@@ -100,8 +100,8 @@
       "publishedAt": "2026-03-20T13:00:00Z",
       "readTime": 9,
       "featured": false,
-      "tags": ["NBA", "Playoffs", "Baloncesto", "2026"]
+      "tags": ["NBA", "Playoffs", "Baloncesto", "OKC Thunder"]
     }
   ],
-  "categories": ["Fútbol", "Cine", "Series", "NBA", "Guías", "Tecnología", "Noticias"]
+  "categories": ["Fútbol", "Cine", "Series", "NBA", "Deportes", "Tecnología", "Noticias"]
 }
