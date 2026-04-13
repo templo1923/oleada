@@ -76,7 +76,7 @@ $(document).ready(function() {
                             }
                             
                             if (urlFinalCodificada) {
-                                canalesHtml += `<a href="embed/eventos.html?r=${urlFinalCodificada}" target="_blank" class="canal-link">➤ ${nombreCanal}</a>`;
+                                canalesHtml += `<a href="repro/player/repro.html?r=${urlFinalCodificada}" target="_blank" class="canal-link">➤ ${nombreCanal}</a>`;
                             }
                         }
                     });

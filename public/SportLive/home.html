@@ -533,7 +533,7 @@ function displayChannels(channels) {
                     const card = document.createElement('div');
                     card.className = 'channel-card';
                     const linkBase64 = btoa(channel.linkOriginal);
-                    const finalUrl = `embed/eventos.html?r=${linkBase64}`;
+                    const finalUrl = `repro/player/repro.html?r=${linkBase64}`;
 
                     card.innerHTML = `
                         <div class="live-indicator">
