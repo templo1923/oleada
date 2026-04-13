@@ -36,34 +36,41 @@ export const metadata: Metadata = {
 }
 
 // 🚨 MOTOR: Listado completo 🚨
+// 🚨 Ajuste en la función getFullCatalog
 async function getFullCatalog() {
   try {
-const fetchOptions = { 
-  next: { revalidate: 300 }, 
-  headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
-};
-const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
-
-
+    const fetchOptions = { 
+      next: { revalidate: 300 }, 
+      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+    };
+    const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
     const data = await res.json();
     
     let allChannels: any[] = [];
     
     for (const cat in data) {
       if (!cat.toUpperCase().includes("EVENTO")) { 
+        // 1. Filtramos activos
         const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
         
-        const formatted = activos.map((c: any) => ({
-            id: c.Canal.toLowerCase().replace(/\s+/g, '').replace(/\+/g, 'plus'),
+        // 2. Limitamos a los mejores 20 canales por categoría para no saturar la landing
+        const limitados = activos.slice(0, 20); 
+        
+        const formatted = limitados.map((c: any) => ({
+            // CORRECCIÓN DE ID: Usamos encodeURIComponent o una limpieza más estricta para evitar 404
+            id: c.Canal.toLowerCase()
+                .trim()
+                .replace(/\s+/g, '-') 
+                .replace(/[^\w\-]+/g, '') // Elimina caracteres especiales que rompen la URL
+                .replace(/\+/g, 'plus'),
             name: c.Canal,
             logo: c.Logo,
             category: cat,
-            description: `Disfruta de la mejor programación de ${c.Canal} en alta calidad Full HD, estable y sin cortes. Transmisión 24/7 en SportLive.`,
+            description: `Disfruta de ${c.Canal} en Full HD. Transmisión 24/7 en SportLive.`,
             isLive: true,
             currentProgram: "Programación Regular",
             schedule: [
-                { time: "00:00", program: "Transmisión Activa 24 Horas" },
-                { time: "12:00", program: "Programación en Vivo" }
+                { time: "00:00", program: "Transmisión Activa" }
             ]
         }));
         
