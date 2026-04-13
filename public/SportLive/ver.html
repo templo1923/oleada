@@ -86,7 +86,9 @@
     main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; width: 100%; }
     
     .page-layout { display: flex; width: 100%; max-width: 1600px; gap: 20px; justify-content: center; align-items: flex-start; }
-    .center-column { flex: 1; max-width: 1000px; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
+    
+    /* 🔥 ESCUDO ANTI-TRAMPAS PARA EL REPRODUCTOR 🔥 */
+    .center-column { flex: 1; max-width: 1000px; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; position: relative; z-index: 50; }
     
     /* REPRODUCTOR */
     .player-container { 
@@ -189,12 +191,12 @@
     }
     .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
 
-    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
+    /* 🔥 BANNERS LIMITADOS PARA NO DAÑAR LA PÁGINA 🔥 */
     .ad-slot { 
         background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
         display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
         font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); 
-        overflow: hidden; transition: 0.3s; 
+        overflow: hidden !important; transition: 0.3s; position: relative; z-index: 1;
     }
     .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
     .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
@@ -202,7 +204,7 @@
     .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
 
     .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; }
-    .bottom-ad { flex: 1; height: 90px; }
+    .bottom-ad { flex: 1; height: auto; min-height: 90px; }
     
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
@@ -442,38 +444,7 @@
         await OneSignal.init({
           appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
           safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
-          notifyButton: {
-            enable: true,
-            colors: {
-              'circle.background': '#ef4444',
-              'circle.foreground': 'white',
-              'badge.background': '#3b82f6',
-              'badge.foreground': 'white',
-              'badge.bordercolor': 'white',
-              'pulse.color': '#ef4444',
-              'dialog.button.background.hovering': '#dc2626',
-              'dialog.button.background.active': '#dc2626',
-              'dialog.button.background': '#ef4444',
-              'dialog.button.foreground': 'white',
-            }
-          },
-          promptOptions: {
-            slidedown: {
-              prompts: [{
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Recibe alertas de los mejores Eventos en vivo y eventos estelares.",
-                  acceptButton: "¡Claro que sí!",
-                  cancelButton: "No, gracias"
-                },
-                delay: {
-                  pageViews: 1,
-                  timeDelay: 3
-                }
-              }]
-            }
-          }
+          notifyButton: { enable: true }
         });
       });
     </script>
@@ -507,7 +478,7 @@
         </div>
     </header>
 
-<main>
+    <main>
         <div class="page-layout">
             
             <div class="ad-slot side-ad">
@@ -574,19 +545,19 @@
         <div class="ads-bottom">
             <div class="ad-slot bottom-ad">
                 <div class="ad-pc">
-                    <script data-cfasync="false">atOptions = {'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script>
-                    <script data-cfasync="false" src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
+                    <script data-cfasync="false">atOptions = {'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script>
+                    <script data-cfasync="false" src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
                 </div>
             </div>
             <div class="ad-slot bottom-ad">
                 <div class="ad-pc">
-                    <script data-cfasync="false">atOptions = {'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</script>
-                    <script data-cfasync="false" src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></script>
+                    <script data-cfasync="false">atOptions = {'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script>
+                    <script data-cfasync="false" src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
                 </div>
             </div>
         </div>
     </main>
-    
+
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
     <nav class="bottom-nav">
