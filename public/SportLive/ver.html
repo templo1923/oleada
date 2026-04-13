@@ -387,7 +387,6 @@
         
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
-        
     }
     
     /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
@@ -421,15 +420,15 @@
             }
     }
 
-    /* 🔥 CSS DE AISLAMIENTO PARA LOS BANNERS 🔥 */
-    .solo-pc { display: flex; width: 100%; height: 100%; justify-content: center; align-items: center; }
-    .solo-movil { display: none; width: 100%; justify-content: center; align-items: center; margin: 10px 0; }
-    .ad-box-fix { background: transparent !important; border: none !important; box-shadow: none !important; }
+    /* 🔥 CSS BLINDADO PARA BANNERS 🔥 */
+    .ad-pc { display: flex; width: 100%; justify-content: center; align-items: center; }
+    .ad-movil { display: none; width: 100%; justify-content: center; align-items: center; }
 
     @media (max-width: 768px) {
-        .solo-pc { display: none !important; }
-        .solo-movil { display: flex !important; }
-        .side-ad { order: 2; width: 100%; min-height: 0; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
+        .ad-pc { display: none !important; }
+        .ad-movil { display: flex !important; }
+        .ad-slot.side-ad { background: transparent; border: none; box-shadow: none; height: auto; margin: 10px 0; }
+        .side-ad { width: 100%; order: 2; position: static; }
         .ads-bottom { display: none !important; }
     }
    </style>
@@ -509,12 +508,14 @@
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad ad-box-fix">
-                <div class="solo-pc">
-                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script><script src='https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js'></script>" width="160" height="600" frameborder="0" scrolling="no"></iframe>
+            <div class="ad-slot side-ad">
+                <div class="ad-pc">
+                    <script data-cfasync="false">atOptions = {'key' : '91ed6130324642c95007aff944f8ed98','format' : 'iframe','height' : 600,'width' : 160,'params' : {}};</script>
+                    <script data-cfasync="false" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
                 </div>
-                <div class="solo-movil">
-                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script><script src='https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js'></script>" width="300" height="250" frameborder="0" scrolling="no"></iframe>
+                <div class="ad-movil">
+                    <script data-cfasync="false">atOptions = {'key' : '0d1f7726b341e7d353a33f1478fd2702','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script>
+                    <script data-cfasync="false" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
                 </div>
             </div>
             
@@ -558,25 +559,27 @@
                 <div id="seo-content"></div>
             </div>
             
-            <div class="ad-slot side-ad ad-box-fix">
-                <div class="solo-pc">
-                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script><script src='https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js'></script>" width="160" height="600" frameborder="0" scrolling="no"></iframe>
+            <div class="ad-slot side-ad">
+                <div class="ad-pc">
+                    <span style="color: #64748b; text-align: center; padding: 20px; font-size: 10px;">DEBES CREAR UN NUEVO CÓDIGO 160x600 PARA ESTE ESPACIO</span>
                 </div>
-                <div class="solo-movil">
-                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script><script src='https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js'></script>" width="320" height="50" frameborder="0" scrolling="no"></iframe>
+                <div class="ad-movil">
+                    <script data-cfasync="false">atOptions = {'key' : 'a743195e3a35eef7dd05698efb5ee34e','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
+                    <script data-cfasync="false" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
                 </div>
             </div>
         </div>
 
         <div class="ads-bottom">
-            <div class="ad-slot bottom-ad ad-box-fix">
-                <div class="solo-pc">
-                     <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script><script src='https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js'></script>" width="468" height="60" frameborder="0" scrolling="no"></iframe>
+            <div class="ad-slot bottom-ad">
+                <div class="ad-pc">
+                    <script data-cfasync="false">atOptions = {'key' : '18c5a84b3204e04d518aa3377467dfd5','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};</script>
+                    <script data-cfasync="false" src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
                 </div>
             </div>
-            <div class="ad-slot bottom-ad ad-box-fix">
-                <div class="solo-pc">
-                     <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script><script src='https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js'></script>" width="468" height="60" frameborder="0" scrolling="no"></iframe>
+            <div class="ad-slot bottom-ad">
+                <div class="ad-pc">
+                    <span style="color: #64748b; text-align: center; padding: 20px; font-size: 10px;">DEBES CREAR UN NUEVO CÓDIGO 468x60 PARA ESTE ESPACIO</span>
                 </div>
             </div>
         </div>
