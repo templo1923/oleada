@@ -37,11 +37,15 @@ export const metadata: Metadata = {
 
 // 🚨 MOTOR: Listado completo 🚨
 // 🚨 Ajuste en la función getFullCatalog
+// 🚨 Motor: Listado ajustado y filtrado
 async function getFullCatalog() {
   try {
     const fetchOptions = { 
       next: { revalidate: 300 }, 
-      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+      headers: { 
+        'Origin': 'https://oleadatvpremium.com', 
+        'Referer': 'https://oleadatvpremium.com/' 
+      } 
     };
     const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
     const data = await res.json();
@@ -49,24 +53,30 @@ async function getFullCatalog() {
     let allChannels: any[] = [];
     
     for (const cat in data) {
-      if (!cat.toUpperCase().includes("EVENTO")) { 
-        // 1. Filtramos activos
-        const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
+      const catUpper = cat.toUpperCase();
+
+      // 1. FILTRO: Saltamos categorías de EVENTOS y CINE 24/7
+      if (!catUpper.includes("EVENTO") && !catUpper.includes("CINE 24/7")) { 
         
-        // 2. Limitamos a los mejores 20 canales por categoría para no saturar la landing
-        const limitados = activos.slice(0, 20); 
+        // 2. Filtramos solo canales activos
+        const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
+
+        // 3. LIMITACIÓN: Tomamos solo los primeros 15 canales por categoría 
+        // para que la landing cargue rápido y no sea infinita
+        const limitados = activos.slice(0, 15);
         
         const formatted = limitados.map((c: any) => ({
-            // CORRECCIÓN DE ID: Usamos encodeURIComponent o una limpieza más estricta para evitar 404
+            // 4. FIX 404: Limpieza profunda del ID para que la URL sea válida
             id: c.Canal.toLowerCase()
                 .trim()
-                .replace(/\s+/g, '-') 
-                .replace(/[^\w\-]+/g, '') // Elimina caracteres especiales que rompen la URL
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quita tildes
+                .replace(/\s+/g, '-') // Espacios por guiones
+                .replace(/[^\w\-]+/g, '') // Quita símbolos raros
                 .replace(/\+/g, 'plus'),
             name: c.Canal,
             logo: c.Logo,
             category: cat,
-            description: `Disfruta de ${c.Canal} en Full HD. Transmisión 24/7 en SportLive.`,
+            description: `Disfruta de la mejor programación de ${c.Canal} en alta calidad Full HD.`,
             isLive: true,
             currentProgram: "Programación Regular",
             schedule: [
@@ -79,6 +89,7 @@ async function getFullCatalog() {
     }
     return allChannels;
   } catch (error) {
+    console.error("Error en catálogo:", error);
     return [];
   }
 }
