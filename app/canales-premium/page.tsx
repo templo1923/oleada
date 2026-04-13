@@ -56,14 +56,14 @@ async function getFullCatalog() {
       const catUpper = cat.toUpperCase();
 
       // 1. FILTRO: Saltamos categorías de EVENTOS y CINE 24/7
-      if (!catUpper.includes("EVENTO") && !catUpper.includes("CINE 24/7")) { 
+      if (!catUpper.includes("CINE 24/7")) { 
         
         // 2. Filtramos solo canales activos
         const activos = data[cat].filter((c: any) => c.Estado !== "Inactivo");
 
-        // 3. LIMITACIÓN: Tomamos solo los primeros 15 canales por categoría 
+        // 3. LIMITACIÓN: Tomamos solo los primeros 20 canales por categoría 
         // para que la landing cargue rápido y no sea infinita
-        const limitados = activos.slice(0, 15);
+        const limitados = activos.slice(0, 20);
         
         const formatted = limitados.map((c: any) => ({
             // 4. FIX 404: Limpieza profunda del ID para que la URL sea válida
