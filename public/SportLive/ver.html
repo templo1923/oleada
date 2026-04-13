@@ -189,29 +189,21 @@
     }
     .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
 
-    /* 🔥 BANNERS Y ANUNCIOS (LA CLAVE) 🔥 */
+    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
     .ad-slot { 
-        display: flex; align-items: center; justify-content: center; 
-        color: #64748b; font-size: 12px; font-weight: 800; letter-spacing: 1px; 
-        text-transform: uppercase; overflow: hidden; 
+        background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
+        display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
+        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); 
+        overflow: hidden; transition: 0.3s; 
     }
+    .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
     
-    /* 🔥 REGLA DE ORO PARA ADSTERRA: Que los iframes respeten el tamaño 🔥 */
-    .ad-slot iframe { max-width: 100% !important; border: none !important; margin: 0 auto; display: block; } 
+    .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
+
+    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; }
+    .bottom-ad { flex: 1; height: 90px; }
     
-    /* LATERALES (PC) */
-    .side-ad { width: 160px; min-height: 600px; flex-shrink: 0; position: sticky; top: 90px; align-self: flex-start; }
-
-    /* INFERIORES (PC Y MÓVIL) */
-    .ads-bottom { 
-        margin-top: 25px; width: 100%; max-width: 1000px; 
-        display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; 
-    }
-    .bottom-ad { 
-        flex: 1; min-width: 300px; min-height: 250px; 
-        display: flex; justify-content: center; align-items: center; 
-    }
-
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
         margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 100%; 
@@ -260,17 +252,22 @@
     .btn-opcion i { font-size: 14px; }
     .btn-opcion:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
     .btn-opcion:active { transform: scale(0.97); }
+    
+    
         
-    /* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
+/* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
     .btn-opcion.opcion-nativa {
         background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #60a5fa;
         box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
     }
 
+
     .btn-opcion.active-signal { 
         background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; 
         border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
     }
+    
+    
     
     #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 4; font-weight: 300;}
     
@@ -343,7 +340,6 @@
     .nav-item.active { color: var(--primary); }
     .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
 
-    /* 🔥 AJUSTES RESPONSIVE: LA MAGIA 🔥 */
     @media (min-width: 768px) {
         .bottom-nav { display: none; }
         .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
@@ -352,12 +348,9 @@
         .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
     }
 
-    @media (max-width: 1200px) { 
-        .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
-        /* 🔥 CELULARES Y TABLETS: APAGAR LATERALES AGRESIVAMENTE 🔥 */
-        .side-ad { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; } 
-    }
+    @media (max-width: 1200px) { .page-layout { flex-direction: column; align-items: center; gap: 15px; } .side-ad { width: 100%; max-width: 1000px; height: 80px; order: 5; position: static; } }
     
+    /* 🔥 MÓVIL: CUADRÍCULA 3x2, TÍTULO MULTILÍNEA Y CANALES PERFECTOS 🔥 */
     @media (max-width: 768px) { 
         body { padding-bottom: 70px; } 
         .desktop-nav { display: none; } 
@@ -369,29 +362,42 @@
         .player-container { border-radius: 0; max-height: none; width: 100%; border: none; border-bottom: 1px solid rgba(255,255,255,0.05);} 
         
         .controls { 
-            padding: 0 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; 
+            padding: 0 10px; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
         } 
         .btn { 
-            width: 100%; height: 100%; flex-direction: column; justify-content: center; 
-            font-size: 10px; padding: 10px 4px; border-radius: 12px; gap: 5px; text-align: center;
+            width: 100%; 
+            height: 100%;
+            flex-direction: column;
+            justify-content: center; 
+            font-size: 10px; 
+            padding: 10px 4px; 
+            border-radius: 12px;
+            gap: 5px;
+            text-align: center;
         } 
         .btn i { font-size: 18px; margin: 0; }
 
+        /* CANALES (Señales) CON FLEXBOX INTELIGENTE PARA CENTRAR IMPARES */
         #multi-signals { 
             display: flex; flex-wrap: wrap; justify-content: center;
             gap: 10px; padding: 15px; border-radius: 0; border-left: none; border-right: none;
         }
-        .btn-opcion { flex: 0 0 calc(50% - 5px); padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; }
+        .btn-opcion { 
+            flex: 0 0 calc(50% - 5px);
+            padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; 
+        }
         
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
-        .center-column { order: 1; width: 100%; } /* Fuerza al centro a ocupar el 100% */
+        .center-column { order: 1; }
         
-        /* 🔥 CELULARES: ASEGURAR QUE LOS INFERIORES SE APILEN BIEN 🔥 */
-        .ads-bottom { flex-direction: column; align-items: center; width: 100%; margin-top: 15px; padding: 0 10px; }
-        .bottom-ad { width: 100%; max-width: 320px; display: flex; justify-content: center; }
+        .side-ad { order: 2; width: 100%; min-height: 90px; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
+        .ads-bottom { display: none !important; } 
     }
     
-    /* 🔥 NUEVO: MODO APAGADO PARA EL BOTÓN CAST 🔥 */
+    /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
     #btn-proyectar-tv.btn-disabled {
         background: var(--glass) !important;
         color: #64748b !important;
@@ -421,8 +427,8 @@
                 z-index: 1000 !important;
             }
     }
-</style>
 
+   </style>
 
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -498,20 +504,13 @@
         </div>
     </header>
 
-<main>
+    <main>
         <div class="page-layout">
             
             <div class="ad-slot side-ad">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '91ed6130324642c95007aff944f8ed98',
-                        'format' : 'iframe',
-                        'height' : 600,
-                        'width' : 160,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
+                    ESPACIO BANNER 1
+                </a>
             </div>
             
             <div class="center-column">
@@ -556,50 +555,22 @@
             </div>
             
             <div class="ad-slot side-ad">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '91ed6130324642c95007aff944f8ed98',
-                        'format' : 'iframe',
-                        'height' : 600,
-                        'width' : 160,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
+                    ESPACIO BANNER 2
+                </a>
             </div>
         </div>
 
-<div class="ads-bottom">
-            <div class="ad-slot bottom-ad" style="min-height: 250px; min-width: 300px; border: none; background: transparent; box-shadow: none;">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '0d1f7726b341e7d353a33f1478fd2702',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+        <div class="ads-bottom">
+            <div class="ad-slot bottom-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 3</a>
             </div>
-            
-            <div class="ad-slot bottom-ad" style="min-height: 250px; min-width: 300px; border: none; background: transparent; box-shadow: none;">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '0d1f7726b341e7d353a33f1478fd2702',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+            <div class="ad-slot bottom-ad">
+                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 4</a>
             </div>
         </div>
-    
     </main>
 
-    
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
     <nav class="bottom-nav">
@@ -1204,7 +1175,7 @@
             }
         } catch(e) {}
 
-        document.getElementById('main-motor').src = `https://player.telelatinomax.shop/repro/player/repro.html?r=${finalR}&n=${encodeURIComponent(name)}&padre=${dominioPadre}`;
+        document.getElementById('main-motor').src = `https://player.telelatinomax.shop/embed/eventos.html?r=${finalR}&n=${encodeURIComponent(name)}&padre=${dominioPadre}`;
     }
     
     async function cambiarSenal(elemento, url, nombre, yaEsB64) {
