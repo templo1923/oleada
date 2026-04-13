@@ -189,7 +189,7 @@
     }
     .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
 
-    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
+/* 🔥 BANNERS LATERALES PEGAJOSOS (AJUSTADOS) 🔥 */
     .ad-slot { 
         background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
         display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
@@ -197,13 +197,17 @@
         overflow: hidden; transition: 0.3s; 
     }
     .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
     
-    .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
+    /* Forzamos que los iframes de Adsterra no se salgan del cuadro */
+    .ad-slot iframe { max-width: 100% !important; height: auto !important; }
 
-    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; }
-    .bottom-ad { flex: 1; height: 90px; }
-    
+    /* Estilo para los laterales en PC */
+    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
+
+    /* Estilo para los de abajo */
+    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; align-items: center; }
+    .bottom-ad { flex: 1; min-height: 250px; display: flex; justify-content: center; }
+
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
         margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 100%; 
@@ -221,213 +225,69 @@
     /* 🔥 BOTÓN COMUNIDAD 🔥 */
     .btn-comunidad {
         background: linear-gradient(145deg, #0088cc, #00a6c7) !important;
-        color: white !important;
-        border: none !important;
+        color: white !important; border: none !important;
         box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
         animation: pulse-comunidad 2s infinite;
     }
     .btn-comunidad i { color: white !important; }
-    .btn-comunidad:hover { transform: translateY(-2px); }
     @keyframes pulse-comunidad { 
         0% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
         50% { box-shadow: 0 0 15px rgba(0, 136, 204, 0.8); } 
         100% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
     }
     
-    /* 🔥 CAJA DE SEÑALES DE CANALES (FLEXBOX CENTRADO) 🔥 */
+    /* 🔥 SEÑALES DE CANALES 🔥 */
     #multi-signals { 
-        margin-top: 20px; display: none; 
-        flex-wrap: wrap; justify-content: center;
+        margin-top: 20px; display: none; flex-wrap: wrap; justify-content: center;
         gap: 12px; padding: 20px; background: var(--card-bg); 
         border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); width: 100%; order: 3; 
     }
     .btn-opcion { 
-        flex: 0 0 160px; 
-        background: var(--glass); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); 
+        flex: 0 0 160px; background: var(--glass); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); 
         padding: 12px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; cursor: pointer; 
         display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; 
         text-transform: uppercase; letter-spacing: 0.5px; min-height: 48px; position: relative; 
-        word-break: break-word; overflow-wrap: anywhere; white-space: normal; text-align: center; line-height: 1.3; height: auto;
+        word-break: break-word; text-align: center; line-height: 1.3; height: auto;
     }
-    .btn-opcion i { font-size: 14px; }
-    .btn-opcion:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
-    .btn-opcion:active { transform: scale(0.97); }
-    
-    
-        
-/* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
-    .btn-opcion.opcion-nativa {
-        background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #60a5fa;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
-    }
-
-
     .btn-opcion.active-signal { 
         background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; 
         border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
     }
     
-    
-    
     #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 4; font-weight: 300;}
-    
-    /* MODALES PRO */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-content { 
-        background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; 
-        border-radius: 20px; width: 90%; max-width: 450px; text-align: center; position: relative; 
-        box-shadow: 0 20px 50px rgba(0,0,0,0.9); transform: translateY(20px); transition: 0.3s ease; 
-    }
-    .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-content h3 { color: #f8fafc; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; }
-    .modal-content h3 i { color: var(--primary); font-size: 22px; }
-    .modal-content p { color: #94a3b8; font-size: 13px; margin-bottom: 20px; line-height: 1.6; font-weight: 400;}
-    .close-btn { position: absolute; top: 15px; right: 15px; color: #64748b; cursor: pointer; font-size: 20px; transition: 0.3s; background: var(--glass); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .close-btn:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-    
-    #textarea-embed { 
-        width: 100%; height: 90px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); 
-        color: #94a3b8; border-radius: 10px; padding: 15px; font-family: monospace; font-size: 12px; 
-        resize: none; margin-bottom: 20px; outline: none; transition: 0.3s;
-    }
-    #textarea-embed:focus { border-color: var(--primary); color: #fff; background: rgba(59, 130, 246, 0.05);}
-    
-    .btn-copiar { 
-        background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; border: none; padding: 14px 20px; 
-        border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; 
-        gap: 10px; transition: 0.3s; width: 100%; justify-content: center; text-transform: uppercase; letter-spacing: 1px; 
-    }
-    .btn-copiar:hover { box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5); transform: translateY(-2px);}
-    
-    .premium-upsell { 
-        margin-top: 20px; padding: 15px; background: rgba(234, 179, 8, 0.05); border: 1px dashed rgba(234, 179, 8, 0.3); 
-        border-radius: 10px; font-size: 12px; color: #facc15; display: flex; flex-direction: column; gap: 12px; text-align: center; 
-    }
-    .btn-upsell { 
-        background: linear-gradient(145deg, #eab308, #ca8a04); color: #000; border: none; padding: 12px; 
-        border-radius: 8px; font-weight: 900; font-size: 12px; cursor: pointer; display: flex; align-items: center; 
-        justify-content: center; gap: 8px; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .btn-upsell:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4); }
-    
-    .instrucciones-lista { text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
-    .paso-item { display: flex; gap: 15px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
-    .paso-num { background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 14px; flex-shrink: 0; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);}
-    .paso-text h4 { margin: 0 0 6px 0; color: #f8fafc; font-size: 14px; font-weight: 800;}
-    .paso-text p { margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;}
-    
-    .btn-paypal { display: inline-flex; align-items: center; gap: 8px; background: #0070ba; color: white; text-decoration: none; padding: 10px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-top: 10px; transition: 0.3s; }
-    .btn-paypal:hover { background: #005ea6; transform: translateY(-2px);}
-    
-    .btn-whatsapp { 
-        background: linear-gradient(145deg, #25D366, #1ebd57); color: white; text-decoration: none; padding: 14px; 
-        border-radius: 10px; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; 
-        gap: 10px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-    }
-    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
-    
-    /* ESTILOS PARA NAVEGACIÓN MÓVIL Y DESKTOP */
-    .bottom-nav {
-        position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(8, 12, 20, 0.95);
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-        padding: 8px 10px 15px 10px; display: flex; justify-content: space-around; align-items: center;
-        z-index: 1001; border-top: 1px solid rgba(255,255,255,0.05); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
-    }
-    .nav-item { color: #64748b; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; transition: all 0.3s; flex: 1; cursor: pointer; }
-    .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
-    .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
-    .nav-item.active { color: var(--primary); }
-    .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
 
-    @media (min-width: 768px) {
-        .bottom-nav { display: none; }
-        .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
-        .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .desktop-nav-item:hover { color: #fff; }
-        .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
+    /* --- RESPONSIVE / MEDIA QUERIES --- */
+
+    @media (max-width: 1200px) { 
+        .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
+        .side-ad { width: 100%; max-width: 1000px; height: auto; min-height: 90px; order: 5; position: static; } 
     }
 
-    @media (max-width: 1200px) { .page-layout { flex-direction: column; align-items: center; gap: 15px; } .side-ad { width: 100%; max-width: 1000px; height: 80px; order: 5; position: static; } }
-    
-    /* 🔥 MÓVIL: CUADRÍCULA 3x2, TÍTULO MULTILÍNEA Y CANALES PERFECTOS 🔥 */
     @media (max-width: 768px) { 
         body { padding-bottom: 70px; } 
         .desktop-nav { display: none; } 
-        
-        .text-volver { display: none; }
-        .back-btn { padding: 8px 12px; }
-        
         #header-logo { max-width: 160px; font-size: 15px; }
-        .player-container { border-radius: 0; max-height: none; width: 100%; border: none; border-bottom: 1px solid rgba(255,255,255,0.05);} 
+        .player-container { border-radius: 0; border: none; } 
         
-        .controls { 
-            padding: 0 10px; 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 8px; 
-        } 
-        .btn { 
-            width: 100%; 
-            height: 100%;
-            flex-direction: column;
-            justify-content: center; 
-            font-size: 10px; 
-            padding: 10px 4px; 
-            border-radius: 12px;
-            gap: 5px;
-            text-align: center;
-        } 
-        .btn i { font-size: 18px; margin: 0; }
+        .controls { padding: 0 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } 
+        .btn { width: 100%; flex-direction: column; font-size: 10px; padding: 10px 4px; } 
 
-        /* CANALES (Señales) CON FLEXBOX INTELIGENTE PARA CENTRAR IMPARES */
-        #multi-signals { 
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 10px; padding: 15px; border-radius: 0; border-left: none; border-right: none;
-        }
-        .btn-opcion { 
-            flex: 0 0 calc(50% - 5px);
-            padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; 
-        }
+        #multi-signals { display: flex; gap: 10px; padding: 15px; border-radius: 0; }
+        .btn-opcion { flex: 0 0 calc(50% - 5px); }
         
-        .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
-        .center-column { order: 1; }
-        
-        .side-ad { order: 2; width: 100%; min-height: 90px; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
-        .ads-bottom { display: none !important; } 
+        /* 🔥 LOGICA MOVIL: Ajustamos banners de abajo para que usen el 320x50 */
+        .ads-bottom { display: flex !important; flex-direction: column; width: 100%; gap: 10px; } 
+        .bottom-ad { width: 320px; min-height: 50px; height: 50px; margin: 0 auto; }
+        .side-ad { order: 2; width: 100%; min-height: 50px; height: auto; position: static; }
     }
-    
-    /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
-    #btn-proyectar-tv.btn-disabled {
-        background: var(--glass) !important;
-        color: #64748b !important;
-        box-shadow: none !important;
-        border: 1px dashed rgba(255, 255, 255, 0.1) !important;
-        cursor: pointer !important;
-    }
-    #btn-proyectar-tv.btn-disabled i { color: #64748b !important; }
-    #btn-proyectar-tv.btn-disabled:hover { transform: none !important; background: rgba(255,255,255,0.02) !important; }
 
-    /* 🔥 NUEVO: ALERTA TOAST 🔥 */
-    #custom-toast {
-        position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-        background: #1e293b; border-left: 4px solid #ef4444; color: #f8fafc;
-        padding: 15px 25px; border-radius: 8px; font-size: 13px; font-weight: 600;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 99999;
-        display: flex; align-items: center; gap: 12px; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        width: max-content; max-width: 90vw; text-align: left; line-height: 1.4;
-    }
+    #btn-proyectar-tv.btn-disabled { background: var(--glass) !important; color: #64748b !important; border: 1px dashed rgba(255, 255, 255, 0.1) !important; }
+    #custom-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; border-left: 4px solid #ef4444; color: #f8fafc; padding: 15px 25px; border-radius: 8px; z-index: 99999; display: flex; align-items: center; gap: 12px; transition: bottom 0.4s; width: max-content; }
     #custom-toast.show { bottom: 80px; } 
-    
-    /* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
-    @media (max-width: 767px) {
-            #onesignal-bell-container, 
-            .onesignal-bell-launcher {
-                bottom: 85px !important;
-                z-index: 1000 !important;
-            }
-    }
 
+    @media (max-width: 767px) {
+            #onesignal-bell-container, .onesignal-bell-launcher { bottom: 85px !important; z-index: 1000 !important; }
+    }
    </style>
 
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -507,11 +367,12 @@
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
-                    ESPACIO BANNER 1
-                </a>
-            </div>
+<div class="ad-slot side-ad">
+    <script type="text/javascript">
+        atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+</div>
             
             <div class="center-column">
                 <div class="player-container">
@@ -554,22 +415,45 @@
                 <div id="seo-content"></div>
             </div>
             
-            <div class="ad-slot side-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
-                    ESPACIO BANNER 2
-                </a>
-            </div>
+<div class="ad-slot side-ad">
+    <script type="text/javascript">
+        atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+</div>
         </div>
 
-        <div class="ads-bottom">
-            <div class="ad-slot bottom-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 3</a>
-            </div>
-            <div class="ad-slot bottom-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 4</a>
-            </div>
+<div class="ads-bottom">
+    <div class="ad-slot bottom-ad">
+        <div class="pc-ad" style="display: block;">
+            <script type="text/javascript">
+                // Este es el 300x250
+                atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
         </div>
-    </main>
+    </div>
+
+    <div class="ad-slot bottom-ad">
+        <div class="pc-ad" style="display: block;">
+            <script type="text/javascript">
+                // Este es el 300x250 (lo repetimos o puedes poner el 320x50 aquí si prefieres)
+                atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+        </div>
+    </div>
+</div>
+
+<div class="ad-slot mobile-only-ad" style="margin-top:20px;">
+    <script type="text/javascript">
+        // Este es tu 320x50 para cerrar con broche de oro en el cel
+        atOptions = { 'key' : 'a743195e3a35eef7dd05698efb5ee34e', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+</div>
+
+</main>
 
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
