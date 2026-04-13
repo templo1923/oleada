@@ -192,17 +192,15 @@
     }
     .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
 
-    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
+    /* 🔥 BANNERS CSS BASE 🔥 */
     .ad-slot { 
         background: transparent; border: none; border-radius: 15px; 
         display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
-        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; position: relative; z-index: 1; 
+        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; 
+        overflow: hidden !important; transition: 0.3s; position: relative; z-index: 1; 
     }
-    .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
-    
-    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; overflow: hidden; }
-    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; }
-    .bottom-ad { width: 468px; height: 60px; flex-shrink: 0; overflow: hidden; }
+    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; display: none; }
+    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; align-items: center; }
     
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
@@ -322,7 +320,7 @@
     }
     .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
     
-    /* ESTILOS PARA NAVEGACIÓN MÓVIL Y DESKTOP */
+    /* 🔥 ESTILOS PARA NAVEGACIÓN MÓVIL Y DESKTOP (Corregidos) 🔥 */
     .bottom-nav {
         position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(8, 12, 20, 0.95);
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
@@ -335,32 +333,27 @@
     .nav-item.active { color: var(--primary); }
     .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
 
-    /* LÓGICA DE BANNERS - CÓMO SE MUESTRAN SEGÚN PANTALLA */
-    .show-pc { display: flex; width: 100%; justify-content: center; }
-    .show-pc-tablet { display: flex; width: 100%; justify-content: center; }
-    .show-tablet-mobile { display: none !important; width: 100%; justify-content: center; }
-
-    /* MODO ESCRITORIO */
-    @media (min-width: 1201px) {
-        .bottom-nav { display: none; }
+    /* MENÚ PC/TABLET (A partir de 768px hacia arriba) */
+    @media (min-width: 768px) {
+        .bottom-nav { display: none !important; }
         .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
         .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         .desktop-nav-item:hover { color: #fff; }
         .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
     }
+    /* MENÚ MÓVIL (Menos de 768px) */
+    @media (max-width: 767px) {
+        .desktop-nav { display: none !important; }
+    }
 
-    /* MODO TABLET */
+    /* 🔥 LOGICA RESPONSIVE DE BANNERS 🔥 */
+    /* MODO TABLET (Entre 768px y 1200px) */
     @media (max-width: 1200px) { 
-        .desktop-nav { display: none; } /* Oculta el menú superior */
-        .bottom-nav { display: flex; } /* Muestra el menú inferior bonito */
         .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
-        .side-ad { display: none !important; } /* Oculta los laterales */
-        .show-pc { display: none !important; } 
-        .show-tablet-mobile { display: flex !important; } /* Muestra los banners extra abajo */
-        .ads-bottom { flex-wrap: wrap; justify-content: center; gap: 15px; }
+        .side-ad { display: none !important; } /* Oculta rascacielos */
     }
     
-    /* MODO MÓVIL */
+    /* MODO MÓVIL (Menos de 768px) */
     @media (max-width: 768px) { 
         body { padding-bottom: 70px; } 
         .text-volver { display: none; }
@@ -375,9 +368,7 @@
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
         
-        .show-pc-tablet { display: none !important; } /* Oculta los de 468x60 en celular */
-        .ads-bottom { flex-direction: column; align-items: center; gap: 15px; }
-        .bottom-ad { height: auto !important; margin: 0; }
+        .ads-bottom { flex-direction: column !important; align-items: center; gap: 15px; }
     }
     
     /* 🔥 MODO APAGADO BOTÓN CAST 🔥 */
@@ -438,12 +429,8 @@
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad">
-                <div class="show-pc">
-                    <script data-cfasync="false">atOptions = {'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script>
-                    <script data-cfasync="false" src="https://wistfulseverely.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+            <div class="ad-slot side-ad" id="ad-left-pc">
                 </div>
-            </div>
             
             <div class="center-column">
                 <div class="player-container">
@@ -485,32 +472,12 @@
                 <div id="seo-content"></div>
             </div>
             
-            <div class="ad-slot side-ad">
-                <div class="show-pc">
-                    <script data-cfasync="false">atOptions = {'key':'b2c9886be7495a584b1189cb74137158','format':'iframe','height':600,'width':160,'params':{}};</script>
-                    <script data-cfasync="false" src="https://wistfulseverely.com/b2c9886be7495a584b1189cb74137158/invoke.js"></script>
-                </div>
-            </div>
+            <div class="ad-slot side-ad" id="ad-right-pc">
+                 </div>
         </div>
 
-        <div class="ads-bottom">
-            <div class="ad-slot bottom-ad show-pc-tablet" style="width: 468px; height: 60px;">
-                <script data-cfasync="false">atOptions = {'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script>
-                <script data-cfasync="false" src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
-            </div>
-            <div class="ad-slot bottom-ad show-pc-tablet" style="width: 468px; height: 60px;">
-                <script data-cfasync="false">atOptions = {'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</script>
-                <script data-cfasync="false" src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></script>
-            </div>
-            <div class="ad-slot bottom-ad show-tablet-mobile" style="width: 300px; height: 250px;">
-                <script data-cfasync="false">atOptions = {'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script>
-                <script data-cfasync="false" src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
-            </div>
-            <div class="ad-slot bottom-ad show-tablet-mobile" style="width: 320px; height: 50px;">
-                <script data-cfasync="false">atOptions = {'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script>
-                <script data-cfasync="false" src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
-            </div>
-        </div>
+        <div class="ads-bottom" id="ads-bottom-container">
+             </div>
     </main>
 
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
@@ -551,6 +518,76 @@
     </div>
 
 <script>
+    // 🔥 LÓGICA DE INYECCIÓN DE BANNERS EN CAPAS (El escudo definitivo) 🔥
+    document.addEventListener("DOMContentLoaded", function() {
+        const screenWidth = window.innerWidth;
+        const adLeftPc = document.getElementById('ad-left-pc');
+        const adRightPc = document.getElementById('ad-right-pc');
+        const adsBottom = document.getElementById('ads-bottom-container');
+
+        const code160_A = `<script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/91ed6130324642c95007aff944f8ed98/invoke.js"></scr` + `ipt>`;
+        const code160_B = `<script>atOptions={'key':'b2c9886be7495a584b1189cb74137158','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/b2c9886be7495a584b1189cb74137158/invoke.js"></scr` + `ipt>`;
+        
+        const code468_A = `<script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></scr` + `ipt>`;
+        const code468_B = `<script>atOptions={'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></scr` + `ipt>`;
+        
+        const code300 = `<script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></scr` + `ipt>`;
+        const code320 = `<script>atOptions={'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></scr` + `ipt>`;
+
+        function injectAd(element, codeHTML) {
+            if(!element) return;
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.style.overflow = 'hidden';
+            iframe.scrolling = 'no';
+            
+            const htmlContent = `<!DOCTYPE html><html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head><body>${codeHTML}</body></html>`;
+            
+            element.appendChild(iframe);
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(htmlContent);
+            iframe.contentWindow.document.close();
+        }
+
+        function createAdSlot(width, height, isMobile=false) {
+            const div = document.createElement('div');
+            div.className = 'ad-slot bottom-ad';
+            div.style.width = isMobile ? '100%' : width;
+            div.style.maxWidth = width;
+            div.style.height = height;
+            return div;
+        }
+
+        if (screenWidth > 1200) {
+            // MODO PC: 2 lados, 2 abajo
+            adLeftPc.style.display = 'flex';
+            adRightPc.style.display = 'flex';
+            injectAd(adLeftPc, code160_A);
+            injectAd(adRightPc, code160_B);
+
+            const b1 = createAdSlot('468px', '60px');
+            const b2 = createAdSlot('468px', '60px');
+            adsBottom.appendChild(b1); adsBottom.appendChild(b2);
+            injectAd(b1, code468_A); injectAd(b2, code468_B);
+        } else if (screenWidth > 768) {
+            // MODO TABLET: 2 Banners de 468x60 abajo
+            const b1 = createAdSlot('468px', '60px');
+            const b2 = createAdSlot('468px', '60px');
+            adsBottom.appendChild(b1); adsBottom.appendChild(b2);
+            injectAd(b1, code468_A); injectAd(b2, code468_B);
+        } else {
+            // MODO MÓVIL: 2 Banners adaptados al celular
+            const m1 = createAdSlot('300px', '250px', true);
+            const m2 = createAdSlot('320px', '50px', true);
+            adsBottom.appendChild(m1); adsBottom.appendChild(m2);
+            injectAd(m1, code300); injectAd(m2, code320);
+        }
+    });
+</script>
+
+<script>
     if (document.referrer === "" && !window.location.href.includes('&ref=vip')) {
         const linkFantasma = document.createElement('a');
         linkFantasma.href = window.location.href + '&ref=vip';
@@ -564,7 +601,6 @@
     const nNombre = params.get('n');    
     const peliId = params.get('peli');
     
-    // 🔥 CIRUGÍA: EVITAR EL HUECO EN MÓVILES DESDE EL MILISEGUNDO CERO 🔥
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         const btnCastInit = document.getElementById("btn-proyectar-tv");
         if (btnCastInit) {
@@ -942,7 +978,6 @@
         }
 
         // =======================================================
-// =======================================================
         // 🔥 2. LÓGICA ORIGINAL: AGENDA DEPORTIVA
         // =======================================================
         if (rDirecto && nNombre) {
@@ -974,7 +1009,6 @@
                     tituloSeguro = tituloSeguro.replace(/[\r\n]+/g, " "); 
                     tituloSeguro = tituloSeguro.replace(/'/g, "\\'"); 
 
-                    // 🔥 CIRUGÍA ORDENAMIENTO: Extraemos, evaluamos y ordenamos 🔥
                     let embedsExtraidos = partido.attributes.embeds.data.map(emb => {
                         const rawIframe = emb.attributes.embed_iframe;
                         let linkExtra = rawIframe;
@@ -988,7 +1022,6 @@
                             linkExtra = rawIframe.split('src="')[1].split('"')[0];
                         }
 
-                        // Comprobamos si el enlace crudo es un M3U8 directo
                         let esNativo = false;
                         try {
                             const dec = atob(linkExtra);
@@ -1000,10 +1033,7 @@
                         return { originalData: emb, link: linkExtra, esNativo: esNativo };
                     });
 
-                    // Ponemos los nativos primero
                     embedsExtraidos.sort((a, b) => (a.esNativo === b.esNativo) ? 0 : a.esNativo ? -1 : 1);
-
-                    // Cargamos el motor con la opción #1 (la ganadora)
                     loadMotor(embedsExtraidos[0].link, tituloOriginal, true);
 
                     let htmlBotones = embedsExtraidos.map((obj, index) => {
@@ -1017,7 +1047,6 @@
 
                     box.innerHTML = htmlBotones;
                 } else {
-                    // Si no se encuentra en la agenda, carga el original
                     loadMotor(rDirecto, tituloOriginal, true);
                 }
             } catch (e) { 
@@ -1068,7 +1097,6 @@
 
                     box.innerHTML = htmlBotones;
                     } else {
-                    // 🔥 REDIRECCIÓN ANTI-PÉRDIDA DE TRÁFICO (Canal no encontrado) 🔥
                     window.location.replace("https://oleadatvpremium.com/SportLive/agenda");
                 }
             } catch (e) { 
@@ -1076,7 +1104,6 @@
                 window.location.replace("https://oleadatvpremium.com/SportLive/agenda");
             }
         } else if (!peliId && !rDirecto && !channelId) {
-            // Si entran al ver.html sin ningún parámetro, también los mandamos a la web
             window.location.replace("https://oleadatvpremium.com/SportLive/agenda");
         }
     }
@@ -1128,7 +1155,6 @@
 
         if (esVIP && !yaEsB64) { 
             const textoOriginal = elemento.innerHTML;
-            
             elemento.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: #eab308;"></i> Conectando VIP...';
             
             try {
@@ -1150,7 +1176,6 @@
     
     setupVer();
     
-    // 🔥 RECEPTOR DEL ENLACE DESDE EL IFRAME PARA PROYECTAR A TV 🔥
     let urlListaParaCast = "";
     window.castHabilitado = false; 
 
@@ -1210,7 +1235,6 @@
   </div>
 
   <script>
-    // 1. Registrar el Service Worker (Tu "Maik Shield")
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => {
@@ -1219,13 +1243,11 @@
         });
     }
 
-    // 2. Lógica de Instalación PWA
     let deferredPrompt;
     const installBanner = document.getElementById('pwa-install-banner');
     const btnInstalar = document.getElementById('btn-instalar-app');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevenir el banner nativo de Google (Queremos mostrar el nuestro que es más bonito)
         e.preventDefault();
         deferredPrompt = e;
         installBanner.style.display = 'flex';
@@ -1241,7 +1263,6 @@
         }
     });
 
-    // Detectar iOS (Apple no deja instalar automático, hay que enseñarles cómo)
     const isIos = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
       return /iphone|ipad|ipod/.test( userAgent );
