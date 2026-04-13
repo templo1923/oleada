@@ -202,8 +202,25 @@
     
     .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
 
-    .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-    .bottom-ad { width: auto; max-width: 100%; display: flex; justify-content: center; }
+/* 🔥 BANNERS INFERIORES FORZADOS 🔥 */
+    .ads-bottom { 
+        margin-top: 30px; 
+        width: 100%; 
+        display: flex !important; /* Fuerza a que siempre se muestre la fila */
+        flex-direction: row; 
+        justify-content: space-around; 
+        flex-wrap: wrap;
+        gap: 15px; 
+        padding-bottom: 20px;
+    }
+    .bottom-ad { 
+        flex: 1; 
+        min-width: 320px; /* Asegura que la caja tenga espacio para el banner */
+        min-height: 60px; /* Evita que el contenedor colapse a 0px de alto */
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+    }
 
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
@@ -530,9 +547,36 @@
                 </div>
 
                 <div id="seo-content"></div>
-            </div>
-            
-<div class="ad-slot side-ad" style="border: none; background: transparent; box-shadow: none;">
+
+                <div class="ads-bottom">
+                    <div class="ad-slot bottom-ad" style="border: none; background: transparent; box-shadow: none; width: 100%;">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : '18c5a84b3204e04d518aa3377467dfd5',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
+                    </div>
+                    
+                    <div class="ad-slot bottom-ad" style="border: none; background: transparent; box-shadow: none; width: 100%;">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : 'a743195e3a35eef7dd05698efb5ee34e',
+                                'format' : 'iframe',
+                                'height' : 50,
+                                'width' : 320,
+                                'params' : {}
+                            };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+                    </div>
+                </div>
+
+            </div> <div class="ad-slot side-ad" style="border: none; background: transparent; box-shadow: none;">
                 <script type="text/javascript">
                     atOptions = {
                         'key' : '91ed6130324642c95007aff944f8ed98',
@@ -543,32 +587,6 @@
                     };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
-            </div>
-        </div> <div class="ads-bottom">
-            <div class="ad-slot bottom-ad" style="border: none; background: transparent; box-shadow: none;">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '18c5a84b3204e04d518aa3377467dfd5',
-                        'format' : 'iframe',
-                        'height' : 60,
-                        'width' : 468,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
-            </div>
-            
-            <div class="ad-slot bottom-ad" style="border: none; background: transparent; box-shadow: none;">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : 'a743195e3a35eef7dd05698efb5ee34e',
-                        'format' : 'iframe',
-                        'height' : 50,
-                        'width' : 320,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
             </div>
         </div>
     </main>
