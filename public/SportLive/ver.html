@@ -197,7 +197,7 @@
         overflow: hidden; transition: 0.3s; 
     }
     .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
+    .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
     
     .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
 
@@ -253,21 +253,16 @@
     .btn-opcion:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
     .btn-opcion:active { transform: scale(0.97); }
     
-    
-        
-/* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
+    /* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
     .btn-opcion.opcion-nativa {
         background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #60a5fa;
         box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
     }
 
-
     .btn-opcion.active-signal { 
         background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; 
         border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
     }
-    
-    
     
     #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 4; font-weight: 300;}
     
@@ -392,9 +387,6 @@
         
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
-        
-        .side-ad { order: 2; width: 100%; min-height: 90px; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
-        .ads-bottom { display: none !important; } 
     }
     
     /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
@@ -426,6 +418,19 @@
                 bottom: 85px !important;
                 z-index: 1000 !important;
             }
+    }
+
+    /* 🔥 CSS BLINDADO PARA AISLAR LOS BANNERS EN MÓVIL Y PC 🔥 */
+    .ad-pc { display: flex; width: 100%; height: 100%; justify-content: center; align-items: center; flex-direction: column;}
+    .ad-movil { display: none; width: 100%; justify-content: center; align-items: center; flex-direction: column;}
+
+    @media (max-width: 768px) {
+        .ad-pc { display: none !important; }
+        .ad-movil { display: flex !important; }
+        
+        .ad-slot.side-ad { background: transparent; border: none; box-shadow: none; height: auto; min-height: 0; padding: 10px 0;}
+        .side-ad { width: 100%; position: static; order: 2; margin: 0; }
+        .ads-bottom { display: none !important; } /* Ocultamos los de abajo en móvil para no sobrecargar */
     }
 
    </style>
@@ -472,8 +477,6 @@
         });
       });
     </script>
-
-
 </head>
 <body>
 
@@ -508,9 +511,12 @@
         <div class="page-layout">
             
             <div class="ad-slot side-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
-                    ESPACIO BANNER 1
-                </a>
+                <div class="ad-pc">
+                    <span>ESPACIO BANNER 160x600 (A)</span>
+                </div>
+                <div class="ad-movil">
+                    <span>ESPACIO BANNER 300x250</span>
+                </div>
             </div>
             
             <div class="center-column">
@@ -547,26 +553,33 @@
                     
                     <div id="servidores-list" class="servidores-grid"></div>
 
-                    <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;">
-                        </div>
+                    <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;"></div>
                 </div>
 
                 <div id="seo-content"></div>
             </div>
             
             <div class="ad-slot side-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">
-                    ESPACIO BANNER 2
-                </a>
+                <div class="ad-pc">
+                    <span style="color: #64748b; font-size: 10px; text-align:center;">PIDE UN NUEVO 160x600 PARA ESTE LUGAR</span>
+                </div>
+                <div class="ad-movil">
+                    <span>ESPACIO BANNER 320x50</span>
+                </div>
             </div>
         </div>
 
         <div class="ads-bottom">
             <div class="ad-slot bottom-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 3</a>
+                <div class="ad-pc">
+                    <span>ESPACIO BANNER 468x60 (A)</span>
+                </div>
             </div>
+            
             <div class="ad-slot bottom-ad">
-                <a href="#" target="_blank" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: inherit;">ESPACIO BANNER 4</a>
+                <div class="ad-pc">
+                    <span style="color: #64748b; font-size: 10px; text-align:center;">PIDE UN NUEVO 468x60 PARA ESTE LUGAR</span>
+                </div>
             </div>
         </div>
     </main>
