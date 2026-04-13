@@ -87,14 +87,15 @@
     
     .page-layout { display: flex; width: 100%; max-width: 1600px; gap: 20px; justify-content: center; align-items: flex-start; }
     
-    /* 🔥 REPRODUCTOR BLINDADO 🔥 */
+    /* 🔥 ARMADURA Z-INDEX: Protege tu reproductor de clics falsos 🔥 */
     .center-column { flex: 1; max-width: 1000px; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; position: relative; z-index: 100; }
     
+    /* REPRODUCTOR */
     .player-container { 
         width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; background: #000; 
         border-radius: 15px; position: relative; overflow: hidden; 
         border: 1px solid rgba(96, 165, 250, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.8); order: 1; 
-        z-index: 101;
+        z-index: 101; 
     }
     iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     
@@ -195,14 +196,13 @@
     .ad-slot { 
         background: transparent; border: none; border-radius: 15px; 
         display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
-        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; 
-        overflow: hidden; transition: 0.3s; position: relative; z-index: 1; 
+        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; position: relative; z-index: 1; 
     }
     .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
     
-    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
+    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; overflow: hidden; }
     .ads-bottom { margin-top: 25px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; }
-    .bottom-ad { width: 468px; height: 60px; flex-shrink: 0; }
+    .bottom-ad { width: 468px; height: 60px; flex-shrink: 0; overflow: hidden; }
     
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
@@ -335,7 +335,13 @@
     .nav-item.active { color: var(--primary); }
     .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
 
-    @media (min-width: 1200px) {
+    /* LÓGICA DE BANNERS - CÓMO SE MUESTRAN SEGÚN PANTALLA */
+    .show-pc { display: flex; width: 100%; justify-content: center; }
+    .show-pc-tablet { display: flex; width: 100%; justify-content: center; }
+    .show-tablet-mobile { display: none !important; width: 100%; justify-content: center; }
+
+    /* MODO ESCRITORIO */
+    @media (min-width: 1201px) {
         .bottom-nav { display: none; }
         .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
         .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
@@ -343,18 +349,20 @@
         .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
     }
 
-    /* 🔥 LOGICA RESPONSIVE: CÓMO SE MUESTRAN LOS BANNERS 🔥 */
-    /* MODO TABLET (menos de 1200px): Los lados desaparecen y los inyectamos abajo */
+    /* MODO TABLET */
     @media (max-width: 1200px) { 
+        .desktop-nav { display: none; } /* Oculta el menú superior */
+        .bottom-nav { display: flex; } /* Muestra el menú inferior bonito */
         .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
-        .side-ad { display: none !important; } /* Ocultamos los laterales en pantallas medianas/pequeñas */
-        .ads-bottom { flex-wrap: wrap; }
+        .side-ad { display: none !important; } /* Oculta los laterales */
+        .show-pc { display: none !important; } 
+        .show-tablet-mobile { display: flex !important; } /* Muestra los banners extra abajo */
+        .ads-bottom { flex-wrap: wrap; justify-content: center; gap: 15px; }
     }
     
-    /* MODO MÓVIL (menos de 768px): Todo apilado */
+    /* MODO MÓVIL */
     @media (max-width: 768px) { 
         body { padding-bottom: 70px; } 
-        .desktop-nav { display: none; } 
         .text-volver { display: none; }
         .back-btn { padding: 8px 12px; }
         #header-logo { max-width: 160px; font-size: 15px; }
@@ -367,8 +375,9 @@
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
         
-        .ads-bottom { flex-direction: column; align-items: center; gap: 10px; }
-        .bottom-ad { width: 100%; max-width: 320px; height: auto; }
+        .show-pc-tablet { display: none !important; } /* Oculta los de 468x60 en celular */
+        .ads-bottom { flex-direction: column; align-items: center; gap: 15px; }
+        .bottom-ad { height: auto !important; margin: 0; }
     }
     
     /* 🔥 MODO APAGADO BOTÓN CAST 🔥 */
@@ -429,8 +438,12 @@
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad" id="ad-left-pc">
+            <div class="ad-slot side-ad">
+                <div class="show-pc">
+                    <script data-cfasync="false">atOptions = {'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script>
+                    <script data-cfasync="false" src="https://wistfulseverely.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
                 </div>
+            </div>
             
             <div class="center-column">
                 <div class="player-container">
@@ -472,18 +485,38 @@
                 <div id="seo-content"></div>
             </div>
             
-            <div class="ad-slot side-ad" id="ad-right-pc">
+            <div class="ad-slot side-ad">
+                <div class="show-pc">
+                    <script data-cfasync="false">atOptions = {'key':'b2c9886be7495a584b1189cb74137158','format':'iframe','height':600,'width':160,'params':{}};</script>
+                    <script data-cfasync="false" src="https://wistfulseverely.com/b2c9886be7495a584b1189cb74137158/invoke.js"></script>
                 </div>
+            </div>
         </div>
 
-        <div class="ads-bottom" id="ads-bottom-container">
+        <div class="ads-bottom">
+            <div class="ad-slot bottom-ad show-pc-tablet" style="width: 468px; height: 60px;">
+                <script data-cfasync="false">atOptions = {'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script>
+                <script data-cfasync="false" src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
             </div>
+            <div class="ad-slot bottom-ad show-pc-tablet" style="width: 468px; height: 60px;">
+                <script data-cfasync="false">atOptions = {'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</script>
+                <script data-cfasync="false" src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></script>
+            </div>
+            <div class="ad-slot bottom-ad show-tablet-mobile" style="width: 300px; height: 250px;">
+                <script data-cfasync="false">atOptions = {'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script>
+                <script data-cfasync="false" src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+            </div>
+            <div class="ad-slot bottom-ad show-tablet-mobile" style="width: 320px; height: 50px;">
+                <script data-cfasync="false">atOptions = {'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script>
+                <script data-cfasync="false" src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+            </div>
+        </div>
     </main>
 
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
     <nav class="bottom-nav">
-        <div class="desktop-nav-item" onclick="navegarSeguro('index.html')"><i class="fas fa-home"></i> Inicio</div>
+        <div onclick="navegarSeguro('inicio')" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></div>
         <div onclick="navegarSeguro('agenda')" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Agenda</span></div>
         <div onclick="navegarSeguro('television')" class="nav-item"><i class="fas fa-tv"></i><span>TV En Vivo</span></div>
         <div onclick="navegarSeguro('peliculas')" class="nav-item"><i class="fas fa-film"></i><span>Películas</span></div>
@@ -516,81 +549,6 @@
             <a href="https://wa.me/584162805770?text=Hola,%20acabo%20de%20pagar%20la%20Licencia%20Premium.%20%0A%0AMis%20datos%20son:%0A-%20Web:%20[Escribe%20tu%20dominio]%0A-%20Comprobante:%20[Pega%20el%20ID%20o%20foto]" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Activar mi Dominio</a>
         </div>
     </div>
-
-<script>
-    // 🔥 LÓGICA DE INYECCIÓN DE BANNERS (El truco maestro) 🔥
-    document.addEventListener("DOMContentLoaded", function() {
-        const screenWidth = window.innerWidth;
-        const adLeftPc = document.getElementById('ad-left-pc');
-        const adRightPc = document.getElementById('ad-right-pc');
-        const adsBottom = document.getElementById('ads-bottom-container');
-
-        // Códigos limpios de Adsterra
-        const code160_A = `<script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/91ed6130324642c95007aff944f8ed98/invoke.js"></scr` + `ipt>`;
-        const code160_B = `<script>atOptions={'key':'b2c9886be7495a584b1189cb74137158','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/b2c9886be7495a584b1189cb74137158/invoke.js"></scr` + `ipt>`;
-        
-        const code468_A = `<script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></scr` + `ipt>`;
-        const code468_B = `<script>atOptions={'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></scr` + `ipt>`;
-        
-        const code300 = `<script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></scr` + `ipt>`;
-        const code320 = `<script>atOptions={'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></scr` + `ipt>`;
-
-        // Función para inyectar con DOM (evita que document.write rompa todo)
-        function injectAd(element, codeHTML) {
-            if(!element) return;
-            const iframe = document.createElement('iframe');
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.style.border = 'none';
-            iframe.style.overflow = 'hidden';
-            iframe.scrolling = 'no';
-            
-            const htmlContent = `<!DOCTYPE html><html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head><body>${codeHTML}</body></html>`;
-            
-            element.appendChild(iframe);
-            iframe.contentWindow.document.open();
-            iframe.contentWindow.document.write(htmlContent);
-            iframe.contentWindow.document.close();
-        }
-
-        if (screenWidth > 1200) {
-            // MODO PC: 2 lados, 2 abajo
-            injectAd(adLeftPc, code160_A);
-            injectAd(adRightPc, code160_B);
-            
-            const bottomA = document.createElement('div'); bottomA.className = 'ad-slot bottom-ad';
-            const bottomB = document.createElement('div'); bottomB.className = 'ad-slot bottom-ad';
-            adsBottom.appendChild(bottomA); adsBottom.appendChild(bottomB);
-            
-            injectAd(bottomA, code468_A);
-            injectAd(bottomB, code468_B);
-
-        } else if (screenWidth > 768 && screenWidth <= 1200) {
-            // MODO TABLET: 4 abajo
-            const b1 = document.createElement('div'); b1.className = 'ad-slot bottom-ad'; b1.style.width = '300px'; b1.style.height = '250px';
-            const b2 = document.createElement('div'); b2.className = 'ad-slot bottom-ad'; b2.style.width = '320px'; b2.style.height = '50px';
-            const b3 = document.createElement('div'); b3.className = 'ad-slot bottom-ad'; b3.style.width = '468px'; b3.style.height = '60px';
-            const b4 = document.createElement('div'); b4.className = 'ad-slot bottom-ad'; b4.style.width = '468px'; b4.style.height = '60px';
-            
-            adsBottom.appendChild(b1); adsBottom.appendChild(b2); adsBottom.appendChild(b3); adsBottom.appendChild(b4);
-            
-            injectAd(b1, code300);
-            injectAd(b2, code320);
-            injectAd(b3, code468_A);
-            injectAd(b4, code468_B);
-
-        } else {
-            // MODO MÓVIL: 2 abajo
-            const m1 = document.createElement('div'); m1.className = 'ad-slot bottom-ad'; m1.style.width = '300px'; m1.style.height = '250px';
-            const m2 = document.createElement('div'); m2.className = 'ad-slot bottom-ad'; m2.style.width = '320px'; m2.style.height = '50px';
-            
-            adsBottom.appendChild(m1); adsBottom.appendChild(m2);
-            
-            injectAd(m1, code300);
-            injectAd(m2, code320);
-        }
-    });
-</script>
 
 <script>
     if (document.referrer === "" && !window.location.href.includes('&ref=vip')) {
