@@ -197,7 +197,7 @@
         overflow: hidden; transition: 0.3s; 
     }
     .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-    .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
+    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
     
     .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
 
@@ -387,6 +387,7 @@
         
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
+        
     }
     
     /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
@@ -420,22 +421,16 @@
             }
     }
 
-    /* 🔥 CSS BLINDADO PARA PUBLICIDAD ADSTERRA 🔥 */
-    .ad-pc { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; }
-    .ad-movil { display: none; width: 100%; align-items: center; justify-content: center; }
+    /* 🔥 CSS DE AISLAMIENTO PARA LOS BANNERS 🔥 */
+    .solo-pc { display: flex; width: 100%; height: 100%; justify-content: center; align-items: center; }
+    .solo-movil { display: none; width: 100%; justify-content: center; align-items: center; margin: 10px 0; }
+    .ad-box-fix { background: transparent !important; border: none !important; box-shadow: none !important; }
 
     @media (max-width: 768px) {
-        .ad-pc { display: none !important; }
-        .ad-movil { display: flex !important; }
-        .ad-slot.side-ad { 
-            background: transparent !important; 
-            border: none !important; 
-            box-shadow: none !important; 
-            height: auto !important; 
-            min-height: 0 !important; 
-            margin: 10px 0; 
-        }
-        .ads-bottom { display: none !important; } /* Ocultamos los inferiores en móvil para no sobrecargar */
+        .solo-pc { display: none !important; }
+        .solo-movil { display: flex !important; }
+        .side-ad { order: 2; width: 100%; min-height: 0; height: auto; margin: 0; position: static; border-radius: 0; border-left: none; border-right: none;}
+        .ads-bottom { display: none !important; }
     }
    </style>
 
@@ -446,7 +441,38 @@
         await OneSignal.init({
           appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
           safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
-          notifyButton: { enable: true }
+          notifyButton: {
+            enable: true,
+            colors: {
+              'circle.background': '#ef4444',
+              'circle.foreground': 'white',
+              'badge.background': '#3b82f6',
+              'badge.foreground': 'white',
+              'badge.bordercolor': 'white',
+              'pulse.color': '#ef4444',
+              'dialog.button.background.hovering': '#dc2626',
+              'dialog.button.background.active': '#dc2626',
+              'dialog.button.background': '#ef4444',
+              'dialog.button.foreground': 'white',
+            }
+          },
+          promptOptions: {
+            slidedown: {
+              prompts: [{
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "Recibe alertas de los mejores Eventos en vivo y eventos estelares.",
+                  acceptButton: "¡Claro que sí!",
+                  cancelButton: "No, gracias"
+                },
+                delay: {
+                  pageViews: 1,
+                  timeDelay: 3
+                }
+              }]
+            }
+          }
         });
       });
     </script>
@@ -483,14 +509,12 @@
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad">
-                <div class="ad-pc">
-                    <script>atOptions = {'key' : '91ed6130324642c95007aff944f8ed98','format' : 'iframe','height' : 600,'width' : 160,'params' : {}};</script>
-                    <script src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+            <div class="ad-slot side-ad ad-box-fix">
+                <div class="solo-pc">
+                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script><script src='https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js'></script>" width="160" height="600" frameborder="0" scrolling="no"></iframe>
                 </div>
-                <div class="ad-movil">
-                    <script>atOptions = {'key' : '0d1f7726b341e7d353a33f1478fd2702','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script>
-                    <script src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+                <div class="solo-movil">
+                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script><script src='https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js'></script>" width="300" height="250" frameborder="0" scrolling="no"></iframe>
                 </div>
             </div>
             
@@ -505,48 +529,59 @@
 
                 <div class="controls">
                     <button class="btn" onclick="let iframe = document.getElementById('main-motor'); iframe.src = iframe.src;"><i class="fas fa-sync-alt"></i> Recargar</button>
-                    <button class="btn btn-comunidad" onclick="window.open('https://t.me/TU_GRUPO', '_blank')"><i class="fab fa-telegram"></i> Comunidad</button>
+                    
+                    <button class="btn btn-comunidad" onclick="window.open('https://t.me/TU_GRUPO', '_blank')">
+                        <i class="fab fa-telegram"></i> Comunidad
+                    </button>
+
                     <button class="btn" onclick="toggleFS()"><i class="fas fa-expand"></i> Ampliar</button>
                     <button class="btn" onclick="compartirCanal()"><i class="fas fa-share-alt"></i> Compartir</button>
                     <button class="btn" onclick="abrirModalEmbed()"><i class="fas fa-code"></i> Insertar</button>
-                    <button class="btn" id="btn-proyectar-tv" style="display:none;" onclick="iniciarCasteo()"><i class="fa-brands fa-chromecast"></i> Proyectar</button>
+                    
+                    <button class="btn" id="btn-proyectar-tv" style="display:none;" onclick="iniciarCasteo()">
+                        <i class="fa-brands fa-chromecast"></i> Proyectar
+                    </button>
                 </div>
 
                 <div id="multi-signals"></div>
 
                 <div id="vod-controls" class="vod-controls-box">
-                    <h4 style="color:#60a5fa; margin-bottom:10px; text-align:center; font-size:14px; font-weight:800; letter-spacing: 1px;"><i class="fas fa-server"></i> SELECCIONA UN SERVIDOR</h4>
+                    <h4 style="color:#60a5fa; margin-bottom:10px; text-align:center; font-size:14px; font-weight:800; letter-spacing: 1px;">
+                        <i class="fas fa-server"></i> SELECCIONA UN SERVIDOR
+                    </h4>
+                    
                     <div id="servidores-list" class="servidores-grid"></div>
+
                     <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;"></div>
                 </div>
 
                 <div id="seo-content"></div>
             </div>
             
-            <div class="ad-slot side-ad">
-                <div class="ad-pc">
-                    <script>atOptions = {'key' : '91ed6130324642c95007aff944f8ed98','format' : 'iframe','height' : 600,'width' : 160,'params' : {}};</script>
-                    <script src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+            <div class="ad-slot side-ad ad-box-fix">
+                <div class="solo-pc">
+                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script><script src='https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js'></script>" width="160" height="600" frameborder="0" scrolling="no"></iframe>
                 </div>
-                <div class="ad-movil">
-                    <script>atOptions = {'key' : 'a743195e3a35eef7dd05698efb5ee34e','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
-                    <script src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+                <div class="solo-movil">
+                    <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script><script src='https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js'></script>" width="320" height="50" frameborder="0" scrolling="no"></iframe>
                 </div>
             </div>
         </div>
 
         <div class="ads-bottom">
-            <div class="ad-slot bottom-ad">
-                <script>atOptions = {'key' : '18c5a84b3204e04d518aa3377467dfd5','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};</script>
-                <script src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
+            <div class="ad-slot bottom-ad ad-box-fix">
+                <div class="solo-pc">
+                     <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script><script src='https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js'></script>" width="468" height="60" frameborder="0" scrolling="no"></iframe>
+                </div>
             </div>
-            <div class="ad-slot bottom-ad">
-                <script>atOptions = {'key' : '18c5a84b3204e04d518aa3377467dfd5','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};</script>
-                <script src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
+            <div class="ad-slot bottom-ad ad-box-fix">
+                <div class="solo-pc">
+                     <iframe srcdoc="<style>body{margin:0;padding:0;overflow:hidden;}</style><script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script><script src='https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js'></script>" width="468" height="60" frameborder="0" scrolling="no"></iframe>
+                </div>
             </div>
         </div>
     </main>
-    
+
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
     <nav class="bottom-nav">
