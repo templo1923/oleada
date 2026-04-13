@@ -8,15 +8,14 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#3b82f6">
     <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./icons/icon-16x16.png">
-  <link rel="shortcut icon" href="./icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/icon-16x16.png">
+    <link rel="shortcut icon" href="./icons/favicon.ico">
 
     <meta name="referrer" content="origin">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-    /* DISEÑO BASE UNIFICADO PRO */
     :root {
         --primary: #3b82f6; 
         --secondary: #1e3a8a;
@@ -27,7 +26,6 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
     
-    html { height: 100%; } 
     body { 
         min-height: 100vh; 
         background-color: var(--bg-dark); 
@@ -36,520 +34,99 @@
         background-image: radial-gradient(circle at top right, rgba(30, 58, 138, 0.2), transparent 400px);
     }
 
-    /* HEADER PRO */
+    /* HEADER */
     header { 
-        background: rgba(8, 12, 20, 0.8); 
-        backdrop-filter: blur(15px); 
-        padding: 15px 20px; 
+        background: rgba(8, 12, 20, 0.8); backdrop-filter: blur(15px); padding: 15px 20px; 
         display: flex; justify-content: space-between; align-items: center; 
-        box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 1000; 
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
         position: sticky; top: 0;
     }
     .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 15px; }
-    
-    .header-title { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-    .logo { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 8px; width: 100%; overflow: hidden; }
-    .logo i { color: var(--primary); flex-shrink: 0; }
-    
-    #header-logo { 
-        display: block; 
-        background: linear-gradient(to right, #ffffff, var(--primary)); 
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        text-transform: uppercase; letter-spacing: 1px;
-        white-space: nowrap; 
-        overflow: hidden; 
-        text-overflow: ellipsis;
-        max-width: 50vw;
-    }   
-    
-    .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+    #header-logo { background: linear-gradient(to right, #ffffff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
 
-    .back-btn { 
-        color: #cbd5e1; text-decoration: none; 
-        background: var(--glass); padding: 8px 16px; border-radius: 30px; 
-        font-size: 13px; font-weight: 600; cursor: pointer; 
-        border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px; 
-        transition: 0.3s; flex-shrink: 0;
+    /* ESTRUCTURA PRINCIPAL REPARADA */
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; width: 100%; }
+    
+    .page-layout { 
+        display: flex; 
+        width: 100%; 
+        max-width: 1500px; /* Amarra los laterales para que no "vuelen" */
+        gap: 20px; 
+        justify-content: center; 
+        align-items: flex-start; 
     }
-    .back-btn:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.4); }
 
-    .menu-container { position: relative; }
-    .menu-button { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 38px; height: 38px; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-    .menu-button:hover { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); transform: scale(1.05); }
-    .menu-dropdown { position: absolute; top: 45px; right: 0; background: #111827; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 200px; display: none; z-index: 1002; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-    .menu-dropdown.active { display: block; animation: fadeIn 0.2s ease; }
-    .menu-dropdown a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #cbd5e1; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .menu-dropdown a:hover { background: rgba(59, 130, 246, 0.1); color: #fff; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .center-column { 
+        flex: 1; 
+        max-width: 900px; /* Tamaño ideal del reproductor */
+        min-width: 0; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+    }
 
-    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; width: 100%; }
-    
-    .page-layout { display: flex; width: 100%; max-width: 1600px; gap: 20px; justify-content: center; align-items: flex-start; }
-    .center-column { flex: 1; max-width: 1000px; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
-    
     /* REPRODUCTOR */
     .player-container { 
-        width: 100%; aspect-ratio: 16 / 9; max-height: 60vh; background: #000; 
+        width: 100%; aspect-ratio: 16 / 9; background: #000; 
         border-radius: 15px; position: relative; overflow: hidden; 
-        border: 1px solid rgba(96, 165, 250, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.8); order: 1; 
+        border: 1px solid rgba(96, 165, 250, 0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
     iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    
-    /* ESTILOS VOD */
-    #player-overlay {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-size: cover; background-position: center; z-index: 5;
-        display: none; align-items: center; justify-content: center;
-        border-radius: 15px; overflow: hidden;
-    }
-    .overlay-glass {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(8, 12, 20, 0.6); backdrop-filter: blur(3px); z-index: 1;
-    }
-    .btn-play-master {
-        position: relative; z-index: 2; background: rgba(59, 130, 246, 0.8);
-        color: white; border: 2px solid rgba(255, 255, 255, 0.2); width: 80px; height: 80px;
-        border-radius: 50%; font-size: 30px; cursor: pointer; display: flex;
-        align-items: center; justify-content: center; transition: 0.3s;
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); backdrop-filter: blur(5px);
-        padding-left: 5px; 
-    }
-    .btn-play-master:hover { transform: scale(1.1); background: var(--primary); box-shadow: 0 0 40px rgba(59, 130, 246, 0.9); }
-    
-    .vod-controls-box { width: 100%; margin-top: 15px; display: none; flex-direction: column; gap: 15px; order: 3;}
-    
-    /* SELECTOR TIPO DROPDOWN */
-    .custom-select-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
-    
-    .selected-card {
-        background: linear-gradient(145deg, rgba(37, 99, 235, 0.1), rgba(29, 78, 216, 0.2));
-        border: 1px solid var(--primary); padding: 15px; border-radius: 12px;
-        display: flex; justify-content: center; align-items: center; cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.3s; position: relative;
-    }
-    .selected-card:hover { border-color: #60a5fa; background: rgba(59, 130, 246, 0.15); }
-    .selected-info { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; flex: 1; margin: 0 25px; }
-    .dropdown-icon { color: #60a5fa; transition: transform 0.3s; font-size: 16px; position: absolute; right: 15px; }
-    .dropdown-icon.open { transform: rotate(180deg); }
 
-    .options-grid {
-        display: none; 
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
-        background: rgba(17, 24, 39, 0.95); padding: 15px; border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;
-    }
-    .options-grid.open { display: grid; animation: fadeIn 0.3s ease; }
-
-    .server-card {
-        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-        padding: 12px 10px; border-radius: 10px; cursor: pointer; transition: 0.3s;
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; 
-        height: 100%; width: 100%;
-    }
-    .server-card:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
-    
-    .server-name { 
-        font-size: 12px; font-weight: 800; color: #f8fafc; text-transform: uppercase; text-align: center; 
-        width: 100%; word-break: break-word; overflow-wrap: anywhere; line-height: 1.3;
-    }
-    .server-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center;}
-    .server-tags span { padding: 4px 6px; border-radius: 6px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
-    
-    .badge-lang { background: rgba(255,255,255,0.1); color: #e2e8f0; }
-    .badge-vip { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
-    .badge-ads { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
-
-    /* ESTILOS VOD: ACORDEÓN DE DESCARGAS Y TORRENT */
-    .descargas-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
-    .descargas-header {
-        background: linear-gradient(145deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.2));
-        border: 1px solid #10b981; padding: 15px; border-radius: 12px;
-        display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-        transition: 0.3s; color: #10b981; font-weight: 800; font-size: 14px;
-    }
-    .descargas-header:hover { background: rgba(16, 185, 129, 0.2); border-color: #34d399; }
-    .descargas-grid {
-        display: none; flex-direction: column; gap: 8px;
-        background: rgba(17, 24, 39, 0.95); padding: 15px; border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;
-    }
-    .descargas-grid.open { display: flex; animation: fadeIn 0.3s ease; }
-    .torrent-info {
-        background: rgba(59, 130, 246, 0.05); border-left: 3px solid #3b82f6;
-        padding: 12px; font-size: 12px; color: #94a3b8; border-radius: 0 8px 8px 0;
-        margin-bottom: 10px; text-align: left; line-height: 1.5;
-    }
-    .torrent-info strong { color: #60a5fa; font-size: 13px; display: block; margin-bottom: 4px; }
-    
-    .btn-descarga {
-        background: linear-gradient(145deg, #10b981, #059669); color: white; border: none;
-        padding: 12px 15px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; text-decoration: none;
-    }
-    .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
-
-    /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
+    /* PUBLICIDAD ADSTERRA FIX */
     .ad-slot { 
         background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
-        display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
-        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); 
-        overflow: hidden; transition: 0.3s; 
+        display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
     
-    /* Ajuste para que el banner 160x600 no se corte */
-.side-ad { 
-    width: 160px; 
-    height: 600px; /* Altura fija para el banner de Adsterra */
-    flex-shrink: 0; 
-    position: sticky; 
-    top: 90px; 
-    align-self: flex-start; 
-}
+    /* El de 160x600 necesita alto fijo */
+    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: sticky; top: 90px; }
 
-/* Ajuste para los de abajo (300x250) */
-.ads-bottom { 
-    margin-top: 25px; 
-    width: 100%; 
-    max-width: 1000px; 
-    display: flex; 
-    gap: 15px; 
-    justify-content: center; 
-}
-.bottom-ad { 
-    flex: 1; 
-    min-height: 250px; /* Altura mínima para que quepa el banner de 250 */
-    display: flex;
-    justify-content: center;
-}
-    
-    /* 🔥 CONTROLES Y BOTONES 🔥 */
-    .controls { 
-        margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 100%; 
-        justify-content: center; order: 2; flex-wrap: wrap; 
-    }
-    
-    .btn { 
-        background: var(--glass); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.05); 
-        padding: 10px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; 
-        font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; flex-shrink: 0;
-    }
-    .btn i { color: var(--primary); font-size: 16px; }
-    .btn:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.4); color: #fff; }
+    /* Los de abajo necesitan 250px de alto */
+    .ads-bottom { margin-top: 25px; width: 100%; display: flex; gap: 15px; justify-content: center; }
+    .bottom-ad { width: 300px; height: 250px; flex-shrink: 0; }
 
-    /* 🔥 BOTÓN COMUNIDAD 🔥 */
-    .btn-comunidad {
-        background: linear-gradient(145deg, #0088cc, #00a6c7) !important;
-        color: white !important;
-        border: none !important;
-        box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
-        animation: pulse-comunidad 2s infinite;
-    }
-    .btn-comunidad i { color: white !important; }
-    .btn-comunidad:hover { transform: translateY(-2px); }
-    @keyframes pulse-comunidad { 
-        0% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
-        50% { box-shadow: 0 0 15px rgba(0, 136, 204, 0.8); } 
-        100% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.4); } 
-    }
-    
-    /* 🔥 CAJA DE SEÑALES DE CANALES (FLEXBOX CENTRADO) 🔥 */
-    #multi-signals { 
-        margin-top: 20px; display: none; 
-        flex-wrap: wrap; justify-content: center;
-        gap: 12px; padding: 20px; background: var(--card-bg); 
-        border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); width: 100%; order: 3; 
-    }
-    .btn-opcion { 
-        flex: 0 0 160px; 
-        background: var(--glass); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); 
-        padding: 12px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; cursor: pointer; 
-        display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; 
-        text-transform: uppercase; letter-spacing: 0.5px; min-height: 48px; position: relative; 
-        word-break: break-word; overflow-wrap: anywhere; white-space: normal; text-align: center; line-height: 1.3; height: auto;
-    }
-    .btn-opcion i { font-size: 14px; }
-    .btn-opcion:hover { background: rgba(59, 130, 246, 0.1); color: #fff; border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
-    .btn-opcion:active { transform: scale(0.97); }
-    
-    
-        
-/* 🔥 ESTILO PARA LA OPCIÓN RECOMENDADA (TU MINA DE ORO) 🔥 */
-    .btn-opcion.opcion-nativa {
-        background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #60a5fa;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+    .mobile-only-ad { display: none; } /* Oculto en PC */
+
+    /* BOTONES Y SEÑALES (Mantenemos tus estilos) */
+    .controls { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .btn { background: var(--glass); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
+    .btn-comunidad { background: linear-gradient(145deg, #0088cc, #00a6c7) !important; color: white !important; }
+
+    #multi-signals { margin-top: 20px; display: none; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 20px; background: var(--card-bg); border-radius: 15px; width: 100%; }
+    .btn-opcion { flex: 0 0 160px; background: var(--glass); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; text-align: center; }
+    .active-signal { background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; }
+
+    /* --- RESPONSIVE REPARADO --- */
+    @media (max-width: 1200px) {
+        .page-layout { flex-direction: column; align-items: center; }
+        .side-ad { display: none !important; } /* Ocultamos los de 160x600 porque rompen la pantalla */
     }
 
+    @media (max-width: 768px) {
+        main { padding: 10px; }
+        .player-container { border-radius: 0; }
+        .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 10px; }
+        .btn { flex-direction: column; font-size: 10px; padding: 10px 4px; border-radius: 12px; }
+        #multi-signals { border-radius: 0; }
+        .btn-opcion { flex: 0 0 calc(50% - 5px); }
 
-    .btn-opcion.active-signal { 
-        background: linear-gradient(145deg, #3b82f6, #2563eb) !important; color: #fff !important; 
-        border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
+        /* MOSTRAR BANNER MOVIL 320x50 CENTRADO */
+        .mobile-only-ad { display: flex !important; width: 320px; height: 50px; margin: 15px auto; }
+        .ads-bottom { flex-direction: column; align-items: center; }
     }
-    
-    
-    
-    #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 4; font-weight: 300;}
-    
-    /* MODALES PRO */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-content { 
-        background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; 
-        border-radius: 20px; width: 90%; max-width: 450px; text-align: center; position: relative; 
-        box-shadow: 0 20px 50px rgba(0,0,0,0.9); transform: translateY(20px); transition: 0.3s ease; 
-    }
-    .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-content h3 { color: #f8fafc; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; }
-    .modal-content h3 i { color: var(--primary); font-size: 22px; }
-    .modal-content p { color: #94a3b8; font-size: 13px; margin-bottom: 20px; line-height: 1.6; font-weight: 400;}
-    .close-btn { position: absolute; top: 15px; right: 15px; color: #64748b; cursor: pointer; font-size: 20px; transition: 0.3s; background: var(--glass); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .close-btn:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-    
-    #textarea-embed { 
-        width: 100%; height: 90px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); 
-        color: #94a3b8; border-radius: 10px; padding: 15px; font-family: monospace; font-size: 12px; 
-        resize: none; margin-bottom: 20px; outline: none; transition: 0.3s;
-    }
-    #textarea-embed:focus { border-color: var(--primary); color: #fff; background: rgba(59, 130, 246, 0.05);}
-    
-    .btn-copiar { 
-        background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; border: none; padding: 14px 20px; 
-        border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; 
-        gap: 10px; transition: 0.3s; width: 100%; justify-content: center; text-transform: uppercase; letter-spacing: 1px; 
-    }
-    .btn-copiar:hover { box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5); transform: translateY(-2px);}
-    
-    .premium-upsell { 
-        margin-top: 20px; padding: 15px; background: rgba(234, 179, 8, 0.05); border: 1px dashed rgba(234, 179, 8, 0.3); 
-        border-radius: 10px; font-size: 12px; color: #facc15; display: flex; flex-direction: column; gap: 12px; text-align: center; 
-    }
-    .btn-upsell { 
-        background: linear-gradient(145deg, #eab308, #ca8a04); color: #000; border: none; padding: 12px; 
-        border-radius: 8px; font-weight: 900; font-size: 12px; cursor: pointer; display: flex; align-items: center; 
-        justify-content: center; gap: 8px; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .btn-upsell:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4); }
-    
-    .instrucciones-lista { text-align: left; display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
-    .paso-item { display: flex; gap: 15px; align-items: flex-start; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
-    .paso-num { background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 14px; flex-shrink: 0; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);}
-    .paso-text h4 { margin: 0 0 6px 0; color: #f8fafc; font-size: 14px; font-weight: 800;}
-    .paso-text p { margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;}
-    
-    .btn-paypal { display: inline-flex; align-items: center; gap: 8px; background: #0070ba; color: white; text-decoration: none; padding: 10px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; margin-top: 10px; transition: 0.3s; }
-    .btn-paypal:hover { background: #005ea6; transform: translateY(-2px);}
-    
-    .btn-whatsapp { 
-        background: linear-gradient(145deg, #25D366, #1ebd57); color: white; text-decoration: none; padding: 14px; 
-        border-radius: 10px; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; 
-        gap: 10px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-    }
-    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
-    
-    /* ESTILOS PARA NAVEGACIÓN MÓVIL Y DESKTOP */
-    .bottom-nav {
-        position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(8, 12, 20, 0.95);
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-        padding: 8px 10px 15px 10px; display: flex; justify-content: space-around; align-items: center;
-        z-index: 1001; border-top: 1px solid rgba(255,255,255,0.05); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); 
-    }
-    .nav-item { color: #64748b; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; transition: all 0.3s; flex: 1; cursor: pointer; }
-    .nav-item i { font-size: 22px; margin-bottom: 4px; transition: 0.3s; }
-    .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; transition: 0.3s; }
-    .nav-item.active { color: var(--primary); }
-    .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
-
-    @media (min-width: 768px) {
-        .bottom-nav { display: none; }
-        .desktop-nav { display: flex; gap: clamp(10px, 1.5vw, 20px); align-items: center; justify-content: center; flex-shrink: 0; }
-        .desktop-nav-item { color: #94a3b8; font-size: clamp(12px, 1.2vw, 14px); font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .desktop-nav-item:hover { color: #fff; }
-        .desktop-nav-item.active { color: var(--primary); font-weight: 800; }
-    }
-
-    @media (max-width: 1200px) { .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
-    
-    .side-ad { width: 100%; max-width: 1000px; height: auto; min-height: 250px; order: 5; position: static; } }
-    
-    /* 🔥 MÓVIL: CUADRÍCULA 3x2, TÍTULO MULTILÍNEA Y CANALES PERFECTOS 🔥 */
-    @media (max-width: 768px) { 
-        body { padding-bottom: 70px; } 
-        .desktop-nav { display: none; } 
-        
-        .text-volver { display: none; }
-        .back-btn { padding: 8px 12px; }
-        
-        #header-logo { max-width: 160px; font-size: 15px; }
-        .player-container { border-radius: 0; max-height: none; width: 100%; border: none; border-bottom: 1px solid rgba(255,255,255,0.05);} 
-        
-        .controls { 
-            padding: 0 10px; 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 8px; 
-        } 
-        .btn { 
-            width: 100%; 
-            height: 100%;
-            flex-direction: column;
-            justify-content: center; 
-            font-size: 10px; 
-            padding: 10px 4px; 
-            border-radius: 12px;
-            gap: 5px;
-            text-align: center;
-        } 
-        .btn i { font-size: 18px; margin: 0; }
-
-        /* CANALES (Señales) CON FLEXBOX INTELIGENTE PARA CENTRAR IMPARES */
-        #multi-signals { 
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 10px; padding: 15px; border-radius: 0; border-left: none; border-right: none;
-        }
-        .btn-opcion { 
-            flex: 0 0 calc(50% - 5px);
-            padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; 
-        }
-        
-        .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
-        .center-column { order: 1; }
-        
-        /* Ajuste para el banner lateral que ahora queda arriba o abajo en móvil */
-.side-ad { 
-    order: 2; 
-    width: 100%; 
-    min-height: 50px; /* Espacio para el banner 320x50 */
-    height: auto; 
-    margin: 15px 0; 
-    position: static; 
-    border-radius: 0; 
-    border-left: none; 
-    border-right: none;
-}
-
-/* ACTIVAMOS los banners de abajo en móvil */
-.ads-bottom { 
-    display: flex !important; /* Quitamos el none */
-    flex-direction: column; 
-    align-items: center; 
-    gap: 10px; 
-    margin-bottom: 20px;
-}
-.bottom-ad { 
-    width: 320px; 
-    height: 50px; /* Tamaño exacto de tu banner móvil */
-    flex: none;
-}
-
-    }
-
-    /* 🔥 NUEVO: MODO APAGADO (GRIS Y SIN BRILLO) PARA EL BOTÓN CAST 🔥 */
-    #btn-proyectar-tv.btn-disabled {
-        background: var(--glass) !important;
-        color: #64748b !important;
-        box-shadow: none !important;
-        border: 1px dashed rgba(255, 255, 255, 0.1) !important;
-        cursor: pointer !important;
-    }
-    #btn-proyectar-tv.btn-disabled i { color: #64748b !important; }
-    #btn-proyectar-tv.btn-disabled:hover { transform: none !important; background: rgba(255,255,255,0.02) !important; }
-
-    /* 🔥 NUEVO: ALERTA TOAST 🔥 */
-    #custom-toast {
-        position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-        background: #1e293b; border-left: 4px solid #ef4444; color: #f8fafc;
-        padding: 15px 25px; border-radius: 8px; font-size: 13px; font-weight: 600;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 99999;
-        display: flex; align-items: center; gap: 12px; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        width: max-content; max-width: 90vw; text-align: left; line-height: 1.4;
-    }
-    #custom-toast.show { bottom: 80px; } 
-    
-    /* 🔥 TRUCO: Empuja la campanita de OneSignal hacia arriba en móviles 🔥 */
-    @media (max-width: 767px) {
-            #onesignal-bell-container, 
-            .onesignal-bell-launcher {
-                bottom: 85px !important;
-                z-index: 1000 !important;
-            }
-    }
-
-    
-
-   </style>
-
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
-          safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
-          notifyButton: {
-            enable: true,
-            colors: {
-              'circle.background': '#ef4444',
-              'circle.foreground': 'white',
-              'badge.background': '#3b82f6',
-              'badge.foreground': 'white',
-              'badge.bordercolor': 'white',
-              'pulse.color': '#ef4444',
-              'dialog.button.background.hovering': '#dc2626',
-              'dialog.button.background.active': '#dc2626',
-              'dialog.button.background': '#ef4444',
-              'dialog.button.foreground': 'white',
-            }
-          },
-          promptOptions: {
-            slidedown: {
-              prompts: [{
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Recibe alertas de los mejores Eventos en vivo y eventos estelares.",
-                  acceptButton: "¡Claro que sí!",
-                  cancelButton: "No, gracias"
-                },
-                delay: {
-                  pageViews: 1,
-                  timeDelay: 3
-                }
-              }]
-            }
-          }
-        });
-      });
-    </script>
-
-
+</style>
 </head>
 <body>
 
     <header>
         <div class="header-content">
-            <div class="header-title">
-                <div class="logo"><i class="fas fa-play-circle"></i> <span id="header-logo">SPORT LIVE</span></div>
-            </div>
-            
+            <div class="logo"><i class="fas fa-play-circle" style="color:var(--primary)"></i> <span id="header-logo">SPORT LIVE</span></div>
             <nav class="desktop-nav">
-                <div class="desktop-nav-item" onclick="navegarSeguro('inicio')"><i class="fas fa-home"></i> Inicio</div>
-                <div class="desktop-nav-item" onclick="navegarSeguro('agenda')"><i class="fas fa-calendar-alt"></i> Agenda</div>
-                <div class="desktop-nav-item" onclick="navegarSeguro('television')"><i class="fas fa-tv"></i> TV En Vivo</div>
-                <div class="desktop-nav-item" onclick="navegarSeguro('peliculas')"><i class="fas fa-film"></i> Películas</div>
-            </nav>
-
+                </nav>
             <div class="header-actions">
-                <button onclick="volverAtras()" class="back-btn"><i class="fas fa-arrow-left"></i> <span class="text-volver">VOLVER</span></button>
-                <div class="menu-container">
-                    <button class="menu-button" id="menuButton"><i class="fas fa-bars"></i></button>
-                    <div class="menu-dropdown" id="menuDropdown">
-                        <a onclick="window.open('https://chat.whatsapp.com/TU_GRUPO', '_blank')"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Comunidad SportLive</a>
-                        <a onclick="window.open('https://play.google.com/store/apps/details?id=com.vpn.lat', '_blank')"><i class="fas fa-shield-alt" style="color: #3b82f6;"></i> Descargar VPN</a>
-                        <a onclick="compartirCanal()"><i class="fas fa-share-nodes" style="color: #eab308;"></i> Compartir Web</a>
-                    </div>
-                </div>
+                <button onclick="volverAtras()" class="back-btn"><i class="fas fa-arrow-left"></i> VOLVER</button>
             </div>
         </div>
     </header>
@@ -557,94 +134,58 @@
     <main>
         <div class="page-layout">
             
-<div class="ad-slot side-ad">
-    <script type="text/javascript">
-        atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
-    </script>
-    <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
-</div>
+            <div class="ad-slot side-ad">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+            </div>
             
             <div class="center-column">
+                <div class="ad-slot mobile-only-ad">
+                    <script type="text/javascript">
+                        atOptions = { 'key' : 'a743195e3a35eef7dd05698efb5ee34e', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                    </script>
+                    <script type="text/javascript" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
+                </div>
+
                 <div class="player-container">
-                    <div id="player-overlay">
-                        <div class="overlay-glass"></div>
-                        <button class="btn-play-master" id="btn-play-peli" onclick="iniciarPeliculaVOD()"><i class="fas fa-play"></i></button>
-                    </div>
-                    <iframe id="main-motor" src="" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe id="main-motor" src="" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
                 </div>
 
                 <div class="controls">
-                    <button class="btn" onclick="let iframe = document.getElementById('main-motor'); iframe.src = iframe.src;"><i class="fas fa-sync-alt"></i> Recargar</button>
-                    
-                    <button class="btn btn-comunidad" onclick="window.open('https://t.me/TU_GRUPO', '_blank')">
-                        <i class="fab fa-telegram"></i> Comunidad
-                    </button>
-
+                    <button class="btn" onclick="location.reload()"><i class="fas fa-sync-alt"></i> Recargar</button>
+                    <button class="btn btn-comunidad" onclick="window.open('https://t.me/TU_GRUPO', '_blank')"><i class="fab fa-telegram"></i> Comunidad</button>
                     <button class="btn" onclick="toggleFS()"><i class="fas fa-expand"></i> Ampliar</button>
-                    <button class="btn" onclick="compartirCanal()"><i class="fas fa-share-alt"></i> Compartir</button>
-                    <button class="btn" onclick="abrirModalEmbed()"><i class="fas fa-code"></i> Insertar</button>
-                    
-                    <button class="btn" id="btn-proyectar-tv" style="display:none;" onclick="iniciarCasteo()">
-                        <i class="fa-brands fa-chromecast"></i> Proyectar
-                    </button>
                 </div>
 
                 <div id="multi-signals"></div>
 
-                <div id="vod-controls" class="vod-controls-box">
-                    <h4 style="color:#60a5fa; margin-bottom:10px; text-align:center; font-size:14px; font-weight:800; letter-spacing: 1px;">
-                        <i class="fas fa-server"></i> SELECCIONA UN SERVIDOR
-                    </h4>
-                    
-                    <div id="servidores-list" class="servidores-grid"></div>
-
-                    <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;">
-                        </div>
+                <div class="ads-bottom">
+                    <div class="ad-slot bottom-ad">
+                        <script type="text/javascript">
+                            atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+                    </div>
+                    <div class="ad-slot bottom-ad">
+                        <script type="text/javascript">
+                            atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                        </script>
+                        <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
+                    </div>
                 </div>
-
-                <div id="seo-content"></div>
             </div>
-            
-<div class="ad-slot side-ad">
-    <script type="text/javascript">
-        atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
-    </script>
-    <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
-</div>
+
+            <div class="ad-slot side-ad">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '91ed6130324642c95007aff944f8ed98', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
+            </div>
         </div>
-
-<div class="ads-bottom">
-    <div class="ad-slot bottom-ad">
-        <div class="pc-ad" style="display: block;">
-            <script type="text/javascript">
-                // Este es el 300x250
-                atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
-        </div>
-    </div>
-
-    <div class="ad-slot bottom-ad">
-        <div class="pc-ad" style="display: block;">
-            <script type="text/javascript">
-                // Este es el 300x250 (lo repetimos o puedes poner el 320x50 aquí si prefieres)
-                atOptions = { 'key' : '0d1f7726b341e7d353a33f1478fd2702', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
-        </div>
-    </div>
-</div>
-
-<div class="ad-slot mobile-only-ad" style="margin-top:20px;">
-    <script type="text/javascript">
-        // Este es tu 320x50 para cerrar con broche de oro en el cel
-        atOptions = { 'key' : 'a743195e3a35eef7dd05698efb5ee34e', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-    </script>
-    <script type="text/javascript" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
-</div>
-
-</main>
-
+    </main>
+    
     <div id="custom-toast"><i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 18px;"></i> <span id="toast-msg"></span></div>
 
     <nav class="bottom-nav">
