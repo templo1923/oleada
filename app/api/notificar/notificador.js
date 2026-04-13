@@ -67,7 +67,7 @@ async function enviarNotificacion(nombre) {
     return new Promise((resolve) => {
         const payload = JSON.stringify({
             app_id: ONESIGNAL_APP_ID,
-            included_segments: ["Subscribed Users"],
+            included_segments: ["Total Subscriptions"],
             headings: { "es": "🔴 ¡EVENTO EN VIVO!" },
             contents: { "es": `${nombre} ya está disponible. ¡Toca para ver en HD!` },
             url: "https://oleadatvpremium.com/SportLive/television.html"

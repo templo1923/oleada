@@ -60,7 +60,7 @@ export async function GET(request: Request) {
 
         const onesignalPayload = {
             app_id: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
-            included_segments: ["Subscribed Users"],
+            included_segments: ["Total Subscriptions"],
             headings: { "en": titulo, "es": titulo },
             contents: { "en": mensaje, "es": mensaje },
             url: "https://oleadatvpremium.com/SportLive/television.html"
