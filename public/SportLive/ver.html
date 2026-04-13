@@ -192,12 +192,12 @@
     /* 🔥 BANNERS LATERALES PEGAJOSOS 🔥 */
     .ad-slot { 
         background: var(--card-bg); border: 1px dashed rgba(96, 165, 250, 0.3); border-radius: 15px; 
-        display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
         font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); 
         overflow: hidden; transition: 0.3s; 
     }
     .ad-slot:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-    .ad-slot img { width: 100%; height: 100%; object-fit: cover; } 
+    .ad-slot img, .ad-slot iframe { width: 100%; height: 100%; object-fit: cover; } 
     
     .side-ad { width: 160px; height: 60vh; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; }
 
@@ -420,14 +420,21 @@
             }
     }
 
-    /* 🔥 CSS BLINDADO PARA BANNERS 🔥 */
-    .ad-pc { display: flex; width: 100%; justify-content: center; align-items: center; }
-    .ad-movil { display: none; width: 100%; justify-content: center; align-items: center; }
+    /* 🔥 CSS BLINDADO PARA PUBLICIDAD ADSTERRA 🔥 */
+    .ad-pc { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; }
+    .ad-movil { display: none; width: 100%; align-items: center; justify-content: center; flex-direction: column; }
 
     @media (max-width: 768px) {
         .ad-pc { display: none !important; }
         .ad-movil { display: flex !important; }
-        .ad-slot.side-ad { background: transparent; border: none; box-shadow: none; height: auto; margin: 10px 0; }
+        .ad-slot.side-ad { 
+            background: transparent !important; 
+            border: none !important; 
+            box-shadow: none !important; 
+            height: auto !important; 
+            min-height: 0 !important; 
+            margin: 10px 0; 
+        }
         .side-ad { width: 100%; order: 2; position: static; }
         .ads-bottom { display: none !important; }
     }
@@ -440,38 +447,7 @@
         await OneSignal.init({
           appId: "e017f9e9-c78d-4693-bb09-0e26b2f6d66c",
           safari_web_id: "web.onesignal.auto.0be2159b-fe04-48af-91ed-a963117d84ac",
-          notifyButton: {
-            enable: true,
-            colors: {
-              'circle.background': '#ef4444',
-              'circle.foreground': 'white',
-              'badge.background': '#3b82f6',
-              'badge.foreground': 'white',
-              'badge.bordercolor': 'white',
-              'pulse.color': '#ef4444',
-              'dialog.button.background.hovering': '#dc2626',
-              'dialog.button.background.active': '#dc2626',
-              'dialog.button.background': '#ef4444',
-              'dialog.button.foreground': 'white',
-            }
-          },
-          promptOptions: {
-            slidedown: {
-              prompts: [{
-                type: "push",
-                autoPrompt: true,
-                text: {
-                  actionMessage: "Recibe alertas de los mejores Eventos en vivo y eventos estelares.",
-                  acceptButton: "¡Claro que sí!",
-                  cancelButton: "No, gracias"
-                },
-                delay: {
-                  pageViews: 1,
-                  timeDelay: 3
-                }
-              }]
-            }
-          }
+          notifyButton: { enable: true }
         });
       });
     </script>
@@ -510,11 +486,11 @@
             
             <div class="ad-slot side-ad">
                 <div class="ad-pc">
-                    <script data-cfasync="false">atOptions = {'key' : '91ed6130324642c95007aff944f8ed98','format' : 'iframe','height' : 600,'width' : 160,'params' : {}};</script>
+                    <script data-cfasync="false">atOptions = {'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</script>
                     <script data-cfasync="false" src="https://www.highperformanceformat.com/91ed6130324642c95007aff944f8ed98/invoke.js"></script>
                 </div>
                 <div class="ad-movil">
-                    <script data-cfasync="false">atOptions = {'key' : '0d1f7726b341e7d353a33f1478fd2702','format' : 'iframe','height' : 250,'width' : 300,'params' : {}};</script>
+                    <script data-cfasync="false">atOptions = {'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</script>
                     <script data-cfasync="false" src="https://www.highperformanceformat.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></script>
                 </div>
             </div>
@@ -550,9 +526,7 @@
                     <h4 style="color:#60a5fa; margin-bottom:10px; text-align:center; font-size:14px; font-weight:800; letter-spacing: 1px;">
                         <i class="fas fa-server"></i> SELECCIONA UN SERVIDOR
                     </h4>
-                    
                     <div id="servidores-list" class="servidores-grid"></div>
-
                     <div id="descargas-container" style="display:none; margin-top: 15px; width: 100%;"></div>
                 </div>
 
@@ -564,7 +538,7 @@
                     <span style="color: #64748b; text-align: center; padding: 20px; font-size: 10px;">DEBES CREAR UN NUEVO CÓDIGO 160x600 PARA ESTE ESPACIO</span>
                 </div>
                 <div class="ad-movil">
-                    <script data-cfasync="false">atOptions = {'key' : 'a743195e3a35eef7dd05698efb5ee34e','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};</script>
+                    <script data-cfasync="false">atOptions = {'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</script>
                     <script data-cfasync="false" src="https://www.highperformanceformat.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></script>
                 </div>
             </div>
@@ -573,7 +547,7 @@
         <div class="ads-bottom">
             <div class="ad-slot bottom-ad">
                 <div class="ad-pc">
-                    <script data-cfasync="false">atOptions = {'key' : '18c5a84b3204e04d518aa3377467dfd5','format' : 'iframe','height' : 60,'width' : 468,'params' : {}};</script>
+                    <script data-cfasync="false">atOptions = {'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</script>
                     <script data-cfasync="false" src="https://www.highperformanceformat.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></script>
                 </div>
             </div>
