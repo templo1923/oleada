@@ -10,13 +10,11 @@ const HISTORIAL_PATH = "./scripts/notificados.json";
 async function iniciar() {
     console.log("🚀 Buscando nuevos eventos estelares...");
 
-    // 1. Cargar historial de notificados (La Memoria)
     let historial = [];
     if (fs.existsSync(HISTORIAL_PATH)) {
         historial = JSON.parse(fs.readFileSync(HISTORIAL_PATH, 'utf8'));
     }
 
-    // 2. Consultar canales.php
     https.get(CANALES_URL, {
         headers: { 
             'Origin': 'https://oleadatvpremium.com', 
@@ -30,13 +28,11 @@ async function iniciar() {
                 const data = JSON.parse(body);
                 let nuevosEventos = [];
 
-                // 3. Buscar en categorías que contengan "EVENTO"
                 for (const cat in data) {
                     if (cat.toUpperCase().includes("EVENTO")) {
                         data[cat].forEach(canal => {
                             if (canal.Estado !== "Inactivo") {
                                 const idUnico = canal.Canal.toLowerCase().trim();
-                                // Si NO está en la memoria, es nuevo
                                 if (!historial.includes(idUnico)) {
                                     nuevosEventos.push({ nombre: canal.Canal, id: idUnico });
                                 }
@@ -50,10 +46,9 @@ async function iniciar() {
                     
                     for (const evento of nuevosEventos) {
                         await enviarNotificacion(evento.nombre);
-                        historial.push(evento.id); // Lo guardamos en la memoria
+                        historial.push(evento.id); 
                     }
 
-                    // 4. Guardar historial actualizado (Solo los últimos 50)
                     const historialLimpio = historial.slice(-50);
                     fs.writeFileSync(HISTORIAL_PATH, JSON.stringify(historialLimpio, null, 2));
                     console.log("✅ Memoria actualizada en notificados.json.");
@@ -79,15 +74,15 @@ async function enviarNotificacion(nombre) {
         });
 
         const req = https.request({
-            // 🔥 AQUÍ ESTÁ LA SOLUCIÓN: La nueva API de OneSignal 🔥
             hostname: 'api.onesignal.com', 
             port: 443,
-            path: '/notifications',
+            // 🔥 CORREGIDO: Ruta exacta igual a route.ts 🔥
+            path: '/api/v1/notifications',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                // 🔥 Y volvemos a usar la palabra Key como manda su documentación nueva
-                'Authorization': `Key ${ONESIGNAL_KEY}`
+                // 🔥 CORREGIDO: Palabra 'key' minúscula igual a route.ts 🔥
+                'Authorization': `key ${ONESIGNAL_KEY}`
             }
         }, (res) => {
             let respuestaOneSignal = "";
