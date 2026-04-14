@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
       // 🔥 CORRECCIÓN: NUNCA bloquees /_next/ o Google no leerá tu CSS y pensará que tu web está rota. Solo bloqueamos la API.
       disallow: ['/api/'], 
     },
-    sitemap: `${DOMINIO}/sitemap.xml`,
+    sitemap: 'https://oleadatvpremium.com/sitemap.xml',
   }
 }
