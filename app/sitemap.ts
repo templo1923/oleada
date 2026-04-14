@@ -26,5 +26,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+// 3. Iterar Eventos Hoy (Usando tu archivo interno eventos-auto.json)
+  if (Array.isArray(eventosData)) {
+    eventosData.forEach((evento: any) => {
+      if (evento.slug) {
+        rutas.push({
+          url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
+          // Usamos la fecha del evento si existe, si no la de hoy
+          lastModified: new Date(evento.publishedAt || evento.date || new Date()),
+          changeFrequency: 'hourly',
+          priority: 0.8,
+        });
+      }
+    });
+  }
+
   return rutas;
 }
