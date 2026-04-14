@@ -83,7 +83,7 @@ async function enviarNotificacion(nombre) {
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 // 🔥 CORREGIDO: Usamos "key" como en tu route.ts 🔥
-                'Authorization': `key ${ONESIGNAL_KEY}`
+                'Authorization': `KEY ${ONESIGNAL_KEY}`
             }
         }, (res) => {
             let respuestaOneSignal = "";
