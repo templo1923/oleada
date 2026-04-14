@@ -1,14 +1,11 @@
+import { MetadataRoute } from 'next'
+import blogData from '../data/blog-posts.json' // Ruta relativa segura
+
 export const dynamic = 'force-dynamic';
 
-import { MetadataRoute } from 'next'
-// 🔥 1. IMPORTANTE: Faltaba importar tu JSON del blog
-import blogData from '@/data/blog-posts.json'
-
-
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // 🔥 ESTRATEGIA MULTI-DOMINIO
-  const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
+  // 🔥 FORZAMOS TU DOMINIO REAL PARA EVITAR EL 404 DE GOOGLE
+  const DOMINIO = 'https://oleadatvpremium.com';
 
   // 1. Añadimos tus páginas estáticas principales y legales
   const rutas: MetadataRoute.Sitemap = [
