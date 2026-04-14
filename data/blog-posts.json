@@ -9,7 +9,7 @@
       "image": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
       "category": "Fútbol",
       "author": {
-        "name": "Michael Bermeo",
+        "name": "SportLive",
         "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
       },
       "publishedAt": "2026-04-10T10:00:00Z",
@@ -111,7 +111,7 @@
   "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
   "category": "Noticias",
   "author": {
-    "name": "Michael Bermeo",
+    "name": "SportLive",
     "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
   },
   "publishedAt": "2026-04-12T09:00:00Z",
@@ -128,7 +128,7 @@
   "image": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800&q=80",
   "category": "Tecnología",
   "author": {
-    "name": "Michael Bermeo",
+    "name": "SportLive",
     "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
   },
   "publishedAt": "2026-04-13T15:00:00Z",
@@ -145,7 +145,7 @@
   "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&q=80",
   "category": "Guías",
   "author": {
-    "name": "Michael Bermeo",
+    "name": "SportLive",
     "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"
   },
   "publishedAt": "2026-04-13T18:30:00Z",
