@@ -3,7 +3,7 @@ const https = require('https');
 
 // Configuración OneSignal
 const ONESIGNAL_APP_ID = "e017f9e9-c78d-4693-bb09-0e26b2f6d66c";
-const ONESIGNAL_KEY = "os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnqcv42br6btedne4jw2icuexskvzv2hpwesjflxhcwo47bdh4asktpwsvaoeicmiamztfffrrqclwxy";
+const ONESIGNAL_KEY = process.env.ONESIGNAL_KEY;
 const CANALES_URL = "https://api.telelatinomax.shop/canales.php";
 const HISTORIAL_PATH = "./scripts/notificados.json";
 
