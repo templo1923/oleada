@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next'
 // 🔥 1. IMPORTANTE: Faltaba importar tu JSON del blog
 import blogData from '@/data/blog-posts.json'
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 🔥 ESTRATEGIA MULTI-DOMINIO
   const DOMINIO = process.env.NEXT_PUBLIC_SITE_URL || 'https://sportlive-one.vercel.app';
