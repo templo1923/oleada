@@ -1,13 +1,13 @@
 import { MetadataRoute } from 'next'
-import blogData from '../data/blog-posts.json'
+import blogData from '../data/blog-posts.json' // Datos locales del blog
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Se actualiza cada hora
+export const revalidate = 3600; 
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const DOMINIO = 'https://oleadatvpremium.com';
 
-  // 1. Rutas base y estáticas
+  // 1. Tus rutas manuales (las fijas)
   const rutas: MetadataRoute.Sitemap = [
     { url: DOMINIO, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${DOMINIO}/agenda-deportiva`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${DOMINIO}/eventos-hoy`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
   ];
 
-  // 2. Blog (Local)
+  // 2. Cargar artículos del Blog (Desde tu JSON local)
   if (blogData?.posts) {
     blogData.posts.forEach((post: any) => {
       rutas.push({
@@ -29,12 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // 3. EVENTOS HOY (Dinámico)
+  // 3. CARGA DINÁMICA DE "EVENTOS HOY" (La lista que me pasaste)
   try {
-    // Usamos un timeout corto para que no bloquee el sitemap si la API está lenta
     const res = await fetch('https://tucentral.store/Sportlive/eventos-auto.json', {
       next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(5000) 
+      signal: AbortSignal.timeout(8000) // Damos 8 segundos por si son muchos datos
     });
 
     if (res.ok) {
@@ -44,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           if (evento.slug) {
             rutas.push({
               url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
-              lastModified: new Date(),
+              lastModified: new Date(evento.publishedAt || new Date()),
               changeFrequency: 'hourly',
               priority: 0.8,
             });
@@ -53,8 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     }
   } catch (e) {
-    console.error("Error cargando eventos para sitemap:", e);
-    // Si falla, no pasa nada, el sitemap devuelve las rutas anteriores
+    console.error("Error cargando eventos externos:", e);
   }
 
   return rutas;

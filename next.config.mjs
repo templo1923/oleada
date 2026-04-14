@@ -45,22 +45,11 @@ const nextConfig = {
   // 🔥 REESCRITURAS CORREGIDAS 🔥
   async rewrites() {
     return [
-{
-      // Prioridad absoluta para archivos raíz críticos
-      source: '/sitemap.xml',
-      destination: '/sitemap.xml',
-    },
-    {
-      source: '/robots.txt',
-      destination: '/robots.txt',
-    },
-    { 
-      // Esta es la regla que suele "romper" todo. 
-      // Vamos a asegurar que NO toque nada que termine en .xml
-      source: '/:path((?!sitemap|robots|api|_next|.*\\.xml$).*)', 
+{ 
+      // Solo redirige si NO es un archivo crítico
+      source: '/:path((?!sitemap|robots|api|_next).*)', 
       destination: '/SportLive/:path*' 
     },
-    
       { 
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
