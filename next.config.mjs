@@ -45,11 +45,22 @@ const nextConfig = {
   // 🔥 REESCRITURAS CORREGIDAS 🔥
   async rewrites() {
     return [
-      { 
-        // 🚨 CORRECCIÓN AQUÍ: Se añade ":path" antes del paréntesis para nombrar el parámetro
-        source: '/:path((?!sitemap|robots|api|_next).*)', 
-        destination: '/SportLive/:path*' 
-      },
+{
+      // Prioridad absoluta para archivos raíz críticos
+      source: '/sitemap.xml',
+      destination: '/sitemap.xml',
+    },
+    {
+      source: '/robots.txt',
+      destination: '/robots.txt',
+    },
+    { 
+      // Esta es la regla que suele "romper" todo. 
+      // Vamos a asegurar que NO toque nada que termine en .xml
+      source: '/:path((?!sitemap|robots|api|_next|.*\\.xml$).*)', 
+      destination: '/SportLive/:path*' 
+    },
+    
       { 
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
