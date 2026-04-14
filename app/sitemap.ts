@@ -3,11 +3,10 @@ import blogData from '../data/blog-posts.json'
 import eventosData from '../data/eventos-auto.json' // 🔥 FALTABA ESTO
 import canalesData from '../data/channels.json'     // 🔥 AÑADIMOS TUS CANALES LOCALES
 
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const DOMINIO = 'https://oleadatvpremium.com';
 
-  // Páginas estáticas seguras
+  // 1. Páginas estáticas seguras
   const rutas: MetadataRoute.Sitemap = [
     { url: DOMINIO, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${DOMINIO}/agenda-deportiva`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
@@ -17,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${DOMINIO}/eventos-hoy`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   ];
 
-  // Blog (Carga desde tu archivo local, es 100% seguro)
+  // 2. Blog (Carga desde archivo local)
   if (blogData && blogData.posts) {
     blogData.posts.forEach((post: any) => {
       rutas.push({
@@ -29,13 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-// 3. Iterar Eventos Hoy (Usando tu archivo interno eventos-auto.json)
-  if (Array.isArray(eventosData)) {
+  // 3. Eventos Hoy (Carga desde archivo local corregido)
+  if (eventosData && Array.isArray(eventosData)) {
     eventosData.forEach((evento: any) => {
       if (evento.slug) {
         rutas.push({
           url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
-          // Usamos la fecha del evento si existe, si no la de hoy
           lastModified: new Date(evento.publishedAt || evento.date || new Date()),
           changeFrequency: 'hourly',
           priority: 0.8,
@@ -44,7 +42,43 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  // 4. Canales Premium (Usando tu archivo channels.json)
+  if (canalesData) {
+    // Si tu channels.json es un array directo:
+    if (Array.isArray(canalesData)) {
+      canalesData.forEach((canal: any) => {
+        // Asegúrate de que 'slug' o el nombre del canal exista en tu JSON
+        const canalId = canal.slug || canal.id || canal.name?.toLowerCase().replace(/\s+/g, '-');
+        if (canalId) {
+          rutas.push({
+            url: `${DOMINIO}/canal/${canalId}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.7,
+          });
+        }
+      });
+    } else {
+      // Si tu channels.json está dividido por categorías (ej: { "Deportes": [...], "Cine": [...] })
+      Object.values(canalesData).forEach((categoria: any) => {
+        if (Array.isArray(categoria)) {
+          categoria.forEach((canal: any) => {
+            // Ajusta "Canal" según cómo se llame el campo en tu channels.json
+            const nombreCanal = canal.Canal || canal.name;
+            if (nombreCanal) {
+              const cleanId = nombreCanal.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+              rutas.push({
+                url: `${DOMINIO}/canal/${cleanId}`,
+                lastModified: new Date(),
+                changeFrequency: 'weekly',
+                priority: 0.7,
+              });
+            }
+          });
+        }
+      });
+    }
+  }
 
-  
   return rutas;
 }
