@@ -3,6 +3,13 @@ import blogData from '../data/blog-posts.json' // Ruta relativa segura
 
 export const dynamic = 'force-dynamic';
 
+async function fetchSafe(url: string) {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+    return res.ok ? await res.json() : null;
+  } catch (e) { return null; }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 🔥 FORZAMOS TU DOMINIO REAL PARA EVITAR EL 404 DE GOOGLE
   const DOMINIO = 'https://oleadatvpremium.com';
