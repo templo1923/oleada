@@ -45,8 +45,14 @@ const nextConfig = {
   },
 
   // 🔥 NUEVO: REESCRITURAS INTACTAS (URLs limpias sin .html) 🔥
-  async rewrites() {
-    return [
+// next.config.mjs
+async rewrites() {
+  return [
+    { 
+      // 🔥 EXCLUSIÓN: Solo aplica si NO es sitemap o robots
+      source: '/((?!sitemap|robots|api|_next).*)', 
+      destination: '/SportLive/:path*' 
+    },
       { 
         source: '/SportLive/inicio', 
         destination: '/SportLive/index.html' 
