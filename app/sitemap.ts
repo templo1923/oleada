@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next'
 import blogData from '../data/blog-posts.json'
-import eventosData from '../data/eventos-auto.json' // 🔥 FALTABA ESTO
-import canalesData from '../data/channels.json'     // 🔥 AÑADIMOS TUS CANALES LOCALES
+import canalesData from '../data/channels.json'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Hacemos el sitemap dinámico para que llame a la API
+export const dynamic = 'force-dynamic';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const DOMINIO = 'https://oleadatvpremium.com';
 
-  // 1. Páginas estáticas seguras
+  // 1. Páginas estáticas principales
   const rutas: MetadataRoute.Sitemap = [
     { url: DOMINIO, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${DOMINIO}/agenda-deportiva`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
@@ -16,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${DOMINIO}/eventos-hoy`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   ];
 
-  // 2. Blog (Carga desde archivo local)
+  // 2. Blog (Sigue leyendo de tu JSON local porque así lo tienes configurado)
   if (blogData && blogData.posts) {
     blogData.posts.forEach((post: any) => {
       rutas.push({
@@ -28,26 +30,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  // 3. Eventos Hoy (Carga desde archivo local corregido)
-  if (eventosData && Array.isArray(eventosData)) {
-    eventosData.forEach((evento: any) => {
-      if (evento.slug) {
-        rutas.push({
-          url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
-          lastModified: new Date(evento.publishedAt || evento.date || new Date()),
-          changeFrequency: 'hourly',
-          priority: 0.8,
+  // 3. EVENTOS HOY (Lógica idéntica a tu page.tsx)
+  try {
+    const res = await fetch('https://tucentral.store/Sportlive/eventos-auto.json', { 
+      cache: 'no-store',
+      signal: AbortSignal.timeout(8000) // Timeout de seguridad de 8 segundos
+    });
+    
+    if (res.ok) {
+      const eventosData = await res.json();
+      if (Array.isArray(eventosData)) {
+        eventosData.forEach((evento: any) => {
+          if (evento.slug) {
+            rutas.push({
+              url: `${DOMINIO}/eventos-hoy/${evento.slug}`,
+              lastModified: new Date(evento.publishedAt || evento.date || new Date()),
+              changeFrequency: 'hourly',
+              priority: 0.8,
+            });
+          }
         });
       }
-    });
+    }
+  } catch (error) {
+    console.error("Error al traer eventos para el sitemap:", error);
   }
 
-  // 4. Canales Premium (Usando tu archivo channels.json)
+  // 4. Canales Premium (Sigue leyendo de tu archivo channels.json)
   if (canalesData) {
-    // Si tu channels.json es un array directo:
     if (Array.isArray(canalesData)) {
       canalesData.forEach((canal: any) => {
-        // Asegúrate de que 'slug' o el nombre del canal exista en tu JSON
         const canalId = canal.slug || canal.id || canal.name?.toLowerCase().replace(/\s+/g, '-');
         if (canalId) {
           rutas.push({
@@ -59,11 +71,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         }
       });
     } else {
-      // Si tu channels.json está dividido por categorías (ej: { "Deportes": [...], "Cine": [...] })
       Object.values(canalesData).forEach((categoria: any) => {
         if (Array.isArray(categoria)) {
           categoria.forEach((canal: any) => {
-            // Ajusta "Canal" según cómo se llame el campo en tu channels.json
             const nombreCanal = canal.Canal || canal.name;
             if (nombreCanal) {
               const cleanId = nombreCanal.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
