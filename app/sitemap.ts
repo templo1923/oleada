@@ -1,5 +1,8 @@
 import { MetadataRoute } from 'next'
 import blogData from '../data/blog-posts.json'
+import eventosData from '../data/eventos-auto.json' // 🔥 FALTABA ESTO
+import canalesData from '../data/channels.json'     // 🔥 AÑADIMOS TUS CANALES LOCALES
+
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const DOMINIO = 'https://oleadatvpremium.com';
@@ -41,5 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+
+  
   return rutas;
 }
