@@ -3,7 +3,6 @@ const https = require('https');
 
 // Configuración OneSignal
 const ONESIGNAL_APP_ID = "e017f9e9-c78d-4693-bb09-0e26b2f6d66c";
-// ⚠️ NOTA: Si tu repositorio es público, cualquiera puede ver esta clave. Lo ideal a futuro es usar GitHub Secrets.
 const ONESIGNAL_KEY = "os_v2_app_4al7t2ohrvdjhoyjbytlf5wwnqcv42br6btedne4jw2icuexskvzv2hpwesjflxhcwo47bdh4asktpwsvaoeicmiamztfffrrqclwxy";
 const CANALES_URL = "https://api.telelatinomax.shop/canales.php";
 const HISTORIAL_PATH = "./scripts/notificados.json";
@@ -19,7 +18,10 @@ async function iniciar() {
 
     // 2. Consultar canales.php
     https.get(CANALES_URL, {
-        headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' }
+        headers: { 
+            'Origin': 'https://oleadatvpremium.com', 
+            'Referer': 'https://oleadatvpremium.com/' 
+        }
     }, (res) => {
         let body = "";
         res.on("data", (chunk) => body += chunk);
@@ -59,7 +61,9 @@ async function iniciar() {
                     console.log("😴 No hay eventos nuevos. No se enviará spam.");
                 }
 
-            } catch (e) { console.error("Error procesando JSON de canales:", e); }
+            } catch (e) { 
+                console.error("Error procesando JSON de canales:", e); 
+            }
         });
     });
 }
@@ -68,7 +72,6 @@ async function enviarNotificacion(nombre) {
     return new Promise((resolve) => {
         const payload = JSON.stringify({
             app_id: ONESIGNAL_APP_ID,
-            // 🔥 CORREGIDO: El nombre exacto de tu segmento 🔥
             included_segments: ["Total Subscriptions"],
             headings: { "es": "🔴 ¡ESTELAR EN VIVO!", "en": "🔴 ¡ESTELAR EN VIVO!" },
             contents: { "es": `${nombre} ya está disponible. ¡Toca para ver en HD!`, "en": `${nombre} ya está disponible. ¡Toca para ver en HD!` },
@@ -76,14 +79,15 @@ async function enviarNotificacion(nombre) {
         });
 
         const req = https.request({
-            hostname: 'onesignal.com',
+            // 🔥 AQUÍ ESTÁ LA SOLUCIÓN: La nueva API de OneSignal 🔥
+            hostname: 'api.onesignal.com', 
             port: 443,
-            path: '/api/v1/notifications',
+            path: '/notifications',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                // 🔥 CORREGIDO: Usamos "key" como en tu route.ts 🔥
-                'Authorization': `key ${ONESIGNAL_KEY}`
+                // 🔥 Y volvemos a usar la palabra Key como manda su documentación nueva
+                'Authorization': `Key ${ONESIGNAL_KEY}`
             }
         }, (res) => {
             let respuestaOneSignal = "";
