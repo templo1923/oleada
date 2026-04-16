@@ -1284,5 +1284,92 @@
     }
   </script>
 
+
+
+<div id="adBlockAlert" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8,12,20,0.98); z-index: 9999999; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; backdrop-filter: blur(10px);">
+        <i class="fas fa-hand-paper" style="font-size: 60px; color: #ef4444; margin-bottom: 20px; animation: pulse-comunidad 2s infinite;"></i>
+        <h2 style="font-size: 28px; margin-bottom: 10px; font-weight: 800; color: #f8fafc;">¡Bloqueador de Anuncios Detectado!</h2>
+        <p style="font-size: 15px; color: #94a3b8; max-width: 400px; margin-bottom: 25px; line-height: 1.6;">
+            SPORT LIVE es <strong>100% gratuito</strong> gracias a la publicidad.<br><br>
+            Para seguir viendo el contenido y apoyarnos, por favor <strong>desactiva tu AdBlocker</strong> o añade nuestra página a tu lista de excepciones.
+        </p>
+        <button onclick="location.reload()" style="background: linear-gradient(145deg, #3b82f6, #2563eb); color: white; border: none; padding: 14px 24px; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);">
+            <i class="fas fa-sync-alt"></i> Ya lo desactivé, recargar página
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // 1. LÓGICA DE DETECCIÓN DE ADBLOCK
+            function detectAdBlock() {
+                // Creamos un div con clases que TODOS los AdBlocks odian y bloquean por defecto
+                let adTest = document.createElement('div');
+                adTest.innerHTML = '&nbsp;';
+                adTest.className = 'adsbox ad-slot ad-left ad-right sponsor banner doubleclick';
+                adTest.style.height = '1px';
+                adTest.style.width = '1px';
+                adTest.style.position = 'absolute';
+                adTest.style.top = '-1000px';
+                document.body.appendChild(adTest);
+
+                // Esperamos medio segundo para dejar que el AdBlock haga su trabajo
+                setTimeout(function() {
+                    let adBlockAlert = document.getElementById('adBlockAlert');
+                    // Si el elemento fue ocultado o su altura es 0, ¡hay AdBlock!
+                    if (adTest.offsetHeight === 0 || window.getComputedStyle(adTest).display === 'none') {
+                        adBlockAlert.style.display = 'flex'; // Mostramos pantalla gigante
+                        document.body.style.overflow = 'hidden'; // Bloqueamos el scroll
+                        // Ocultamos el reproductor para que no puedan saltarse el div
+                        document.querySelector('.center-column').style.display = 'none'; 
+                    }
+                    adTest.remove(); // Limpiamos el elemento
+                }, 500);
+            }
+            
+            // Ejecutar detección
+            detectAdBlock();
+
+            // 2. SEGURIDAD: DESACTIVAR CLICK DERECHO
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            // 3. SEGURIDAD: BLOQUEAR ATAJOS DE TECLADO DEVTOOLS
+            document.addEventListener('keydown', function(e) {
+                // Prevenir F12
+                if (e.key === 'F12' || e.keyCode === 123) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl+Shift+I (Inspeccionar)
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl+Shift+J (Consola)
+                if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl+Shift+C (Inspector de elementos)
+                if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl+U (Ver código fuente)
+                if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                    e.preventDefault();
+                }
+            });
+
+            // 4. SEGURIDAD: TRAMPA DEBUGGER (Congela la consola si logran abrirla)
+            setInterval(function() {
+                (function() { return false; }['constructor']('debugger')());
+            }, 500);
+
+            // Evitar que arrastren imagenes o iframes fuera de la web
+            document.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>g
+
 </body>
 </html>
