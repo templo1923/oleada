@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Outfit, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import Script from 'next/script' 
+import Script from 'next/script' // 🚀 Importación del Script añadida aquí arriba
 import { NewsTicker } from '@/components/news-ticker' // 🚀 IMPORTAMOS EL TICKER
 import './globals.css'
 
@@ -17,7 +17,10 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  // 🔥 1. METADATABASE: Obligatorio para que Next.js resuelva bien las imágenes
   metadataBase: new URL('https://oleadatvpremium.com'),
+  
+  // 🔥 2. TEMPLATE: Para que las subpáginas hereden el nombre de la marca
   title: {
     template: '%s | SportLive Tv Premium',
     default: 'SportLive Tv Premium | Deportes en Vivo, Canales TV y Cine',
@@ -25,18 +28,19 @@ export const metadata: Metadata = {
   description: 'Tu hub de entretenimiento premium. Agenda deportiva en vivo, canales de TV premium, estrenos de cine y mucho mas. ESPN, Win Sports, HBO y mas.',
   keywords: 'ver partidos en vivo, futbol gratis, canales deportivos online, win sports en vivo, espn en vivo, peliculas estrenos, streaming deportes',
   generator: 'SportLive Tv Premium',
-  authors: [{ name: 'OleadaTV' }], 
+  authors: [{ name: 'OleadaTV' }], // O Kiamber Systems ;)
   
   openGraph: {
     title: 'SportLive Tv Premium | Deportes en Vivo, Canales TV y Cine',
     description: 'Tu hub de entretenimiento premium. Agenda deportiva en vivo, canales de TV premium, estrenos de cine.',
     url: 'https://oleadatvpremium.com',
     type: 'website',
-    locale: 'es_ES', 
+    locale: 'es_ES', // Si tu público es mayormente de Colombia/Latam, puedes usar 'es_CO' o 'es_LA'
     siteName: 'SportLive Tv Premium',
+    // 🔥 3. IMÁGENES: ESTO ES LO QUE LEE WHATSAPP Y FACEBOOK 🔥
     images: [
       {
-        url: '/SportLive/icons/icon-512x512.png', 
+        url: '/SportLive/icons/icon-512x512.png', // Asegúrate de que esta ruta exista en tu carpeta public
         width: 512,
         height: 512,
         alt: 'SportLive Premium Logo',
@@ -48,6 +52,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'SportLive Tv Premium',
     description: 'Tu hub de entretenimiento premium',
+    // 🔥 IMAGEN PARA TWITTER / X 🔥
     images: ['/SportLive/icons/icon-512x512.png'],
   },
   
@@ -108,6 +113,7 @@ export default function RootLayout({
           }}
         />
 
+        {/* 🚀 INTEGRACIÓN ONESIGNAL (Campanita y Solicitud de Permisos) 🚀 */}
         <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
         <script
           dangerouslySetInnerHTML={{
@@ -157,12 +163,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      
+      {/* 🚨 AQUÍ ESTÁ EL AJUSTE: Agregado overflow-x-hidden para matar el espacio negro 🚨 */}
       <body className={`${outfit.variable} ${geistMono.variable} font-sans antialiased overflow-x-hidden w-full`} suppressHydrationWarning>
-        
-        {/* 🔥 EL TICKER RENDERIZADO GLOBALMENTE 🔥 */}
-        <NewsTicker /> 
-        
+
+{/* 🔥 PASAMOS EL TICKER AL NAVBAR COMO PROPIEDAD 🔥 */}
+        <Navbar ticker={<NewsTicker />} />
+
         {children}
         <Analytics />
         
