@@ -70,7 +70,7 @@ export default async function PeliculaPage(props: any) {
   if (!movie) {
     return (
       <div className="min-h-screen bg-[#080c14] flex flex-col items-center justify-center text-white font-['Outfit']">
-        >
+        
         <Film className="w-16 h-16 text-slate-600 mb-4" />
         <h1 className="text-3xl font-black mb-4 uppercase tracking-widest text-center">Película no encontrada</h1>
         <Link href="/cine-estrenos" className="text-primary hover:underline font-bold">Volver al catálogo</Link>

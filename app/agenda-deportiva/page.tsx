@@ -111,7 +111,7 @@ export default async function AgendaPage() {
 
   return (
     <div className="relative min-h-screen bg-background flex flex-col w-full">
-      >
+      
       
       <main className="pt-24 pb-12 flex-1 w-full">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 text-center">

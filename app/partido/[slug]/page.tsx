@@ -121,7 +121,7 @@ export default async function PartidoPage(props: any) {
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit']">
-      >
+      
       
       <main className="pt-24 pb-12 flex-1 w-full flex flex-col items-center">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full relative z-10">

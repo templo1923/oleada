@@ -24,7 +24,7 @@ export default async function CarteleraEventosPage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
-      >
+      
       
       <main className="container mx-auto pt-32 pb-20 px-4">
         {/* Cabecera de la Sección */}
