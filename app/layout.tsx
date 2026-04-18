@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import { Outfit, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import Script from 'next/script' // 🚀 Importación del Script añadida aquí arriba
-import { NewsTicker } from '@/components/news-ticker' // 🚀 IMPORTAMOS EL TICKER
+import Script from 'next/script' 
+import { NewsTicker } from '@/components/news-ticker' 
+import { Navbar } from '@/components/navbar' // 🚀 ESTE FALTABA 🚀
 import './globals.css'
 
 const outfit = Outfit({ 
