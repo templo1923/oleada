@@ -1,7 +1,7 @@
-import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
 import { Zap, ChevronRight, Calendar, Activity, Trophy } from "lucide-react";
+import { CountdownTimer } from "@/components/countdown-timer"; // 🚀 IMPORTACIÓN AÑADIDA
 
 // Función para obtener todos los eventos desde tu hosting
 async function getTodosLosEventos() {
@@ -22,9 +22,11 @@ export default async function CarteleraEventosPage() {
     weekday: 'long', day: 'numeric', month: 'long' 
   });
 
+  // 🔥 Lógica añadida: Tomamos el primer evento como el "Estelar" para el cronómetro 🔥
+  const eventoEstelar = eventos.length > 0 ? eventos[0] : null;
+
   return (
     <div className="min-h-screen bg-[#050505] text-white">
-      
       
       <main className="container mx-auto pt-32 pb-20 px-4">
         {/* Cabecera de la Sección */}
@@ -48,11 +50,14 @@ export default async function CarteleraEventosPage() {
           </p>
         </div>
 
+        {/* 🔥 EL BANNER DE CUENTA REGRESIVA AÑADIDO AQUÍ 🔥 */}
+        {eventoEstelar && <CountdownTimer evento={eventoEstelar} />}
+
         {/* Cuadrícula de Eventos ORDENADA */}
         {eventos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventos.map((evento: any) => {
-              // 🔥 1. LIMPIEZA DE TEXTO: Adiós a los asteriscos de la IA 🔥
+              // 1. LIMPIEZA DE TEXTO: Adiós a los asteriscos de la IA 
               const textoLimpio = evento.content?.replace(/\*\*/g, '') || '';
               
               return (
@@ -71,7 +76,7 @@ export default async function CarteleraEventosPage() {
                         <Trophy className="w-3 h-3 text-red-500" /> {evento.liga}
                       </span>
                     </div>
-                    {/* 🔥 2. IMAGEN DE LA LIGA (Logo en la esquina) 🔥 */}
+                    {/* 2. IMAGEN DE LA LIGA (Logo en la esquina) */}
                     <div className="w-12 h-12 bg-white/5 p-1.5 rounded-xl border border-white/10 backdrop-blur-sm flex-shrink-0 flex items-center justify-center">
                       <img src={evento.image} alt={evento.liga} className="w-full h-full object-contain drop-shadow-md" />
                     </div>
@@ -83,7 +88,7 @@ export default async function CarteleraEventosPage() {
                       {evento.title}
                     </h2>
                     
-                    {/* 🔥 3. ALTURA UNIFORME: El line-clamp-3 corta el texto largo con "..." 🔥 */}
+                    {/* 3. ALTURA UNIFORME: El line-clamp-3 corta el texto largo con "..." */}
                     <p className="text-slate-400 text-sm line-clamp-3 mb-6 leading-relaxed">
                       {textoLimpio}
                     </p>
