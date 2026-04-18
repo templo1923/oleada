@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <div className="min-h-screen bg-[#080c14]">
-      <Navbar />
+      >
       <main className="container mx-auto pt-24 pb-12 px-4 max-w-4xl">
         
         {/* BOTÓN VOLVER (HACK DE SEGURIDAD) */}

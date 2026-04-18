@@ -77,7 +77,7 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <Navbar />
+      >
       <main className="container mx-auto pt-24 pb-12 px-4 max-w-4xl">
         
         <div className="mb-8">

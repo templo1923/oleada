@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Play, ShieldCheck, Trophy, Tv, ArrowLeft, Activity, Radio, Info, CheckCircle2, Search, CalendarDays } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -95,7 +94,7 @@ export default async function CanalPage(props: any) {
 
   return (
     <div className="relative min-h-screen bg-[#080c14] overflow-x-hidden flex flex-col w-full font-['Outfit']">
-      <Navbar />
+      >
       
       <main className="pt-24 pb-12 flex-1 w-full flex flex-col items-center relative">
         

@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { AgendaClient } from "@/components/agenda-client"
 import { Globe } from "lucide-react"
@@ -112,7 +111,7 @@ export default async function AgendaPage() {
 
   return (
     <div className="relative min-h-screen bg-background flex flex-col w-full">
-      <Navbar />
+      >
       
       <main className="pt-24 pb-12 flex-1 w-full">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 text-center">

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Play, ShieldCheck, Trophy, ArrowLeft, CheckCircle2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -122,7 +121,7 @@ export default async function PartidoPage(props: any) {
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit']">
-      <Navbar />
+      >
       
       <main className="pt-24 pb-12 flex-1 w-full flex flex-col items-center">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full relative z-10">

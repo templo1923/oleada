@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ChannelsHero } from "@/components/channels/channels-hero"
 import { ChannelsGrid } from "@/components/channels/channels-grid"
@@ -99,7 +98,7 @@ export default async function CanalesPremiumPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      >
       <main className="pt-16">
         <ChannelsHero />
         {/* Pasamos los datos al componente interactivo */}

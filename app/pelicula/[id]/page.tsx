@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Play, Star, Calendar, Clock, Film, ArrowLeft, ShieldCheck, CheckCircle2, Info, Youtube, User, Ticket, Globe, DollarSign } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -71,7 +70,7 @@ export default async function PeliculaPage(props: any) {
   if (!movie) {
     return (
       <div className="min-h-screen bg-[#080c14] flex flex-col items-center justify-center text-white font-['Outfit']">
-        <Navbar />
+        >
         <Film className="w-16 h-16 text-slate-600 mb-4" />
         <h1 className="text-3xl font-black mb-4 uppercase tracking-widest text-center">Película no encontrada</h1>
         <Link href="/cine-estrenos" className="text-primary hover:underline font-bold">Volver al catálogo</Link>
@@ -93,7 +92,7 @@ export default async function PeliculaPage(props: any) {
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit'] overflow-x-hidden">
-      <Navbar />
+      >
       
       <main className="flex-1 w-full flex flex-col items-center">
         

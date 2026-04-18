@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { MoviesHero } from "@/components/movies/movies-hero"
 import { MoviesCatalog } from "@/components/movies/movies-catalog"
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
 export default function CineEstrenosPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      >
       <main className="pt-16">
         <MoviesHero />
         <MoviesCatalog />
