@@ -34,11 +34,49 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
 
   if (!partido) return notFound();
 
-  // Limpiamos los asteriscos del contenido si no usas una librería de Markdown
+  // Limpiamos los asteriscos del contenido
   const contenidoLimpio = partido.content?.replace(/\*\*/g, '');
+
+  // ==========================================
+  // 🔥 PASO 2: SCHEMA MARKUP (DATOS ESTRUCTURADOS PARA GOOGLE) 🔥
+  // ==========================================
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://oleadatvpremium.com/eventos-hoy/${slug}`
+    },
+    "headline": partido.title,
+    "description": partido.excerpt,
+    "image": [
+      partido.image
+    ],
+    "datePublished": partido.publishedAt || partido.date,
+    "dateModified": partido.date,
+    "author": {
+      "@type": "Organization",
+      "name": "SportLive",
+      "url": "https://oleadatvpremium.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SportLive",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png"
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#05070a] text-white">
+      {/* INYECCIÓN INVISIBLE PARA LOS ROBOTS DE GOOGLE */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
       <Navbar />
       <main className="container mx-auto pt-24 pb-12 px-4 max-w-4xl">
         
@@ -62,7 +100,6 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
             {partido.title}
           </h1>
 
-          {/* 🖼️ AJUSTE DE IMAGEN: Ahora es un logo centrado, no una foto gigante vacía */}
           <div className="relative w-full max-w-sm mx-auto aspect-square mb-10 group">
              <div className="absolute inset-0 bg-red-600/20 blur-[80px] rounded-full group-hover:bg-red-600/40 transition-colors" />
              <img 
