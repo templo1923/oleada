@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-background">
-      >
+      
       <main className="pt-16">
         <BlogHero />
         <BlogGrid />

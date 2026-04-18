@@ -98,7 +98,7 @@ export default async function CanalesPremiumPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      >
+      
       <main className="pt-16">
         <ChannelsHero />
         {/* Pasamos los datos al componente interactivo */}
