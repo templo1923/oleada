@@ -92,7 +92,7 @@ export default async function PeliculaPage(props: any) {
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit'] overflow-x-hidden">
-      >
+      
       
       <main className="flex-1 w-full flex flex-col items-center">
         
