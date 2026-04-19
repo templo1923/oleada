@@ -622,7 +622,7 @@ const fetchConLimite = (url, tiempoMaximo = 4000) => {
             // 💡 AQUÍ USAMOS LA FUNCIÓN DE LÍMITE DE 4 SEGUNDOS
             const [res1, res2, res3, res4] = await Promise.all([
                 fetchConLimite(AGENDA_URL, 4000),
-                fetchConLimite(LIVETV_URL, 4000),
+                Promise.resolve({ data: [] }),
                 fetchConLimite(EXTRA_URL, 4000),
                 fetchConLimite(ONLIVE_URL, 4000)
             ]);
