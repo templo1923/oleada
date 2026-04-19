@@ -1006,8 +1006,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.getElementById('seo-content').innerText = `Mira ${tituloLimpio} en vivo y en directo por SPORT LIVE. Disfruta de la mejor transmisión deportiva online gratis.`;
 
             try {
-                const proxies = ['https://api.telelatinomax.shop/api/proxy.php', 'https://api.telelatinomax.shop/api/proxy_livetv.php', 'https://api.telelatinomax.shop/api/proxy_extra.php', 'https://api.telelatinomax.shop/api/proxy_onlive.php'];
-                const res = await Promise.all(proxies.map(p => fetch(p).then(r => r.json()).catch(() => ({data:[]} ))));
+                // 🔥 1. Función de límite de tiempo (4 segundos máximo)
+                const fetchConLimite = (url, tiempoMaximo = 4000) => {
+                    return Promise.race([
+                        fetch(url).then(r => r.json()).catch(() => ({data: []})),
+                        new Promise(resolve => setTimeout(() => resolve({data: []}), tiempoMaximo))
+                    ]);
+                };
+
+                // 🔥 2. Lista de proxies (LIVETV APAGADO TEMPORALMENTE)
+                const proxies = [
+                    'https://api.telelatinomax.shop/api/proxy.php', 
+                    // 'https://api.telelatinomax.shop/api/proxy_livetv.php', // <-- Comentado para evitar el bloqueo de 15s
+                    'https://api.telelatinomax.shop/api/proxy_extra.php', 
+                    'https://api.telelatinomax.shop/api/proxy_onlive.php'
+                ];
+                
+                // 🔥 3. Ejecutamos la búsqueda a toda velocidad
+                const res = await Promise.all(proxies.map(p => fetchConLimite(p, 4000)));
                 const allData = res.flatMap(r => r.data || []);
 
                 const partido = allData.find(item => {
