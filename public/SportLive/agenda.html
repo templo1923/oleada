@@ -592,7 +592,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-
+// Agrega esta función auxiliar justo arriba de obtenerAgenda()
+const fetchConLimite = (url, tiempoMaximo = 4000) => {
+    return Promise.race([
+        fetch(url).then(r => r.json()).catch(() => ({data: []})),
+        new Promise(resolve => setTimeout(() => resolve({data: []}), tiempoMaximo))
+    ]);
+};
 
 
     async function obtenerAgenda() {
@@ -604,12 +610,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const opcionesFecha = { weekday: 'long', day: 'numeric', month: 'long' };
         fechaElement.innerText = new Date().toLocaleDateString('es-ES', opcionesFecha).toUpperCase();
 
-        try {
+        // Ponemos un Loader temporal mientras buscan los datos
+    menuElement.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #3b82f6;">
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 30px; margin-bottom: 15px;"></i>
+            <p style="color: #94a3b8; font-size: 14px; font-weight: 600;">Sincronizando eventos...</p>
+        </div>
+    `;
+
+       try {
+            // 💡 AQUÍ USAMOS LA FUNCIÓN DE LÍMITE DE 4 SEGUNDOS
             const [res1, res2, res3, res4] = await Promise.all([
-                fetch(AGENDA_URL).then(r => r.json()).catch(() => ({data: []})),
-                fetch(LIVETV_URL).then(r => r.json()).catch(() => ({data: []})),
-                fetch(EXTRA_URL).then(r => r.json()).catch(() => ({data: []})),
-                fetch(ONLIVE_URL).then(r => r.json()).catch(() => ({data: []}))
+                fetchConLimite(AGENDA_URL, 4000),
+                fetchConLimite(LIVETV_URL, 4000),
+                fetchConLimite(EXTRA_URL, 4000),
+                fetchConLimite(ONLIVE_URL, 4000)
             ]);
 
             const mapaImagenes = {};
