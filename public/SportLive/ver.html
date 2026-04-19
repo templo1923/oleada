@@ -741,8 +741,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             if (!fuenteExterna) {
                 try {
-                    const resInfo = await fetch(`https://telelatinomax.shop/vod/info/${peliId}`);
-                    const dataInfo = await resInfo.json();
+                    // 🔥 1. FUNCIÓN DE LÍMITE RÁPIDO PARA TMDB (2.5 Segundos)
+                    const fetchInfoLimite = (url, tiempoMax) => {
+                        return Promise.race([
+                            fetch(url).then(r => r.json()).catch(() => null),
+                            new Promise(resolve => setTimeout(() => resolve(null), tiempoMax))
+                        ]);
+                    };
+
+                    // 🔥 2. HACEMOS LA CONSULTA CON LÍMITE (Evita el cuelgue de 12 a 30 segundos)
+                    const dataInfo = await fetchInfoLimite(`https://telelatinomax.shop/vod/info/${peliId}`, 2500);
+                    
                     if (dataInfo && dataInfo.info) {
                         const info = dataInfo.info;
                         let fondo = info.backdrop_path && Array.isArray(info.backdrop_path) ? info.backdrop_path[0] : (info.backdrop_path || (dataInfo.movie_data && dataInfo.movie_data.backdrop));
@@ -769,8 +778,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                 <p style="color: #f8fafc; font-size: 15px; line-height: 1.6; margin-bottom: 15px;">${info.plot || info.description || 'Disfruta de esta película en la mejor calidad.'}</p>
                             </div>
                         `;
+                    } else {
+                        // Si TMDB falló o demoró mucho, ponemos algo genérico para no dejar vacío
+                        document.getElementById('seo-content').innerHTML = `
+                            <div style="background: rgba(17, 24, 39, 0.7); padding: 20px; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3); text-align: left; margin-top: 20px; backdrop-filter: blur(10px);">
+                                <h2 style="color: #60a5fa; margin: 0 0 10px 0; font-size: 24px;">${tituloLimpio}</h2>
+                                <p style="color: #f8fafc; font-size: 15px; line-height: 1.6; margin-bottom: 15px;">Disfruta de esta película en la mejor calidad.</p>
+                            </div>
+                        `;
                     }
-                } catch (e) { console.log("No se pudo cargar TMDB"); }
+                } catch (e) { console.log("No se pudo cargar TMDB", e); }
             } else {
                 const descExterna = params.get('desc') || '';
                 const bgExterno = params.get('bg') || '';
