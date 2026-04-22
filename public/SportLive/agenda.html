@@ -290,56 +290,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 z-index: 1000 !important;
             }
         }
-
-        /* ==========================================
-   💰 ESTILOS DE PUBLICIDAD PREMIUM 💰
-   ========================================== */
-.ad-container-pro {
-    background: linear-gradient(145deg, var(--card-bg), rgba(30, 58, 138, 0.15));
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 15px;
-    padding: 15px;
-    margin: 20px 0;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
+/* 💰 PUBLICIDAD ELEGANTE Y EXACTA 💰 */
+.ad-wrap-320 { 
+    width: 320px; height: 50px; 
+    margin: 15px auto; border-radius: 6px; overflow: hidden; 
+    background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); 
+    position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-
-/* Efecto de luz pasando por el anuncio */
-.ad-container-pro::before {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-    transform: skewX(-25deg); animation: shineAd 6s infinite; pointer-events: none;
+.ad-wrap-300 { 
+    width: 300px; height: 250px; 
+    margin: 10px auto 20px auto; border-radius: 8px; overflow: hidden; 
+    background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); 
+    position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
-@keyframes shineAd { 0% { left: -100%; } 20%, 100% { left: 200%; } }
-
-.ad-badge {
-    position: absolute; top: 0; right: 0;
-    background: rgba(255, 255, 255, 0.1); color: #94a3b8;
-    font-size: 9px; font-weight: 800; padding: 3px 10px;
-    border-bottom-left-radius: 10px; letter-spacing: 1px;
-    text-transform: uppercase; border-left: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+.ad-tag { 
+    position: absolute; top: 0; left: 0; 
+    background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.5); 
+    font-size: 8px; padding: 2px 6px; border-bottom-right-radius: 6px; 
+    z-index: 10; font-weight: bold; letter-spacing: 0.5px; pointer-events: none;
 }
-
-.ad-content {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 90px; /* Altura ideal para banners de móviles */
-    width: 100%; overflow: hidden;
-}
-
-/* Para ocultar el texto de ayuda cuando pegues tu script real */
-.ad-placeholder-text {
-    color: #64748b; font-size: 12px; font-weight: 600;
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-}
-.ad-placeholder-text i { font-size: 20px; color: var(--primary); opacity: 0.5; }
-
-
-
-
     </style>
 
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -437,17 +406,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="hero-subtitle">Selecciona tu deporte favorito y no te pierdas ninguna transmisión. Hay <strong id="count-agenda">0</strong> eventos disponibles hoy.</p>
 </div>
 
-<div class="ad-container-pro" style="padding: 10px; min-height: 70px;">
-    <div class="ad-badge">Patrocinado</div>
-    <div class="ad-content">
-        <iframe src="" id="banner-top-iframe" width="320" height="50" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe>
-    </div>
+<div class="ad-wrap-320">
+    <span class="ad-tag">AD</span>
+    <iframe src="ad-320.html" width="320" height="50" frameborder="0" scrolling="no"></iframe>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("banner-top-iframe").src = iframeBanner320;
-    });
-</script>
 
         <div class="search-container">
             <i class="fas fa-search search-icon"></i>
@@ -928,20 +890,9 @@ function cambiarFiltro(cat) {
 // 💰 LA MAGIA PUBLICITARIA: INYECTAR BANNER CADA 4 PARTIDOS 💰
             if ((index + 1) % 4 === 0 && (index + 1) !== filtrados.length) {
                 html += `
-                <div class="ad-container-pro" style="margin: 5px 0 15px 0; border-color: rgba(255,255,255,0.05); padding: 0;">
-                    <div class="ad-badge" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6; z-index: 10;">Sugerido</div>
-                    <div class="ad-content" style="min-height: 250px; background: #0b1120;">
-                        
-                        <iframe 
-                            src="${iframeBanner300}" 
-                            width="300" 
-                            height="250" 
-                            frameborder="0" 
-                            scrolling="no" 
-                            style="border:none; overflow:hidden; margin: 0 auto; display: block;">
-                        </iframe>
-
-                    </div>
+                <div class="ad-wrap-300">
+                    <span class="ad-tag">Sugerido</span>
+                    <iframe src="ad-300.html" width="300" height="250" frameborder="0" scrolling="no"></iframe>
                 </div>`;
             }
 
