@@ -5,11 +5,26 @@ import { Button } from "@/components/ui/button"
 async function getFeaturedChannels() {
   try {
     const fetchOptions = { 
-      next: { revalidate: 300 }, 
-      headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } 
+      next: { revalidate: 60 }, // Lo bajé a 60 segundos para pruebas
+      headers: { 
+        'Origin': 'https://oleadatvpremium.com', 
+        'Referer': 'https://oleadatvpremium.com/',
+        // 🚨 EL TRUCO: Engañamos a Cloudflare diciendo que somos Google Chrome 🚨
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      } 
     };
+
+    console.log("📡 Vercel: Intentando descargar Canales Premium...");
     const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
+    
+    // Si la API nos tira una puerta en la cara (Error 403, 500, etc)
+    if (!res.ok) {
+      console.error(`❌ Vercel: La API rechazó la conexión. Código: ${res.status} ${res.statusText}`);
+      return [];
+    }
+
     const data = await res.json();
+    console.log("✅ Vercel: Canales descargados con éxito!");
     
     let allChannels: any[] = [];
     
@@ -29,6 +44,8 @@ async function getFeaturedChannels() {
     
     return allChannels.slice(0, 8);
   } catch (error) {
+    // Si hay un error catastrófico, Vercel lo va a imprimir aquí
+    console.error("🚨 Vercel ERROR CRÍTICO EN CANALES:", error);
     return [];
   }
 }
