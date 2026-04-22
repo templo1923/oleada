@@ -12,6 +12,10 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Inicio',
   description: 'Descubre SportLive Premium. La plataforma definitiva para ver deportes y televisión en vivo desde cualquier dispositivo.',
+// 🔥 AQUÍ ESTÁ LA MAGIA: ASÍ SE PONE LA VERSIÓN CANÓNICA EN NEXT.JS 🔥
+  alternates: {
+    canonical: 'https://oleadatvpremium.com/',
+  },
   openGraph: {
     title: 'Descarga SportLive Premium 🚀',
     description: 'La mejor App de entretenimiento ha llegado. Instálala ahora y no te pierdas ningún partido.',
