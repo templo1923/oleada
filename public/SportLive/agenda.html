@@ -436,20 +436,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1 class="hero-title">Agenda <span class="text-primary">Deportiva</span></h1>
     <p class="hero-subtitle">Selecciona tu deporte favorito y no te pierdas ninguna transmisión. Hay <strong id="count-agenda">0</strong> eventos disponibles hoy.</p>
 </div>
+
+<div class="ad-container-pro" style="padding: 10px; min-height: 70px;">
+    <div class="ad-badge">Patrocinado</div>
+    <div class="ad-content">
+        <iframe src="" id="banner-top-iframe" width="320" height="50" frameborder="0" scrolling="no" style="border:none; overflow:hidden;"></iframe>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("banner-top-iframe").src = iframeBanner320;
+    });
+</script>
+
         <div class="search-container">
             <i class="fas fa-search search-icon"></i>
             <input type="search" id="searchInput" class="search-input" placeholder="Buscar equipo, torneo o deporte...">
         </div>
 
-        <div class="ad-container-pro">
-    <div class="ad-badge">Patrocinado</div>
-    <div class="ad-content">
-        <div class="ad-placeholder-text">
-            <i class="fas fa-bullhorn"></i>
-            Espacio Publicitario
-        </div>
-    </div>
-</div>
 
         <div class="filter-wrapper">
             <div id="filter-container"></div>
@@ -537,6 +541,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const NUEVO_PROVEEDOR_JSON = "https://raw.githubusercontent.com/albinchristo04/tarjetarojaenvivoo/main/results/player_urls_latest.json";
 
     let todosLosPartidosGlobal = [];
+    // 💰 TUS CÓDIGOS DE PUBLICIDAD BLINDADOS 💰
+    const adScript300 = `<script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></scr` + `ipt>`;
+    
+    const adScript320 = `<script>atOptions={'key':'a743195e3a35eef7dd05698efb5ee34e','format':'iframe','height':50,'width':320,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/a743195e3a35eef7dd05698efb5ee34e/invoke.js"></scr` + `ipt>`;
+
+    // Los convertimos en páginas web miniatura (Iframes)
+    const iframeBanner300 = `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><style>body{margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;}</style></head><body>${adScript300}</body></html>`)}`;
+    
+    const iframeBanner320 = `data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><style>body{margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;}</style></head><body>${adScript320}</body></html>`)}`;
+
     let categoriaActual = "TODOS";
     let textoBusqueda = "";
 
@@ -911,15 +925,21 @@ function cambiarFiltro(cat) {
 
             // 💰 LA MAGIA PUBLICITARIA: INYECTAR BANNER CADA 4 PARTIDOS 💰
             // Explicación: Si el índice (contando desde 1) es múltiplo de 4 y NO es el último elemento
+// 💰 LA MAGIA PUBLICITARIA: INYECTAR BANNER CADA 4 PARTIDOS 💰
             if ((index + 1) % 4 === 0 && (index + 1) !== filtrados.length) {
                 html += `
-                <div class="ad-container-pro" style="margin: 5px 0 15px 0; border-color: rgba(255,255,255,0.05);">
-                    <div class="ad-badge" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">Recomendado</div>
-                    <div class="ad-content">
+                <div class="ad-container-pro" style="margin: 5px 0 15px 0; border-color: rgba(255,255,255,0.05); padding: 0;">
+                    <div class="ad-badge" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6; z-index: 10;">Sugerido</div>
+                    <div class="ad-content" style="min-height: 250px; background: #0b1120;">
                         
-                        <div class="ad-placeholder-text">
-                            <i class="fas fa-ad"></i> Publicidad In-Feed
-                        </div>
+                        <iframe 
+                            src="${iframeBanner300}" 
+                            width="300" 
+                            height="250" 
+                            frameborder="0" 
+                            scrolling="no" 
+                            style="border:none; overflow:hidden; margin: 0 auto; display: block;">
+                        </iframe>
 
                     </div>
                 </div>`;
