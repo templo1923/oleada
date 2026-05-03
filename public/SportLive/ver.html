@@ -128,7 +128,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .btn-play-master:hover { transform: scale(1.1); background: var(--primary); box-shadow: 0 0 40px rgba(59, 130, 246, 0.9); }
     
-    .vod-controls-box { width: 100%; margin-top: 15px; display: none; flex-direction: column; gap: 15px; order: 4;}
+    .vod-controls-box { width: 100%; margin-top: 15px; display: none; flex-direction: column; gap: 15px; order: 3;}
     
     /* SELECTOR TIPO DROPDOWN */
     .custom-select-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
@@ -200,18 +200,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .btn-descarga:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4); color: white; }
 
-    /* 🔥 BANNERS CSS BASE 🔥 */
-    .ad-slot { 
-        background: transparent; border: none; border-radius: 15px; 
-        display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; 
-        font-weight: 800; letter-spacing: 1px; text-transform: uppercase; 
-        overflow: hidden !important; transition: 0.3s; position: relative; z-index: 1; 
-    }
-    .side-ad { width: 160px; height: 600px; flex-shrink: 0; position: -webkit-sticky; position: sticky; top: 90px; align-self: flex-start; display: none; }
-    
-    /* 🔥 BANNER MEJOR UBICADO 🔥 */
-    .ads-bottom { margin-top: 15px; margin-bottom: 10px; width: 100%; max-width: 1000px; display: flex; gap: 15px; justify-content: center; align-items: center; order: 3; }
-    
     /* 🔥 CONTROLES Y BOTONES 🔥 */
     .controls { 
         margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 100%; 
@@ -247,7 +235,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         margin-top: 20px; display: none; 
         flex-wrap: wrap; justify-content: center;
         gap: 12px; padding: 20px; background: var(--card-bg); 
-        border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); width: 100%; order: 5; 
+        border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.03); width: 100%; order: 4; 
     }
     .btn-opcion { 
         flex: 0 0 160px; 
@@ -272,7 +260,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border-color: transparent !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transform: scale(1.02); 
     }
     
-    #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 6; font-weight: 300;}
+    #seo-content { margin-top: 20px !important; width: 100%; color: #64748b; font-size: 13px; text-align: center; padding: 0 15px; line-height: 1.6; order: 5; font-weight: 300;}
     
     /* MODALES PRO */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
@@ -360,7 +348,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* MODO TABLET (Entre 768px y 1200px) */
     @media (max-width: 1200px) { 
         .page-layout { flex-direction: column; align-items: center; gap: 15px; } 
-        .side-ad { display: none !important; } /* Oculta rascacielos */
     }
     
     /* MODO MÓVIL (Menos de 768px) */
@@ -377,9 +364,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .btn-opcion { flex: 0 0 calc(50% - 5px); padding: 10px 5px; font-size: 10px; min-height: 45px; height: auto; }
         .page-layout { flex-direction: column; gap: 15px; margin-bottom: 15px; }
         .center-column { order: 1; }
-        
-        /* Ajuste de ads-bottom en móvil */
-        .ads-bottom { flex-direction: column !important; align-items: center; gap: 15px; margin-top: 15px; margin-bottom: 15px;}
     }
     
     /* 🔥 MODO APAGADO BOTÓN CAST 🔥 */
@@ -447,9 +431,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main>
         <div class="page-layout">
             
-            <div class="ad-slot side-ad" id="ad-left-pc">
-                </div>
-            
             <div class="center-column">
                 <div class="player-container">
                     <div id="player-overlay">
@@ -475,9 +456,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </button>
                 </div>
 
-                <!-- 🔥 BANNER PRINCIPAL A LA VISTA 🔥 -->
-                <div class="ads-bottom" id="ads-bottom-container" style="margin-top: 15px; margin-bottom: 10px;"></div>
-
                 <div id="multi-signals"></div>
 
                 <div id="vod-controls" class="vod-controls-box">
@@ -492,9 +470,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <div id="seo-content"></div>
             </div>
-            
-            <div class="ad-slot side-ad" id="ad-right-pc">
-                 </div>
         </div>
     </main>
 
@@ -534,74 +509,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="https://wa.me/584162805770?text=Hola,%20acabo%20de%20pagar%20la%20Licencia%20Premium.%20%0A%0AMis%20datos%20son:%0A-%20Web:%20[Escribe%20tu%20dominio]%0A-%20Comprobante:%20[Pega%20el%20ID%20o%20foto]" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Activar mi Dominio</a>
         </div>
     </div>
-
-<script>
-    // 🔥 LÓGICA DE INYECCIÓN DE BANNERS EN CAPAS (El escudo definitivo) 🔥
-    document.addEventListener("DOMContentLoaded", function() {
-        const screenWidth = window.innerWidth;
-        const adLeftPc = document.getElementById('ad-left-pc');
-        const adRightPc = document.getElementById('ad-right-pc');
-        const adsBottom = document.getElementById('ads-bottom-container');
-
-        const code160_A = `<script>atOptions={'key':'91ed6130324642c95007aff944f8ed98','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/91ed6130324642c95007aff944f8ed98/invoke.js"></scr` + `ipt>`;
-        const code160_B = `<script>atOptions={'key':'b2c9886be7495a584b1189cb74137158','format':'iframe','height':600,'width':160,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/b2c9886be7495a584b1189cb74137158/invoke.js"></scr` + `ipt>`;
-        
-        const code468_A = `<script>atOptions={'key':'18c5a84b3204e04d518aa3377467dfd5','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/18c5a84b3204e04d518aa3377467dfd5/invoke.js"></scr` + `ipt>`;
-        const code468_B = `<script>atOptions={'key':'87ed9bdb48ddce4d8371b2ccd4cc82d2','format':'iframe','height':60,'width':468,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/87ed9bdb48ddce4d8371b2ccd4cc82d2/invoke.js"></scr` + `ipt>`;
-        
-        const code300 = `<script>atOptions={'key':'0d1f7726b341e7d353a33f1478fd2702','format':'iframe','height':250,'width':300,'params':{}};</scr` + `ipt><script src="https://wistfulseverely.com/0d1f7726b341e7d353a33f1478fd2702/invoke.js"></scr` + `ipt>`;
-
-        function injectAd(element, codeHTML) {
-            if(!element) return;
-            const iframe = document.createElement('iframe');
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.style.border = 'none';
-            iframe.style.overflow = 'hidden';
-            iframe.scrolling = 'no';
-            
-            const htmlContent = `<!DOCTYPE html><html><head><style>body{margin:0;padding:0;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head><body>${codeHTML}</body></html>`;
-            
-            element.appendChild(iframe);
-            iframe.contentWindow.document.open();
-            iframe.contentWindow.document.write(htmlContent);
-            iframe.contentWindow.document.close();
-        }
-
-        function createAdSlot(width, height, isMobile=false) {
-            const div = document.createElement('div');
-            div.className = 'ad-slot bottom-ad';
-            div.style.width = isMobile ? '100%' : width;
-            div.style.maxWidth = width;
-            div.style.height = height;
-            return div;
-        }
-
-        if (screenWidth > 1200) {
-            // MODO PC: 2 lados, 2 abajo
-            adLeftPc.style.display = 'flex';
-            adRightPc.style.display = 'flex';
-            injectAd(adLeftPc, code160_A);
-            injectAd(adRightPc, code160_B);
-
-            const b1 = createAdSlot('468px', '60px');
-            const b2 = createAdSlot('468px', '60px');
-            adsBottom.appendChild(b1); adsBottom.appendChild(b2);
-            injectAd(b1, code468_A); injectAd(b2, code468_B);
-        } else if (screenWidth > 768) {
-            // MODO TABLET: 2 Banners de 468x60 abajo
-            const b1 = createAdSlot('468px', '60px');
-            const b2 = createAdSlot('468px', '60px');
-            adsBottom.appendChild(b1); adsBottom.appendChild(b2);
-            injectAd(b1, code468_A); injectAd(b2, code468_B);
-        } else {
-            // 🔥 MODO MÓVIL OPTIMIZADO: Solo el 300x250, cero basura 🔥
-            const m1 = createAdSlot('300px', '250px', true);
-            adsBottom.appendChild(m1);
-            injectAd(m1, code300);
-        }
-    });
-</script>
 
 <script>
     if (document.referrer === "" && !window.location.href.includes('&ref=vip')) {
