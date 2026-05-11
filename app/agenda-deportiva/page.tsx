@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Agenda Deportiva de Hoy ⚽ | SportLive',
     description: 'No te pierdas ningún partido hoy. Mira la cartelera completa y accede a las transmisiones en vivo gratis.',
-    url: 'https://oleadatvpremium.com/agenda-deportiva', // 👈 URL exacta de esta página
+    url: 'https://magistvpro.shop /agenda-deportiva', // 👈 URL exacta de esta página
     images: [
       {
-        url: 'https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png',
+        url: 'https://magistvpro.shop /SportLive/icons/icon2-512x512.png',
         width: 512,
         height: 512,
       },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Agenda Deportiva de Hoy ⚽ | SportLive',
     description: 'Mira la programación completa y accede a las transmisiones en vivo.',
-    images: ['https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png'],
+    images: ['https://magistvpro.shop /SportLive/icons/icon2-512x512.png'],
   }
 }
 
@@ -79,7 +79,7 @@ function obtenerDeporte(evento: any): { nombre: string, icono: string, color: st
 async function getAgendaData() {
   const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
   try {
-    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } };
+    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://magistvpro.shop ', 'Referer': 'https://magistvpro.shop /' } };
     const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
     let todos = results.flatMap(r => r.data || []);
     todos.sort((a, b) => (a.attributes.diary_hour || "00:00").localeCompare(b.attributes.diary_hour || "00:00"));

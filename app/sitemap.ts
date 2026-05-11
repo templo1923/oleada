@@ -6,7 +6,7 @@ import canalesData from '../data/channels.json'     // 🔥 AÑADIMOS TUS CANALE
 
 // 1. Convertimos la función en ASYNC para que soporte fetch
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const DOMINIO = 'https://oleadatvpremium.com';
+  const DOMINIO = 'https://magistvpro.shop ';
 
   // 1. Páginas estáticas seguras
   const rutas: MetadataRoute.Sitemap = [

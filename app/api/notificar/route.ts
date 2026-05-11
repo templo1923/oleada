@@ -23,8 +23,8 @@ export async function GET(request: Request) {
 
         const fetchOptions = {
             headers: {
-                'Origin': 'https://oleadatvpremium.com',
-                'Referer': 'https://oleadatvpremium.com/'
+                'Origin': 'https://magistvpro.shop ',
+                'Referer': 'https://magistvpro.shop /'
             },
             cache: 'no-store' as RequestCache
         };
@@ -63,7 +63,7 @@ export async function GET(request: Request) {
             included_segments: ["Total Subscriptions"],
             headings: { "en": titulo, "es": titulo },
             contents: { "en": mensaje, "es": mensaje },
-            url: "https://oleadatvpremium.com/SportLive/television.html"
+            url: "https://magistvpro.shop /SportLive/television.html"
         };
 
         // 3. DISPARAR A ONESIGNAL USANDO LA VARIABLE

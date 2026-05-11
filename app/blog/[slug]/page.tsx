@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: post.title,
       description: descCorta,
-      url: `https://oleadatvpremium.com/blog/${resolvedParams.slug}`,
+      url: `https://magistvpro.shop /blog/${resolvedParams.slug}`,
       type: "article", // 👈 Vital para que Google sepa que es una noticia
       images: [{ url: imagenPost, width: 1200, height: 630 }]
     },

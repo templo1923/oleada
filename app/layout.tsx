@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   // 🔥 1. METADATABASE: Obligatorio para que Next.js resuelva bien las imágenes
-  metadataBase: new URL('https://oleadatvpremium.com'),
+  metadataBase: new URL('https://magistvpro.shop '),
   
   // 🔥 2. TEMPLATE: Para que las subpáginas hereden el nombre de la marca
   title: {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SportLive Tv Premium | Deportes en Vivo, Canales TV y Cine',
     description: 'Tu hub de entretenimiento premium. Agenda deportiva en vivo, canales de TV premium, estrenos de cine.',
-    url: 'https://oleadatvpremium.com',
+    url: 'https://magistvpro.shop ',
     type: 'website',
     locale: 'es_ES', // Si tu público es mayormente de Colombia/Latam, puedes usar 'es_CO' o 'es_LA'
     siteName: 'SportLive Tv Premium',
@@ -104,10 +104,10 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "SportLive Tv Premium",
               "description": "Hub de entretenimiento premium con deportes en vivo, canales de TV y cine",
-              "url": "https://oleadatvpremium.com",
+              "url": "https://magistvpro.shop ",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://oleadatvpremium.com/buscar?q={search_term_string}",
+                "target": "https://magistvpro.shop /buscar?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               }
             })

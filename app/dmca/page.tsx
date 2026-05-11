@@ -68,7 +68,7 @@ export default function DmcaPage() {
                 <p>Envíe todas las notificaciones de DMCA al correo electrónico de nuestro equipo legal:</p>
                 <div className="mt-4 p-4 bg-white/5 rounded-xl border border-white/10 inline-block">
                   <p className="font-bold text-white">Correo electrónico:</p>
-                  <a href="mailto:admin@oleadatvpremium.com" className="text-primary hover:text-blue-400 transition-colors">admin@oleadatvpremium.com</a>
+                  <a href="mailto:admin@magistvpro.shop " className="text-primary hover:text-blue-400 transition-colors">admin@magistvpro.shop </a>
                 </div>
                 <p className="mt-4 text-sm text-slate-400">
                   Una vez recibido un reclamo válido y completo, procederemos a eliminar o deshabilitar los enlaces al material presuntamente infractor en un plazo de 24 a 48 horas hábiles.

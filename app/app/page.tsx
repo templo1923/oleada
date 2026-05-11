@@ -4,7 +4,7 @@ export const metadata = {
   openGraph: {
     title: "Descarga SportLive Premium 📲",
     description: "🔥 Instala la mejor App para ver Fútbol, Cine y TV Premium en VIVO. 100% Gratis y sin cortes.",
-    url: "https://oleadatvpremium.com/app",
+    url: "https://magistvpro.shop /app",
     siteName: "SportLive Premium",
     images: [
       {

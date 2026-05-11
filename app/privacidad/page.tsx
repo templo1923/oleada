@@ -69,7 +69,7 @@ export default function PrivacyPage() {
                   <span className="text-blue-500">4.</span> Consentimiento
                 </h2>
                 <p>
-                  Al utilizar nuestro sitio web, usted acepta por la presente nuestra Política de Privacidad y Cookies, y acepta sus Términos y Condiciones. Si tiene preguntas adicionales o requiere más información, no dude en contactarnos a través de <a href="mailto:admin@oleadatvpremium.com" className="text-primary hover:underline">admin@oleadatvpremium.com</a>.
+                  Al utilizar nuestro sitio web, usted acepta por la presente nuestra Política de Privacidad y Cookies, y acepta sus Términos y Condiciones. Si tiene preguntas adicionales o requiere más información, no dude en contactarnos a través de <a href="mailto:admin@magistvpro.shop " className="text-primary hover:underline">admin@magistvpro.shop </a>.
                 </p>
               </section>
             </div>

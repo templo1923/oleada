@@ -17,7 +17,7 @@ const nextConfig = {
             value: 'sportlivetvpremium.vercel.app',
           },
         ],
-        destination: 'https://oleadatvpremium.com/:path*',
+        destination: 'https://magistvpro.shop /:path*',
         permanent: true,
       },
       {

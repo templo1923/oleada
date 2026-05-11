@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cine y Estrenos HD 🍿 | SportLive Tv Premium",
     description: "Disfruta de los mejores estrenos de cine y tus películas favoritas totalmente gratis y en calidad HD.",
-    url: "https://oleadatvpremium.com/cine-estrenos",
+    url: "https://magistvpro.shop /cine-estrenos",
     type: "website",
     images: [
       {
-        url: "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png", // Tu logo premium
+        url: "https://magistvpro.shop /SportLive/icons/icon2-512x512.png", // Tu logo premium
         width: 512,
         height: 512,
         alt: "SportLive Premium Cine",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Cine y Estrenos HD 🍿 | SportLive Tv Premium",
     description: "Ver películas online gratis. Catálogo actualizado diariamente.",
-    images: ["https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png"],
+    images: ["https://magistvpro.shop /SportLive/icons/icon2-512x512.png"],
   },
 }
 

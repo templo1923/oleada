@@ -14,15 +14,15 @@ export const metadata: Metadata = {
   description: 'Descubre SportLive Premium. La plataforma definitiva para ver deportes y televisión en vivo desde cualquier dispositivo.',
 // 🔥 AQUÍ ESTÁ LA MAGIA: ASÍ SE PONE LA VERSIÓN CANÓNICA EN NEXT.JS 🔥
   alternates: {
-    canonical: 'https://oleadatvpremium.com/',
+    canonical: 'https://magistvpro.shop /',
   },
   openGraph: {
     title: 'Descarga SportLive Premium 🚀',
     description: 'La mejor App de entretenimiento ha llegado. Instálala ahora y no te pierdas ningún partido.',
-    url: 'https://oleadatvpremium.com', // 👈 Añadimos la URL exacta
+    url: 'https://magistvpro.shop ', // 👈 Añadimos la URL exacta
     images: [
       {
-        url: 'https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png', 
+        url: 'https://magistvpro.shop /SportLive/icons/icon2-512x512.png', 
         width: 512,
         height: 512,
       },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Descarga SportLive Premium 🚀',
     description: 'La mejor App de entretenimiento ha llegado. Instálala ahora.',
-    images: ['https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png'],
+    images: ['https://magistvpro.shop /SportLive/icons/icon2-512x512.png'],
   }
 }
 

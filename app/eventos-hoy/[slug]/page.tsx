@@ -45,7 +45,7 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://oleadatvpremium.com/eventos-hoy/${slug}`
+      "@id": `https://magistvpro.shop /eventos-hoy/${slug}`
     },
     "headline": partido.title,
     "description": partido.excerpt,
@@ -57,14 +57,14 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
     "author": {
       "@type": "Organization",
       "name": "SportLive",
-      "url": "https://oleadatvpremium.com"
+      "url": "https://magistvpro.shop "
     },
     "publisher": {
       "@type": "Organization",
       "name": "SportLive",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png"
+        "url": "https://magistvpro.shop /SportLive/icons/icon2-512x512.png"
       }
     }
   };

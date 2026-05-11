@@ -15,10 +15,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Canales Premium TV en Vivo 📺 | SportLive",
     description: "Disfruta de ESPN, Win Sports, Fox Sports, HBO y más de 500 canales premium totalmente gratis en HD.",
-    url: "https://oleadatvpremium.com/canales-premium", // 👈 La ruta exacta
+    url: "https://magistvpro.shop /canales-premium", // 👈 La ruta exacta
     images: [
       {
-        url: "https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png",
+        url: "https://magistvpro.shop /SportLive/icons/icon2-512x512.png",
         width: 512,
         height: 512,
       },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Canales Premium TV en Vivo 📺 | SportLive",
     description: "Disfruta de más de 500 canales premium totalmente gratis en HD.",
-    images: ["https://oleadatvpremium.com/SportLive/icons/icon2-512x512.png"],
+    images: ["https://magistvpro.shop /SportLive/icons/icon2-512x512.png"],
   }
 }
 
@@ -42,8 +42,8 @@ async function getFullCatalog() {
     const fetchOptions = { 
       next: { revalidate: 300 }, 
       headers: { 
-        'Origin': 'https://oleadatvpremium.com', 
-        'Referer': 'https://oleadatvpremium.com/' 
+        'Origin': 'https://magistvpro.shop ', 
+        'Referer': 'https://magistvpro.shop /' 
       } 
     };
     const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);

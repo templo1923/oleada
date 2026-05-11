@@ -66,7 +66,7 @@ export default function TermsPage() {
                   <span className="text-emerald-500">4.</span> Modificaciones
                 </h2>
                 <p>
-                  Nos reservamos el derecho de revisar estos Términos de Uso en cualquier momento. Al usar este sitio web, usted acepta estar sujeto a la versión actual de estos Términos y Condiciones. Cualquier reclamo o disputa relacionada con el uso de nuestro sitio debe dirigirse a nuestro contacto oficial: <a href="mailto:admin@oleadatvpremium.com" className="text-primary hover:underline">admin@oleadatvpremium.com</a>.
+                  Nos reservamos el derecho de revisar estos Términos de Uso en cualquier momento. Al usar este sitio web, usted acepta estar sujeto a la versión actual de estos Términos y Condiciones. Cualquier reclamo o disputa relacionada con el uso de nuestro sitio debe dirigirse a nuestro contacto oficial: <a href="mailto:admin@magistvpro.shop " className="text-primary hover:underline">admin@magistvpro.shop </a>.
                 </p>
               </section>
             </div>

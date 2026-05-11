@@ -33,7 +33,7 @@ export default function BlogPage() {
             "@type": "Blog",
             "name": "OleadaTV Blog",
             "description": "Guias y comparativas de streaming",
-            "url": "https://oleadatvpremium.com/blog",
+            "url": "https://magistvpro.shop /blog",
             "blogPost": [
               {
                 "@type": "BlogPosting",

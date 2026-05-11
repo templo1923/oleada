@@ -55,7 +55,7 @@ function obtenerDeporte(evento: any): { nombre: string, icono: string, color: st
 async function getAgendaData() {
   const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
   try {
-    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://oleadatvpremium.com', 'Referer': 'https://oleadatvpremium.com/' } };
+    const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://magistvpro.shop ', 'Referer': 'https://magistvpro.shop /' } };
     const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
     
     let todos = results.flatMap(r => r.data || []);
