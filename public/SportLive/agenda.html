@@ -439,31 +439,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // ==========================================
     // ==========================================
     // 🛡️ SEGURIDAD COMPATIBLE CON TELEGRAM 🛡️
-    // ==========================================
-    (function() {
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123) return false; 
-            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
-            if (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.keyCode == 'S'.charCodeAt(0))) return false;
-        };
+// 1. Asegúrate de que jQuery esté cargado al inicio del script si no lo tienes en el HEAD
+// 2. Este es el bloque de seguridad que NO rompe Telegram PC:
+(function() {
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false;
+    };
 
-        // 🔥 CAMBIO CRÍTICO: No usamos window.top porque bloquea la App en Telegram
-        // Solo bloqueamos el clickjacking si no estamos en Telegram
-        const isTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.platform !== "unknown";
-        if (window.top !== window.self && !isTelegram) {
-            window.top.location = window.self.location;
+    // ELIMINADO: window.top.location = window.self.location; 
+    // Al quitar eso, el "SecurityError" desaparece y la agenda carga en PC.
+
+    setInterval(function() {
+        let before = new Date().getTime();
+        debugger; 
+        if (new Date().getTime() - before > 200) {
+            window.location.replace("https://www.google.com");
         }
-
-        // Trampa agresiva para consola (opcional, mantenla si quieres)
-        setInterval(function() {
-            let before = new Date().getTime();
-            debugger; 
-            if (new Date().getTime() - before > 100) {
-                window.location.replace("https://www.google.com");
-            }
-        }, 2000);
-    })();
+    }, 3000);
+})();
 
     // 🚨 Función para navegar sin previsualizar URL
     function navegarSeguro(url) {
