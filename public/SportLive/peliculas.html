@@ -854,13 +854,12 @@ topPelis.forEach(p => {
 
   <script>
     // 1. Registrar el Service Worker (Tu "Maik Shield")
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('🛡️ Maik Shield Activado:', reg.scope);
-            }).catch(err => console.log('Error Maik Shield:', err));
-        });
-    }
+/* if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+    });
+}
+*/
 
     // 2. Lógica de Instalación PWA
     let deferredPrompt;
