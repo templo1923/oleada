@@ -64,7 +64,7 @@ export default async function EventoEstiloBlog({ params }: { params: { slug: str
       "name": "SportLive",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://magistvpro.shop /SportLive/icons/icon2-512x512.png"
+        "url": "https://magistvpro.shop/SportLive/icons/icon2-512x512.png"
       }
     }
   };

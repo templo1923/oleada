@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://magistvpro.shop /SportLive/icons/icon2-512x512.png", // Tu logo premium
+        url: "https://magistvpro.shop/SportLive/icons/icon2-512x512.png", // Tu logo premium
         width: 512,
         height: 512,
         alt: "SportLive Premium Cine",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Cine y Estrenos HD 🍿 | SportLive Tv Premium",
     description: "Ver películas online gratis. Catálogo actualizado diariamente.",
-    images: ["https://magistvpro.shop /SportLive/icons/icon2-512x512.png"],
+    images: ["https://magistvpro.shop/SportLive/icons/icon2-512x512.png"],
   },
 }
 

@@ -91,7 +91,7 @@ export async function generateMetadata(props: any): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://magistvpro.shop /SportLive/icons/icon-512x512.png", // Tu logo premium siempre seguro
+          url: "https://magistvpro.shop/SportLive/icons/icon-512x512.png", // Tu logo premium siempre seguro
           width: 512,
           height: 512,
           alt: tituloSeo,
@@ -104,7 +104,7 @@ export async function generateMetadata(props: any): Promise<Metadata> {
       card: "summary_large_image",
       title: tituloSeo,
       description: descSeo,
-      images: ["https://magistvpro.shop /SportLive/icons/icon-512x512.png"],
+      images: ["https://magistvpro.shop/SportLive/icons/icon-512x512.png"],
     }
   }
 }
@@ -117,7 +117,7 @@ export default async function PartidoPage(props: any) {
   const { equipoA, equipoB, torneo, esPartido } = procesarPartido(n);
   
   // Apunta directamente a tu reproductor
-  const linkReproductor = `https://magistvpro.shop /SportLive/ver.html?r=${r}&n=${encodeURIComponent(n)}`;
+  const linkReproductor = `https://magistvpro.shop/SportLive/ver.html?r=${r}&n=${encodeURIComponent(n)}`;
 
   return (
     <div className="relative min-h-screen bg-[#080c14] flex flex-col w-full font-['Outfit']">
@@ -167,7 +167,7 @@ export default async function PartidoPage(props: any) {
 
               {/* 🔥 HACK DE SEGURIDAD: Formulario invisible para ocultar la URL al pasar el mouse 🔥 */}
               <div className="w-full max-w-sm mt-4">
-                <form action="https://magistvpro.shop /SportLive/ver.html" method="GET" target="_blank">
+                <form action="https://magistvpro.shop/SportLive/ver.html" method="GET" target="_blank">
                   {/* Pasamos los parámetros de forma oculta */}
                   <input type="hidden" name="r" value={r} />
                   <input type="hidden" name="n" value={n} />

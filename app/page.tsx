@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     url: 'https://magistvpro.shop ', // 👈 Añadimos la URL exacta
     images: [
       {
-        url: 'https://magistvpro.shop /SportLive/icons/icon2-512x512.png', 
+        url: 'https://magistvpro.shop/SportLive/icons/icon2-512x512.png', 
         width: 512,
         height: 512,
       },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Descarga SportLive Premium 🚀',
     description: 'La mejor App de entretenimiento ha llegado. Instálala ahora.',
-    images: ['https://magistvpro.shop /SportLive/icons/icon2-512x512.png'],
+    images: ['https://magistvpro.shop/SportLive/icons/icon2-512x512.png'],
   }
 }
 

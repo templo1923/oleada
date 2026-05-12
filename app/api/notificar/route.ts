@@ -63,7 +63,7 @@ export async function GET(request: Request) {
             included_segments: ["Total Subscriptions"],
             headings: { "en": titulo, "es": titulo },
             contents: { "en": mensaje, "es": mensaje },
-            url: "https://magistvpro.shop /SportLive/television.html"
+            url: "https://magistvpro.shop/SportLive/television.html"
         };
 
         // 3. DISPARAR A ONESIGNAL USANDO LA VARIABLE

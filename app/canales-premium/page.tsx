@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: "https://magistvpro.shop /canales-premium", // 👈 La ruta exacta
     images: [
       {
-        url: "https://magistvpro.shop /SportLive/icons/icon2-512x512.png",
+        url: "https://magistvpro.shop/SportLive/icons/icon2-512x512.png",
         width: 512,
         height: 512,
       },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Canales Premium TV en Vivo 📺 | SportLive",
     description: "Disfruta de más de 500 canales premium totalmente gratis en HD.",
-    images: ["https://magistvpro.shop /SportLive/icons/icon2-512x512.png"],
+    images: ["https://magistvpro.shop/SportLive/icons/icon2-512x512.png"],
   }
 }
 

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     url: 'https://magistvpro.shop /agenda-deportiva', // 👈 URL exacta de esta página
     images: [
       {
-        url: 'https://magistvpro.shop /SportLive/icons/icon2-512x512.png',
+        url: 'https://magistvpro.shop/SportLive/icons/icon2-512x512.png',
         width: 512,
         height: 512,
       },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Agenda Deportiva de Hoy ⚽ | SportLive',
     description: 'Mira la programación completa y accede a las transmisiones en vivo.',
-    images: ['https://magistvpro.shop /SportLive/icons/icon2-512x512.png'],
+    images: ['https://magistvpro.shop/SportLive/icons/icon2-512x512.png'],
   }
 }
 
