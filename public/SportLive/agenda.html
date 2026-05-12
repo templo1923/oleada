@@ -437,32 +437,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // ==========================================
     // 🚨 SEGURIDAD FRONTEND MAXIMA (PARANOIA MODE + ANTI-IFRAME) 🚨
     // ==========================================
+    // ==========================================
+    // 🛡️ SEGURIDAD COMPATIBLE CON TELEGRAM 🛡️
+    // ==========================================
     (function() {
-        // Bloquear click derecho
         document.addEventListener('contextmenu', e => e.preventDefault());
-        // Bloquear atajos de teclado de desarrollador
         document.onkeydown = function(e) {
             if (e.keyCode == 123) return false; 
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; 
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.keyCode == 'S'.charCodeAt(0))) return false;
         };
-        // Bloquear que otra web incruste tu página en un Iframe (Clickjacking)
-        if (window.top !== window.self) {
+
+        // 🔥 CAMBIO CRÍTICO: No usamos window.top porque bloquea la App en Telegram
+        // Solo bloqueamos el clickjacking si no estamos en Telegram
+        const isTelegram = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.platform !== "unknown";
+        if (window.top !== window.self && !isTelegram) {
             window.top.location = window.self.location;
         }
-        // Bucle infinito para trabar la consola si la logran abrir
+
+        // Trampa agresiva para consola (opcional, mantenla si quieres)
         setInterval(function() {
             let before = new Date().getTime();
             debugger; 
-            let after = new Date().getTime();
-            if (after - before > 100) {
-                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%; font-family:sans-serif;'>Acceso Denegado</h1>";
+            if (new Date().getTime() - before > 100) {
                 window.location.replace("https://www.google.com");
             }
-        }, 1500);
+        }, 2000);
     })();
 
     // 🚨 Función para navegar sin previsualizar URL
@@ -1265,7 +1265,17 @@ function cambiarFiltro(cat) {
 
 
 
+    
   </script>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    // Avisamos a Telegram que la App está lista y expandimos
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+    }
+</script>
 
 </body>
 </html>
