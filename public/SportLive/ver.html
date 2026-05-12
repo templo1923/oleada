@@ -697,7 +697,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     };
 
                     // 🔥 2. HACEMOS LA CONSULTA CON LÍMITE (Evita el cuelgue de 12 a 30 segundos)
-                    const dataInfo = await fetchInfoLimite(`https://srv.jhllegalgroup.com/vod/info/${peliId}`, 2500);
+                    const dataInfo = await fetchInfoLimite(`https://run.jhllegalgroup.com/vod/info/${peliId}`, 2500);
                     
                     if (dataInfo && dataInfo.info) {
                         const info = dataInfo.info;
@@ -777,7 +777,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         descargas = dataObj.data.downloads || [];
                     }
                 } else {
-                    const response = await fetch(`https://srv.jhllegalgroup.com/vod/enlaces/${peliId}`);
+                    const response = await fetch(`https://run.jhllegalgroup.com/vod/enlaces/${peliId}`);
                     const arrayLinks = await response.json();
                     enlaces = arrayLinks.map(l => {
                         let host = "Servidor";
@@ -932,7 +932,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                         if (esVIP) {
                             try {
-                                const req = await fetch(`https://srv.jhllegalgroup.com/vod/extract?url=${encodeURIComponent(urlFinal)}`);
+                                const req = await fetch(`https://run.jhllegalgroup.com/vod/extract?url=${encodeURIComponent(urlFinal)}`);
                                 const data = await req.json();
                                 if (data.success && data.url) {
                                     loadMotor(data.url, tituloLimpio, false);
@@ -1155,7 +1155,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             elemento.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: #eab308;"></i> Conectando VIP...';
             
             try {
-                const req = await fetch(`https://srv.jhllegalgroup.com/vod/extract?url=${encodeURIComponent(url)}`);
+                const req = await fetch(`https://run.jhllegalgroup.com/vod/extract?url=${encodeURIComponent(url)}`);
                 const data = await req.json();
                 
                 if (data.success && data.url) {
