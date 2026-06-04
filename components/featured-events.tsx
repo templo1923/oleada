@@ -4,7 +4,7 @@ import { Play, ChevronRight, Activity } from 'lucide-react'
 // 🔥 1. VOLVEMOS A LEER DIRECTAMENTE DE TU CARPETA DE TV (canales.php) 🔥
 async function getFeaturedData() {
   try {
-    const response = await fetch('https://api.telelatinomax.shop/canales.php', {
+    const response = await fetch('https://telelatinomax.shop/canales.php', {
       cache: 'no-store',
       headers: { 
         'X-Requested-With': 'XMLHttpRequest',

@@ -635,7 +635,7 @@ topPelis.forEach(p => {
                     return palabrasBusqueda.every(palabra => nombreLocal.includes(palabra));
                 }).slice(0, 8); 
                 
-                const req = await fetch(`https://api.telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(texto)}`);
+                const req = await fetch(`https://telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(texto)}`);
                 const data = await req.json();
 
                 let htmlSugerencias = '';
@@ -681,7 +681,7 @@ topPelis.forEach(p => {
                         const urlReproductor = `ver.html?peli=${peli._id}&n=${encodeURIComponent(peli.title)}&fuente=${encodeURIComponent(peli.f_origen)}&y=${peli.year}&r=${peli.rating}&bg=${encodeURIComponent(peli.backdrop)}&desc=${descSegura}`;
                         
                         let imgPoster = peli.poster;
-                        if (imgPoster && imgPoster.startsWith("ver.php")) imgPoster = `https://api.telelatinomax.shop/api-kiamber/${imgPoster}`;
+                        if (imgPoster && imgPoster.startsWith("ver.php")) imgPoster = `https://telelatinomax.shop/api-kiamber/${imgPoster}`;
 
                         htmlSugerencias += `
                             <a href="${urlReproductor}" class="sugerencia-item" style="border-left: 3px solid #10b981;">
@@ -747,7 +747,7 @@ topPelis.forEach(p => {
 
         let resultadosExternos = [];
         try {
-            const res = await fetch(`https://api.telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(termino)}`);
+            const res = await fetch(`https://telelatinomax.shop/api-kiamber/get-movie.php?q=${encodeURIComponent(termino)}`);
             const result = await res.json();
             if (result.data && result.data.posts) {
                 resultadosExternos = result.data.posts;
@@ -806,10 +806,10 @@ topPelis.forEach(p => {
             const yearSeguro = p.year || 'HD';
             
             let posterFinal = p.poster;
-            if (posterFinal && posterFinal.startsWith("ver.php")) posterFinal = `https://api.telelatinomax.shop/api-kiamber/${posterFinal}`;
+            if (posterFinal && posterFinal.startsWith("ver.php")) posterFinal = `https://telelatinomax.shop/api-kiamber/${posterFinal}`;
 
             let fondoFinal = p.backdrop || '';
-            if (fondoFinal && fondoFinal.startsWith("ver.php")) fondoFinal = `https://api.telelatinomax.shop/api-kiamber/${fondoFinal}`;
+            if (fondoFinal && fondoFinal.startsWith("ver.php")) fondoFinal = `https://telelatinomax.shop/api-kiamber/${fondoFinal}`;
             const fondoSeguro = encodeURIComponent(fondoFinal).replace(/'/g, "%27");
 
             htmlFinal += `

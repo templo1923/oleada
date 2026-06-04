@@ -46,7 +46,7 @@ async function getFullCatalog() {
         'Referer': 'https://magistvpro.shop /' 
       } 
     };
-    const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
+    const res = await fetch('https://telelatinomax.shop/canales.php', fetchOptions);
     const data = await res.json();
     
     let allChannels: any[] = [];

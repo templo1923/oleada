@@ -30,7 +30,7 @@ export async function GET(request: Request) {
         };
 
         // 1. LEER EVENTOS VIP
-        const resCanales = await fetch("https://api.telelatinomax.shop/canales.php", fetchOptions);
+        const resCanales = await fetch("https://telelatinomax.shop/canales.php", fetchOptions);
         const canalesData = await resCanales.json();
         
         let nombresEventosVIP: string[] = [];

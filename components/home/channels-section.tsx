@@ -15,7 +15,7 @@ async function getFeaturedChannels() {
     };
 
     console.log("📡 Vercel: Intentando descargar Canales Premium...");
-    const res = await fetch('https://api.telelatinomax.shop/canales.php', fetchOptions);
+    const res = await fetch('https://telelatinomax.shop/canales.php', fetchOptions);
     
     // Si la API nos tira una puerta en la cara (Error 403, 500, etc)
     if (!res.ok) {

@@ -80,7 +80,7 @@ async function getAgendaData() {
   const PROXIES = ["proxy.php", "proxy_livetv.php", "proxy_extra.php", "proxy_onlive.php"];
   try {
     const fetchOptions = { next: { revalidate: 120 }, headers: { 'Origin': 'https://magistvpro.shop ', 'Referer': 'https://magistvpro.shop /' } };
-    const results = await Promise.all(PROXIES.map(p => fetch(`https://api.telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
+    const results = await Promise.all(PROXIES.map(p => fetch(`https://telelatinomax.shop/api/${p}`, fetchOptions).then(r => r.json()).catch(() => ({ data: [] }))));
     let todos = results.flatMap(r => r.data || []);
     todos.sort((a, b) => (a.attributes.diary_hour || "00:00").localeCompare(b.attributes.diary_hour || "00:00"));
     return todos.map(t => ({...t, categoriaAsignada: obtenerDeporte(t)}));
