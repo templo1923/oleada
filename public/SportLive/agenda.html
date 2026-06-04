@@ -486,10 +486,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     const $ = jQuery;
-    const AGENDA_URL = "http://telelatinomax.shop/api/proxy.php"; 
-    const LIVETV_URL = "http://telelatinomax.shop/api/proxy_livetv.php"; 
-    const EXTRA_URL = "http://telelatinomax.shop/api/proxy_extra.php"; 
-    const ONLIVE_URL = "http://telelatinomax.shop/api/proxy_onlive.php"; 
+    const AGENDA_URL = "https://telelatinomax.shop/api/proxy.php"; 
+    const LIVETV_URL = "https://telelatinomax.shop/api/proxy_livetv.php"; 
+    const EXTRA_URL = "https://telelatinomax.shop/api/proxy_extra.php"; 
+    const ONLIVE_URL = "https://telelatinomax.shop/api/proxy_onlive.php"; 
     const IMG_BASE = "https://cdn.pltvhd.com";
 
     // 👇 NUEVA LÍNEA: La ruta al archivo JSON generado por tu Scraper
@@ -899,7 +899,7 @@ function cambiarFiltro(cat) {
 <script>
     async function cargarEventoDestacadoEnAgenda() {
         try {
-            const response = await fetch('http://telelatinomax.shop/canales.php');
+            const response = await fetch('https://telelatinomax.shop/canales.php');
             if (!response.ok) return;
             const data = await response.json();
             
